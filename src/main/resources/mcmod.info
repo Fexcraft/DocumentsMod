@@ -1,13 +1,13 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "documents",
+  "name": "Documents Mod",
+  "description": "Mod providing custom document-like items for servers/modpacks.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://fexcraft.net/wiki/mod/documents",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
+  "authorList": ["FEX___96"],
   "credits": "The Forge and FML guys, for making this example",
   "logoFile": "",
   "screenshots": [],
