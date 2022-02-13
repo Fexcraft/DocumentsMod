@@ -1,4 +1,4 @@
-package net.fexcraft.mod.doc;
+package net.fexcraft.mod.doc.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
