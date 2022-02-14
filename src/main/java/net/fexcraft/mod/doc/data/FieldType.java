@@ -13,6 +13,7 @@ public enum FieldType {
 	INFO_IMG	(false),
 	PLAYER_IMG	(false),
 	ENUM		(true),
+	ISSUER		(false),
 	;
 	
 	public final boolean editable;
