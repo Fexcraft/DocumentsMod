@@ -9,9 +9,9 @@ public class FieldData {
 	
 	public final FieldType type;
 	public int posx, posy, sizex, sizey;
-	public float fontsize;
+	public float fontscale;
 	public String value;
-	public boolean can_empty;
+	public boolean can_empty, autoscale;
 	public ArrayList<String> description = new ArrayList<>();
 
 	public FieldData(JsonMap map){
@@ -23,11 +23,12 @@ public class FieldData {
 		sizex = size.get(0).integer_value();
 		sizey = size.get(1).integer_value();
 		value = map.getString("value", null);
-		fontsize = map.getFloat("font_size", 1f);
+		fontscale = map.getFloat("font_scale", 1f);
 		can_empty = map.getBoolean("can_be_empty", false);
 		if(map.has("description")){
 			map.getArray("description").value.forEach(elm -> description.add(elm.string_value()));
 		}
+		autoscale = map.getBoolean("auto_scale", true);
 	}
 
 }
