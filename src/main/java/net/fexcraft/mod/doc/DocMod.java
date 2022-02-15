@@ -2,7 +2,11 @@ package net.fexcraft.mod.doc;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
+import net.fexcraft.mod.doc.cap.DocItemCapability;
+import net.fexcraft.mod.doc.cap.DocItemHandler;
 import net.fexcraft.mod.doc.gui.GuiHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -10,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = DocMod.MODID, name = DocMod.NAME, version = DocMod.VERSION)
+@Mod(modid = DocMod.MODID, name = DocMod.NAME, version = DocMod.VERSION, dependencies = "required-after:fcl")
 public class DocMod {
 	
     public static final String MODID = "documents";
@@ -22,6 +26,8 @@ public class DocMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
         DocRegistry.init(event);
+        CapabilityManager.INSTANCE.register(DocItemCapability.class, new DocItemHandler.Storage(), new DocItemHandler.Callable());
+        MinecraftForge.EVENT_BUS.register(new DocEventHandler());
     }
 
     @EventHandler
@@ -36,4 +42,5 @@ public class DocMod {
 	public static DocMod getInstance(){
 		return INSTANCE;
 	}
+	
 }

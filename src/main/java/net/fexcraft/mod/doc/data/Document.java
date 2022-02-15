@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -14,8 +15,9 @@ public class Document {
 	public int sizex, sizey;
 	public HashMap<String, FieldData> fields = new HashMap<>();
 	public HashMap<String, ResourceLocation> textures = new HashMap<>();
-	public HashMap<String, DocPage> pages = new HashMap<>();
+	public LinkedHashMap<String, DocPage> pages = new LinkedHashMap<>();
 	public HashMap<String, ArrayList<String>> enums = new HashMap<>();
+	public ArrayList<String> description = new ArrayList<>();
 
 	public Document(String key, JsonMap map){
 		id = key;
@@ -58,6 +60,9 @@ public class Document {
 				entry.getValue().asArray().value.forEach(elm -> vals.add(elm.string_value()));
 				enums.put(entry.getKey(), vals);
 			});
+		}
+		if(map.has("description")){
+			map.get("description").asArray().value.forEach(elm -> description.add(elm.toString()));
 		}
 	}
 

@@ -15,15 +15,15 @@ public class FieldData {
 	public ArrayList<String> description = new ArrayList<>();
 
 	public FieldData(JsonMap map){
-		type = FieldType.valueOf(map.getString("type", FieldType.TEXT.name()));
-		JsonArray pos = map.getArray("position");
-		posx = pos.get(0).integer_value();
-		posy = pos.get(1).integer_value();
-		JsonArray size = map.getArray("size");
-		sizex = size.get(0).integer_value();
-		sizey = size.get(1).integer_value();
+		type = FieldType.valueOf(map.getString("type", FieldType.TEXT.name()).toUpperCase());
+		JsonArray pos = map.getArray("position", 0);
+		posx = pos.empty() ? 0 : pos.get(0).integer_value();
+		posy = pos.empty() ? 0 : pos.get(1).integer_value();
+		JsonArray size = map.getArray("size", 0);
+		sizex = size.empty() ? 0 : size.get(0).integer_value();
+		sizey = size.empty() ? 0 : size.get(1).integer_value();
 		value = map.getString("value", null);
-		fontscale = map.getFloat("font_scale", 1f);
+		fontscale = map.getFloat("font_scale", 0);
 		can_empty = map.getBoolean("can_be_empty", false);
 		if(map.has("description")){
 			map.getArray("description").value.forEach(elm -> description.add(elm.string_value()));
