@@ -30,8 +30,8 @@ public class DocEditorContainer extends GenericContainer {
 		if(cap.getDocument() == null){
 			Print.chat(player, "item.missing.doc");
 			player.closeScreen();
-			
 		}
+		doc = cap.getDocument();
 	}
 
 	@Override

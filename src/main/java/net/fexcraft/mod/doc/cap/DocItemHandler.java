@@ -74,6 +74,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		private Document doc;
 		private HashMap<String, String> values = new HashMap<>();
 		private NBTTagCompound save;
+		private boolean done;
 
 		public void setup(ItemStack stack){
 			if(!stack.hasTagCompound()) return;
@@ -93,6 +94,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 				list.appendTag(com);
 			});
 			compound.setTag("values", list);
+			compound.setBoolean("issued", done);
 			return compound;
 		}
 
@@ -112,6 +114,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 					values.put(com.getString("key"), com.getString("val"));
 				}
 			}
+			done = compound.getBoolean("issued");
 		}
 
 		@Override
@@ -128,6 +131,16 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		public void reload(String type){
 			this.doc = DocRegistry.DOCS.get(type);
 			this.read(save);
+		}
+
+		@Override
+		public boolean isIssued(){
+			return done;
+		}
+
+		@Override
+		public boolean isBlank(){
+			return !done;
 		}
 		
 	}

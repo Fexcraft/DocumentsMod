@@ -13,7 +13,7 @@ public class Document {
 	
 	public final String id;
 	public int sizex, sizey;
-	public HashMap<String, FieldData> fields = new HashMap<>();
+	public LinkedHashMap<String, FieldData> fields = new LinkedHashMap<>();
 	public HashMap<String, ResourceLocation> textures = new HashMap<>();
 	public LinkedHashMap<String, DocPage> pages = new LinkedHashMap<>();
 	public HashMap<String, ArrayList<String>> enums = new HashMap<>();
@@ -33,7 +33,7 @@ public class Document {
 		else sizex = sizey = 256;
 		if(map.has("fields")){
 			map.get("fields").asMap().entries().forEach(entry -> {
-				fields.put(entry.getKey(), new FieldData(entry.getValue().asMap()));
+				fields.put(entry.getKey(), new FieldData(entry.getKey(), entry.getValue().asMap()));
 			});
 		}
 		if(map.has("textures")){
@@ -62,7 +62,7 @@ public class Document {
 			});
 		}
 		if(map.has("description")){
-			map.get("description").asArray().value.forEach(elm -> description.add(elm.toString()));
+			map.get("description").asArray().value.forEach(elm -> description.add(elm.string_value()));
 		}
 	}
 

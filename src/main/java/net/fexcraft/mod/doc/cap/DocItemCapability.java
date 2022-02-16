@@ -23,4 +23,8 @@ public interface DocItemCapability {
 
 	public void reload(String type);
 
+	public boolean isIssued();
+	
+	public boolean isBlank();
+
 }

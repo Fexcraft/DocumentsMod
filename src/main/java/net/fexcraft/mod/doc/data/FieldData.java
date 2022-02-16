@@ -10,12 +10,14 @@ public class FieldData {
 	public final FieldType type;
 	public int posx, posy, sizex, sizey;
 	public float fontscale;
-	public String value;
+	public String value, name;
+	public Integer color;
 	public boolean can_empty, autoscale;
 	public ArrayList<String> description = new ArrayList<>();
 
-	public FieldData(JsonMap map){
+	public FieldData(String key, JsonMap map){
 		type = FieldType.valueOf(map.getString("type", FieldType.TEXT.name()).toUpperCase());
+		name = map.getString("name", key);
 		JsonArray pos = map.getArray("position", 0);
 		posx = pos.empty() ? 0 : pos.get(0).integer_value();
 		posy = pos.empty() ? 0 : pos.get(1).integer_value();
@@ -29,6 +31,7 @@ public class FieldData {
 			map.getArray("description").value.forEach(elm -> description.add(elm.string_value()));
 		}
 		autoscale = map.getBoolean("auto_scale", true);
+		color = map.get("font_color", (Integer)null);
 	}
 
 }

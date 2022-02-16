@@ -26,4 +26,8 @@ public enum FieldType {
 		return this == NUMBER;
 	}
 
+	public boolean image(){
+		return this == IMG || this == INFO_IMG || this == PLAYER_IMG;
+	}
+
 }
