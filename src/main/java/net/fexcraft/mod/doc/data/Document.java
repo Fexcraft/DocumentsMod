@@ -36,6 +36,15 @@ public class Document {
 				fields.put(entry.getKey(), new FieldData(entry.getKey(), entry.getValue().asMap()));
 			});
 		}
+		if(!fields.containsKey("uuid")){
+			fields.put("uuid", new FieldData("uuid", FieldType.UUID));
+		}
+		if(!fields.containsKey("issued")){
+			fields.put("issued", new FieldData("issued", FieldType.ISSUED));
+		}
+		if(!fields.containsKey("issuer")){
+			fields.put("issuer", new FieldData("issuer", FieldType.ISSUER));
+		}
 		if(map.has("textures")){
 			map.get("textures").asMap().entries().forEach(entry -> {
 				String str = entry.getValue().string_value();

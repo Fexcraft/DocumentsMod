@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.DocRegistry;
@@ -42,6 +43,7 @@ public class DocumentItem extends Item {
 				for(String str : cap.getDocument().description){
 					tooltip.add(Formatter.format(I18n.format(str)));
 				}
+				tooltip.add(Formatter.format(I18n.format(cap.isIssued() ? "documents.item.issued" : "documents.item.blank")));
 			}
 			else{
 				tooltip.add(cap == null ? "no capability" : "no document data");
@@ -55,7 +57,7 @@ public class DocumentItem extends Item {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
-		if(tab == CreativeTabs.TRANSPORTATION){
+		if(tab == CreativeTabs.TRANSPORTATION || tab == CreativeTab.SEARCH){
 			for(String str : DocRegistry.DOCS.keySet()){
 				ItemStack stack = new ItemStack(this);
 				NBTTagCompound com = new NBTTagCompound();

@@ -1,8 +1,10 @@
 package net.fexcraft.mod.doc.cap;
 
 import java.util.Map;
+import java.util.UUID;
 
 import net.fexcraft.mod.doc.data.Document;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,9 +24,15 @@ public interface DocItemCapability {
 	public Map<String, String> getValues();
 
 	public void reload(String type);
+	
+	public UUID getIssuer();
 
 	public boolean isIssued();
 	
 	public boolean isBlank();
+
+	public Map<String, String> getPlayerData();
+
+	public void issueBy(EntityPlayer player);
 
 }

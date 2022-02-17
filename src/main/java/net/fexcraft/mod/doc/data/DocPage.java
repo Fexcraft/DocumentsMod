@@ -18,9 +18,9 @@ public class DocPage {
 		map.getArray("fields").value.forEach(elm -> {
 			if(elm.isArray()){
 				JsonArray array = elm.asArray();
-				fields.add(new DocPageField(array.get(0).string_value(), array.get(1).integer_value(), array.get(2).integer_value()));
+				fields.add(new DocPageField(array));
 			}
-			else fields.add(new DocPageField(elm.string_value(), -1, -1));
+			else fields.add(new DocPageField(elm.string_value()));
 		});
 		if(map.has("size")){
 			JsonArray array = map.getArray("size");
@@ -36,13 +36,23 @@ public class DocPage {
 	
 	public static class DocPageField {
 		
-		public int x, y;
+		public int x = -1, y, sx = -1, sy = -1;
 		public final String id;
 		
-		public DocPageField(String id, int posx, int posy){
+		public DocPageField(String id){
 			this.id = id;
-			this.x = posx;
-			this.y = posy;
+		}
+
+		public DocPageField(JsonArray array){
+			id = array.get(0).string_value();
+			if(array.size() > 1){
+				x = array.get(1).integer_value();
+				y = array.get(2).integer_value();
+			}
+			if(array.size() > 3){
+				sx = array.get(3).integer_value();
+				sy = array.get(4).integer_value();
+			}
 		}
 		
 	}

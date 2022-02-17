@@ -5,9 +5,15 @@ import static net.fexcraft.mod.doc.data.DocumentItem.NBTKEY;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
+import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.data.Document;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,8 +79,10 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		private ItemStack stack;
 		private Document doc;
 		private HashMap<String, String> values = new HashMap<>();
+		private HashMap<String, String> pldata = new HashMap<>();
 		private NBTTagCompound save;
-		private boolean done;
+		private UUID issuer;
+		private long issued;
 
 		public void setup(ItemStack stack){
 			if(!stack.hasTagCompound()) return;
@@ -94,7 +102,18 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 				list.appendTag(com);
 			});
 			compound.setTag("values", list);
-			compound.setBoolean("issued", done);
+			NBTTagList plist = new NBTTagList();
+			pldata.entrySet().forEach(entry -> {
+				NBTTagCompound com = new NBTTagCompound();
+				com.setString("key", entry.getKey());
+				com.setString("val", entry.getValue());
+				plist.appendTag(com);
+			});
+			compound.setTag("playerdata", plist);
+			if(issuer != null){
+				compound.setLong("issued", issued);
+				compound.setString("issuer", issuer.toString());
+			}
 			return compound;
 		}
 
@@ -114,7 +133,18 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 					values.put(com.getString("key"), com.getString("val"));
 				}
 			}
-			done = compound.getBoolean("issued");
+			if(compound.hasKey("playerdata")){
+				pldata.clear();
+				NBTTagList list = (NBTTagList)compound.getTag("playerdata");
+				for(NBTBase base : list){
+					NBTTagCompound com = (NBTTagCompound)base;
+					pldata.put(com.getString("key"), com.getString("val"));
+				}
+			}
+			if(compound.hasKey("issuer")){
+				issued = compound.getLong("issued");
+				issuer = UUID.fromString(compound.getString("issuer"));
+			}
 		}
 
 		@Override
@@ -134,13 +164,34 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		}
 
 		@Override
+		public UUID getIssuer(){
+			return issuer;
+		}
+
+		@Override
 		public boolean isIssued(){
-			return done;
+			return issuer != null;
 		}
 
 		@Override
 		public boolean isBlank(){
-			return !done;
+			return issuer == null;
+		}
+
+		@Override
+		public Map<String, String> getPlayerData(){
+			if(pldata.isEmpty() && values.containsKey("uuid")){
+				GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(values.get("uuid")));
+				pldata.put("name", gp.getName());
+			}
+			return pldata;
+		}
+
+		@Override
+		public void issueBy(EntityPlayer player){
+			values.put("issuer", (issuer = player.getGameProfile().getId()).toString());
+			values.put("issued", (issued = Time.getDate()) + "");
+			values.put("issuer_name", player.getGameProfile().getName());
 		}
 		
 	}

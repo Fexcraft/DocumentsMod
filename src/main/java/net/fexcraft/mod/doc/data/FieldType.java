@@ -6,7 +6,8 @@ public enum FieldType {
 	INFO_TEXT	(false),
 	UUID		(true),
 	PLAYER_NAME	(false),
-	NUMBER		(true),
+	INTEGER		(true),
+	FLOAT		(true),
 	DATE		(true),
 	JOIN_DATE	(false),
 	IMG			(true),
@@ -14,6 +15,7 @@ public enum FieldType {
 	PLAYER_IMG	(false),
 	ENUM		(true),
 	ISSUER		(false),
+	ISSUED		(false),
 	;
 	
 	public final boolean editable;
@@ -23,11 +25,15 @@ public enum FieldType {
 	}
 	
 	public boolean number(){
-		return this == NUMBER;
+		return this == INTEGER || this == FLOAT;
 	}
 
 	public boolean image(){
 		return this == IMG || this == INFO_IMG || this == PLAYER_IMG;
+	}
+	
+	public boolean date(){
+		return this == DATE || this == JOIN_DATE;
 	}
 
 }

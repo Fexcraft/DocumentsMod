@@ -1,8 +1,14 @@
 item.documents.example_id.name=Example ID Card Item
 
+documents.item.issued=&aIssued Document
+documents.item.blank=&bBlank Document
 documents.editor.confirm_value=Confirm/Apply Value
 documents.editor.confirm=Confirm and Sign Document
 documents.editor.cancel=Cancel and Exit
+documents.editor.status.todo=%s fields left to fill out, e.g. &c%s
+documents.editor.status.done=&aAll fields are filled out.
+documents.editor.status.incomplete=&8Please fill all fields out.
+documents.editor.signed=&bDocument Signed.
 
 documents.example_id.desc0=Example Document
 documents.example_id.desc1=If you still see this file ingame your server's 

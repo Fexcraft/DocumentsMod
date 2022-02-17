@@ -1,16 +1,20 @@
 package net.fexcraft.mod.doc.gui;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
+import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.tmt.ModelBase;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class DocEditor extends GenericGui<DocEditorContainer> {
 	
@@ -23,6 +27,8 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 	private String[] fieldkeys;
 	private int scroll, selected = -1;
 	private FieldData data;
+	private int todo;
+	protected String statustext;
 	//
 	private static ResourceLocation tempimg;
 	private static ArrayList<String> tooltip = new ArrayList<>();
@@ -45,7 +51,11 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 	
 	@Override
 	public void init(){
-		fieldkeys = container.doc.fields.keySet().toArray(new String[0]);
+		container.gui = this;
+		Object[] entries = container.doc.fields.entrySet().stream().filter(e -> e.getValue().type.editable).collect(Collectors.toList()).toArray();
+		ArrayList<String> list = new ArrayList<>();
+		for(Object obj : entries) list.add(((java.util.Map.Entry<String, FieldData>)obj).getKey());
+		fieldkeys = list.toArray(new String[0]);
 		for(int i = 0; i < fieldbuttons.length; i++){
 			int I = i;
 			this.buttons.put("f" + i, fieldbuttons[i] = new BasicButton("f" + i, guiLeft + 17, guiTop + 8 + i * 10, 17, 8 + i * 10, 48, 8, true){
@@ -61,13 +71,14 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 					field.setVisible(false);
 					nfield.setVisible(false);
 					if(data.type.number()){
-						nfield.setText(data.value == null ? "0" : data.value);
+						nfield.setText(data.getValue(container.cap));
 						nfield.setVisible(true);
 					}
 					else if(data.type.editable){
-						field.setText(data.value == null ? "" : data.value);
+						field.setText(data.getValue(container.cap));
 						field.setVisible(true);
 					}
+					statustext = null;
 					return true;
 				}
 			});
@@ -96,7 +107,25 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		nfield.setVisible(false);
 		buttons.put("confirm_value", concanbuttons[0] = new BasicButton("confirm_value", guiLeft + 237, guiTop + 71, 237, 71, 10, 10, true){
 			public boolean onclick(int mx, int my, int mb){
-				//
+				if(data == null || !data.type.editable) return true;
+				if(data.type.number()){
+					Float val = nfield.getValue();
+					if(val == null){
+						statustext = "&cinvalid number input";
+					}
+					else{
+						NBTTagCompound compound = new NBTTagCompound();
+						compound.setString("field", fieldkeys[selected]);
+						compound.setString("value", val + "");
+						container.send(Side.SERVER, compound);
+					}
+				}
+				else{
+					NBTTagCompound compound = new NBTTagCompound();
+					compound.setString("field", fieldkeys[selected]);
+					compound.setString("value", field.getText());
+					container.send(Side.SERVER, compound);
+				}
 				return true;
 			}
 		});
@@ -109,7 +138,13 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		});
 		buttons.put("confirm", concanbuttons[2] = new BasicButton("confirm", guiLeft + 237, guiTop + 85, 237, 85, 10, 10, true){
 			public boolean onclick(int mx, int my, int mb){
-				//
+				if(todo > 0){
+					statustext = "documents.editor.status.incomplete";
+					return true;
+				}
+				NBTTagCompound compound = new NBTTagCompound();
+				compound.setBoolean("issue", true);
+				container.send(Side.SERVER, compound);
 				return true;
 			}
 		});
@@ -119,7 +154,7 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 	public void predraw(float ticks, int mx, int my){
 		for(int i = 0; i < fieldbuttons.length; i++){
 			int I = i + scroll;
-			if(I >= container.doc.fields.size()){
+			if(I >= fieldkeys.length){
 				fieldbuttons[i].enabled = false;
 				texts.get("f" + i).string = "";
 			}
@@ -135,10 +170,29 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 			}
 			else infotext[i].string = "";
 		}
-		valueinfo.string = ex ? data.value : "";//TODO type based info
-		status.string = "//TODO status";
+		valueinfo.string = ex ? data.value : "";
+		status.string = statustext == null ? getStatus() : Formatter.format(I18n.format(statustext));
 	}
 	
+	private String getStatus(){
+		todo = 0;
+		String eg = null;
+		for(String str : fieldkeys){
+			FieldData data = container.doc.fields.get(str);
+			if(!data.type.editable) continue;
+			if(data.value == null && container.cap.getValues().get(str) == null){
+				todo++;
+				if(eg == null) eg = str;
+			}
+		}
+		if(todo > 0){
+			return Formatter.format(I18n.format("documents.editor.status.todo", todo, eg));
+		}
+		else{
+			return Formatter.format(I18n.format("documents.editor.status.done"));
+		}
+	}
+
 	@Override
 	public void drawbackground(float ticks, int mx, int my){
 		boolean ex = selected > -1 && data != null;
