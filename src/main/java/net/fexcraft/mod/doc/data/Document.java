@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
+import net.fexcraft.mod.doc.DocRegistry;
 import net.minecraft.util.ResourceLocation;
 
 public class Document {
@@ -57,7 +58,7 @@ public class Document {
 				textures.put(entry.getKey(), resloc);
 			});
 		}
-		else textures.put("main", new ResourceLocation("minecraft:textures/blocks/stone.png"));
+		else textures.put("main", DocRegistry.STONE);
 		if(map.has("pages")){
 			map.get("pages").asMap().entries().forEach(entry -> {
 				pages.put(entry.getKey(), new DocPage(entry.getKey(), entry.getValue().asMap()));

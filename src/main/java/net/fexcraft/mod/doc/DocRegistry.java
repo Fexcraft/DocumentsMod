@@ -11,12 +11,14 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.data.Document;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class DocRegistry {
 	
 	public static final HashMap<String, Document> DOCS = new HashMap<>();
 	public static final ConcurrentHashMap<UUID, JsonMap> PLAYERS = new ConcurrentHashMap<>();
+	public static ResourceLocation STONE = new ResourceLocation("minecraft:textures/blocks/stone.png");
 	public static String player_img_url = "https://crafatar.com/avatars/<UUID>?size=32";
 	public static boolean use_resourcepacks = true;
 	private static File folder;
@@ -73,6 +75,7 @@ public class DocRegistry {
 		if(map == null){
 			File file = new File(folder, "/documents/" + string + ".json");
 			if(file.exists()) map = JsonHandler.parse(file);
+			else map = new JsonMap();
 			PLAYERS.put(uuid, map);
 		}
 		return map;

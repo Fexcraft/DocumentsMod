@@ -31,12 +31,12 @@ public class DocPage {
 			if(sizey > 256) sizey = 256;
 			if(sizey < 0) sizey = 0;
 		}
-		else sizex = sizey = 256;
+		else sizex = sizey = 0;
 	}
 	
 	public static class DocPageField {
 		
-		public int x = -1, y, sx = -1, sy = -1;
+		public int x = -1, y = -1, sx = -1, sy = -1;
 		public final String id;
 		
 		public DocPageField(String id){

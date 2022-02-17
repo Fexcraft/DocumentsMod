@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc.data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 import net.fexcraft.app.json.JsonArray;
@@ -35,7 +36,7 @@ public class FieldData {
 		if(map.has("description")){
 			map.getArray("description").value.forEach(elm -> description.add(elm.string_value()));
 		}
-		autoscale = map.getBoolean("auto_scale", true);
+		autoscale = map.getBoolean("auto_scale", fontscale == 0);
 		color = map.get("font_color", (Integer)null);
 	}
 
@@ -53,7 +54,7 @@ public class FieldData {
 			if(type == FieldType.JOIN_DATE){
 				JsonMap pd = DocRegistry.getPlayerData(cap.getValues().get("uuid"));
 				try{
-					return LocalDate.ofEpochDay(pd.getLong("joined", Time.getDate())).toString();
+					return LocalDate.ofEpochDay(new Date(pd.getLong("joined", Time.getDate())).getTime() / 86400000).toString();
 				}
 				catch(Exception e){
 					e.printStackTrace();
@@ -68,7 +69,7 @@ public class FieldData {
 		}
 		if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
 			try{
-				return LocalDate.ofEpochDay(Long.parseLong(val)).toString();
+				return LocalDate.ofEpochDay(Long.parseLong(val) / 86400000).toString();
 			}
 			catch(Exception e){
 				e.printStackTrace();

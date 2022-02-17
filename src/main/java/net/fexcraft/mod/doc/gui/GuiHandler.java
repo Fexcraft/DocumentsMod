@@ -7,12 +7,15 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 	
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return ID == 0 ? new DocEditorContainer(player) : null;
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z){
+		if(ID < 2) return new DocEditorContainer(player);
+		return null;
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return ID == 0 ? new DocEditor(player) : null;
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z){
+		if(ID == 0) return new DocEditor(player);
+		if(ID == 1) return new DocView(player, x);
+		return null;
     }
 }

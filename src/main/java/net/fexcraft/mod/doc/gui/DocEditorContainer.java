@@ -9,6 +9,7 @@ import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
@@ -48,6 +49,11 @@ public class DocEditorContainer extends GenericContainer {
 
 	@Override
 	protected void packet(Side side, NBTTagCompound packet, EntityPlayer player){
+		if(packet.hasKey("open_page")){
+			if(side.isClient()) return;
+			player.openGui(DocMod.getInstance(), 1, player.world, packet.getInteger("open_page"), 0, 0);
+			return;
+		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
 			cap.issueBy(player);
 			if(side.isServer()) send(Side.CLIENT, packet);
@@ -80,7 +86,7 @@ public class DocEditorContainer extends GenericContainer {
 			}
 			else if(data.type == FieldType.DATE){
 				try{
-					value = LocalDate.parse(value).toEpochDay() + "";
+					value = (LocalDate.parse(value).toEpochDay() * 86400000) + "";
 				}
 				catch(Exception e){
 					e.printStackTrace();

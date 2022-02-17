@@ -180,7 +180,7 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		for(String str : fieldkeys){
 			FieldData data = container.doc.fields.get(str);
 			if(!data.type.editable) continue;
-			if(data.value == null && container.cap.getValues().get(str) == null){
+			if(data.value == null && container.cap.getValues().get(str) == null && !data.can_empty){
 				todo++;
 				if(eg == null) eg = str;
 			}

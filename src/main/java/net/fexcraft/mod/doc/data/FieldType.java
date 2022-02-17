@@ -16,6 +16,7 @@ public enum FieldType {
 	ENUM		(true),
 	ISSUER		(false),
 	ISSUED		(false),
+	ISSUER_NAME	(false),
 	;
 	
 	public final boolean editable;
