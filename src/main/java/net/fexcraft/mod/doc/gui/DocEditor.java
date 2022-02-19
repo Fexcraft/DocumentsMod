@@ -40,12 +40,10 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		if(container.cap == null){
 			Print.bar(player, "item.missing.cap");
 			player.closeScreen();
-			mc.currentScreen = null;
 		}
 		if(container.cap.getDocument() == null){
 			Print.bar(player, "item.missing.doc");
 			player.closeScreen();
-			mc.currentScreen = null;
 		}
 	}
 	
