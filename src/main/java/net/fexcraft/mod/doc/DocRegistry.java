@@ -176,4 +176,12 @@ public class DocRegistry {
 		return map;
 	}
 
+	public static boolean noRS(){
+		return !use_resourcepacks;
+	}
+
+	public static boolean useRS(){
+		return use_resourcepacks;
+	}
+
 }

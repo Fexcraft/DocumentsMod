@@ -19,6 +19,7 @@ public class Document {
 	public LinkedHashMap<String, DocPage> pages = new LinkedHashMap<>();
 	public HashMap<String, ArrayList<String>> enums = new HashMap<>();
 	public ArrayList<String> description = new ArrayList<>();
+	public ResourceLocation itemicon;
 
 	public Document(String key, JsonMap map){
 		id = key;
@@ -74,6 +75,7 @@ public class Document {
 		if(map.has("description")){
 			map.get("description").asArray().value.forEach(elm -> description.add(elm.string_value()));
 		}
+		itemicon = new ResourceLocation(map.getString("icon", "minecraft:textures/items/paper.png"));
 	}
 
 }
