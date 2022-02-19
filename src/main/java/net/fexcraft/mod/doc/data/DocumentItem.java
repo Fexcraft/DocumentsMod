@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.utils.Formatter;
+import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
@@ -82,6 +83,10 @@ public class DocumentItem extends Item {
 		if(hand == EnumHand.MAIN_HAND){
 			ItemStack stack = player.getHeldItemMainhand();
 			DocItemCapability cap = stack.getCapability(DocItemCapability.CAPABILITY, null);
+			if(cap == null || cap.getDocument() == null){
+				Print.chat(player, "item.missing.doc");
+				return super.onItemRightClick(world, player, hand);
+			}
 			player.openGui(DocMod.getInstance(), cap.isIssued() ? 1 : 0, world, 0, 0, 0);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
