@@ -3,6 +3,7 @@ package net.fexcraft.mod.doc.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -16,10 +17,12 @@ public class Document {
 	public int sizex, sizey;
 	public LinkedHashMap<String, FieldData> fields = new LinkedHashMap<>();
 	public HashMap<String, ResourceLocation> textures = new HashMap<>();
+	public HashMap<String, String> rawtextures = new HashMap<>();
 	public LinkedHashMap<String, DocPage> pages = new LinkedHashMap<>();
 	public HashMap<String, ArrayList<String>> enums = new HashMap<>();
 	public ArrayList<String> description = new ArrayList<>();
 	public ResourceLocation itemicon;
+	public String icon;
 
 	public Document(String key, JsonMap map){
 		id = key;
@@ -49,17 +52,10 @@ public class Document {
 		}
 		if(map.has("textures")){
 			map.get("textures").asMap().entries().forEach(entry -> {
-				String str = entry.getValue().string_value();
-				ResourceLocation resloc = null;
-				if(str.startsWith("external;")){
-					str = str.substring(9);
-					resloc = ExternalTextureHelper.get(str);
-				}
-				else resloc = new ResourceLocation(str);
-				textures.put(entry.getKey(), resloc);
+				rawtextures.put(entry.getKey(), entry.getValue().string_value());
 			});
 		}
-		else textures.put("main", DocRegistry.STONE);
+		else rawtextures.put("main", DocRegistry.STONE.toString());
 		if(map.has("pages")){
 			map.get("pages").asMap().entries().forEach(entry -> {
 				pages.put(entry.getKey(), new DocPage(entry.getKey(), entry.getValue().asMap()));
@@ -75,7 +71,23 @@ public class Document {
 		if(map.has("description")){
 			map.get("description").asArray().value.forEach(elm -> description.add(elm.string_value()));
 		}
-		itemicon = new ResourceLocation(map.getString("icon", "minecraft:textures/items/paper.png"));
+		icon = map.getString("icon", "minecraft:textures/items/paper.png");
+	}
+	
+	public void linktextures(){
+		if(icon.startsWith("external;")) itemicon = ExternalTextureHelper.get(icon.substring(9));
+		else itemicon = new ResourceLocation(icon);
+		//
+		for(Entry<String, String> entry : rawtextures.entrySet()){
+			ResourceLocation resloc = null;
+			String str = entry.getValue();
+			if(str.startsWith("external;")){
+				str = str.substring(9);
+				resloc = ExternalTextureHelper.get(str);
+			}
+			else resloc = new ResourceLocation(str);
+			textures.put(entry.getKey(), resloc);
+		}
 	}
 
 }

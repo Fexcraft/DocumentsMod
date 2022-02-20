@@ -31,8 +31,6 @@ public interface DocItemCapability {
 	
 	public boolean isBlank();
 
-	public Map<String, String> getPlayerData();
-
-	public void issueBy(EntityPlayer player);
+	public void issueBy(EntityPlayer player, boolean client);
 
 }

@@ -1,4 +1,5 @@
 item.documents.example_id.name=Example ID Card Item
+item.documents.document.name=Document
 
 documents.item.issued=&aIssued Document
 documents.item.blank=&bBlank Document

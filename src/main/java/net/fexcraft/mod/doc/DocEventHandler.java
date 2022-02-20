@@ -1,9 +1,15 @@
 package net.fexcraft.mod.doc;
 
+import net.fexcraft.app.json.JsonHandler;
+import net.fexcraft.app.json.JsonHandler.PrintOption;
+import net.fexcraft.lib.mc.network.PacketHandler;
+import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.mod.doc.cap.DocItemHandler;
 import net.fexcraft.mod.doc.data.DocumentItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,6 +44,11 @@ public class DocEventHandler {
 	public void onJoin(PlayerLoggedInEvent event){
 		if(event.player.world.isRemote) return;
 		DocRegistry.opj(event.player);
+		NBTTagCompound com = new NBTTagCompound();
+		com.setString("target_listener", "docmod");
+		com.setString("task", "sync");
+		com.setString("config", JsonHandler.toString(DocRegistry.confmap, PrintOption.FLAT));
+		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), (EntityPlayerMP)event.player);
 	}
 	
 	@SubscribeEvent

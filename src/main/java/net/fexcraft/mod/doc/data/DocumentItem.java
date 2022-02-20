@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.DocMod;
@@ -12,15 +11,12 @@ import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,6 +28,7 @@ public class DocumentItem extends Item {
 
 	public DocumentItem(){
 		this.setRegistryName(DocMod.MODID, "document");
+		this.setTranslationKey(DocMod.MODID + ".document");
 		this.hasSubtypes = true;
 	}
 
@@ -57,22 +54,8 @@ public class DocumentItem extends Item {
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
-		if(tab == CreativeTabs.TRANSPORTATION || tab == CreativeTab.SEARCH){
-			for(String str : DocRegistry.DOCS.keySet()){
-				ItemStack stack = new ItemStack(this);
-				NBTTagCompound com = new NBTTagCompound();
-				com.setString("documents:type", str);
-				stack.setTagCompound(com);
-				stack.getCapability(DocItemCapability.CAPABILITY, null).reload(str);
-				items.add(stack);
-			}
-		}
-	}
-
-	@Override
 	public String getTranslationKey(ItemStack stack){
-		if(stack.hasTagCompound()){
+		if(stack.hasTagCompound() && DocRegistry.useRS()){
 			return "item.documents." + stack.getTagCompound().getString(NBTKEY);
 		}
 		return this.getTranslationKey();

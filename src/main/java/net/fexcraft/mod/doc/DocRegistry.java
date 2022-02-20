@@ -20,11 +20,12 @@ public class DocRegistry {
 	public static final ConcurrentHashMap<UUID, JsonMap> PLAYERS = new ConcurrentHashMap<>();
 	public static ResourceLocation STONE = new ResourceLocation("minecraft:textures/blocks/stone.png");
 	public static String player_img_url = "https://crafatar.com/avatars/<UUID>?size=32";
-	public static boolean use_resourcepacks = true;
-	private static File folder;
+	public static boolean use_resourcepacks = false;
+	public static JsonMap confmap;
+	private static File folder, file;
 
 	public static void init(FMLPreInitializationEvent event){
-		File file = new File(folder = event.getModConfigurationDirectory(), "/documents.json");
+		file = new File(folder = event.getModConfigurationDirectory(), "/documents.json");
 		if(!file.exists()){
 			JsonMap map = new JsonMap();
 			map.add("comment", "If you need help filling out this config file, visit the wiki!");
@@ -130,10 +131,16 @@ public class DocRegistry {
 					+ "	},", true));
 			JsonHandler.print(file, map, PrintOption.SPACED);
 		}
-		JsonMap map = JsonHandler.parse(file);
+		confmap = JsonHandler.parse(file);
+		player_img_url = confmap.getString("player_img_url", player_img_url);
+		use_resourcepacks = confmap.getBoolean("use_resourcepacks", use_resourcepacks);
+		load(confmap);
+	}
+
+	public static void load(JsonMap map){
+		DOCS.clear();
 		if(map.has("documents")) parseDocs(map.get("documents").asMap());
 		player_img_url = map.getString("player_img_url", player_img_url);
-		use_resourcepacks = map.getBoolean("use_resourcepacks", use_resourcepacks);
 	}
 	
 	private static void parseDocs(JsonMap map){

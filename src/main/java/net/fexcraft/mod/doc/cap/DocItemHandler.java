@@ -79,7 +79,6 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		private ItemStack stack;
 		private Document doc;
 		private HashMap<String, String> values = new HashMap<>();
-		private HashMap<String, String> pldata = new HashMap<>();
 		private NBTTagCompound save;
 		private UUID issuer;
 		private long issued;
@@ -102,14 +101,6 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 				list.appendTag(com);
 			});
 			compound.setTag("values", list);
-			NBTTagList plist = new NBTTagList();
-			pldata.entrySet().forEach(entry -> {
-				NBTTagCompound com = new NBTTagCompound();
-				com.setString("key", entry.getKey());
-				com.setString("val", entry.getValue());
-				plist.appendTag(com);
-			});
-			compound.setTag("playerdata", plist);
 			if(issuer != null){
 				compound.setLong("issued", issued);
 				compound.setString("issuer", issuer.toString());
@@ -131,14 +122,6 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 				for(NBTBase base : list){
 					NBTTagCompound com = (NBTTagCompound)base;
 					values.put(com.getString("key"), com.getString("val"));
-				}
-			}
-			if(compound.hasKey("playerdata")){
-				pldata.clear();
-				NBTTagList list = (NBTTagList)compound.getTag("playerdata");
-				for(NBTBase base : list){
-					NBTTagCompound com = (NBTTagCompound)base;
-					pldata.put(com.getString("key"), com.getString("val"));
 				}
 			}
 			if(compound.hasKey("issuer")){
@@ -179,19 +162,13 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		}
 
 		@Override
-		public Map<String, String> getPlayerData(){
-			if(pldata.isEmpty() && values.containsKey("uuid")){
-				GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(values.get("uuid")));
-				pldata.put("name", gp.getName());
-			}
-			return pldata;
-		}
-
-		@Override
-		public void issueBy(EntityPlayer player){
+		public void issueBy(EntityPlayer player, boolean client){
 			values.put("issuer", (issuer = player.getGameProfile().getId()).toString());
 			values.put("issued", (issued = Time.getDate()) + "");
 			values.put("issuer_name", player.getGameProfile().getName());
+			if(client) return;
+			GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(values.get("uuid")));
+			values.put("player_name", gp.getName());
 		}
 		
 	}

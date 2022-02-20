@@ -12,6 +12,7 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.data.DocumentItem;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,8 +41,12 @@ public class DocEditorContainer extends GenericContainer {
 			Print.chat(player, "item.missing.cap");
 			player.closeScreen();
 		}
+		if(cap.getDocument() == null && stack.hasTagCompound() && stack.getTagCompound().hasKey(DocumentItem.NBTKEY)){
+			cap.reload(stack.getTagCompound().getString(DocumentItem.NBTKEY));
+		}
 		if(cap.getDocument() == null){
 			Print.chat(player, "item.missing.doc");
+			Print.chat(player, stack.getTagCompound());
 			player.closeScreen();
 		}
 		doc = cap.getDocument();
@@ -55,9 +60,15 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
-			cap.issueBy(player);
-			if(side.isServer()) send(Side.CLIENT, packet);
+			cap.issueBy(player, player.world.isRemote);
+			if(side.isServer()){
+				packet.setString("player_name", cap.getValues().get("player_name"));
+				Print.debug(cap.getValues().keySet());
+				send(Side.CLIENT, packet);
+			}
 			else{
+				cap.getValues().put("player_name", packet.getString("player_name"));
+				Print.debug(cap.getValues().keySet());
 				player.closeScreen();
 				Print.chat(player, Formatter.format(net.minecraft.client.resources.I18n.format("documents.editor.signed")));
 			}
@@ -108,15 +119,10 @@ public class DocEditorContainer extends GenericContainer {
 			}
 			cap.getValues().put(field, value);
 			packet.setString("value", value);
-			if(field.equals("uuid")){
-				packet.setString("player;name", cap.getPlayerData().get("name"));
-				//TODO join date
-			}
 			send(Side.CLIENT, packet);
 		}
 		else{
 			cap.getValues().put(field, value);
-			if(packet.hasKey("player;name")) cap.getPlayerData().put("name", packet.getString("player;name"));
 			gui.statustext = null;
 		}
 	}

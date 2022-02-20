@@ -3,10 +3,10 @@ package net.fexcraft.mod.doc.data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
@@ -33,11 +33,12 @@ public class FieldData {
 		value = map.getString("value", null);
 		fontscale = map.getFloat("font_scale", 0);
 		can_empty = map.getBoolean("can_be_empty", false);
+		if(key.equals("uuid")) can_empty = false;
 		if(map.has("description")){
 			map.getArray("description").value.forEach(elm -> description.add(elm.string_value()));
 		}
 		autoscale = map.getBoolean("auto_scale", fontscale == 0);
-		color = map.get("font_color", (Integer)null);
+		color = map.has("font_color") ? new RGB(map.get("font_color").string_value()).packed : null;
 	}
 
 	public FieldData(String key, FieldType type){
@@ -47,27 +48,24 @@ public class FieldData {
 
 	public String getValue(DocItemCapability cap){
 		String val = cap.getValues().get(key);
-		Map<String, String> pdt = cap.getPlayerData();
 		if(val == null && value != null) val = value;
 		if(type.number()) return val == null ? "0" : val;
-		else if(pdt.size() > 0){
-			if(type == FieldType.JOIN_DATE){
-				JsonMap pd = DocRegistry.getPlayerData(cap.getValues().get("uuid"));
-				try{
-					return LocalDate.ofEpochDay(new Date(pd.getLong("joined", Time.getDate())).getTime() / 86400000).toString();
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
+		if(type == FieldType.JOIN_DATE){
+			JsonMap pd = DocRegistry.getPlayerData(cap.getValues().get("uuid"));
+			try{
+				return LocalDate.ofEpochDay(new Date(pd.getLong("joined", Time.getDate())).getTime() / 86400000).toString();
 			}
-			else if(type == FieldType.PLAYER_NAME){
-				return pdt.get("name");
-			}
-			else if(type == FieldType.PLAYER_IMG){
-				return DocRegistry.player_img_url.replace("<UUID>", cap.getValues().get("uuid"));
+			catch(Exception e){
+				e.printStackTrace();
 			}
 		}
-		if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
+		else if(type == FieldType.PLAYER_NAME){
+			return cap.getValues().get("player_name");
+		}
+		else if(type == FieldType.PLAYER_IMG){
+			return DocRegistry.player_img_url.replace("<UUID>", cap.getValues().get("uuid"));
+		}
+		else if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
 			try{
 				return LocalDate.ofEpochDay(Long.parseLong(val) / 86400000).toString();
 			}

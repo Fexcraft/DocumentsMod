@@ -40,6 +40,7 @@ public class DocMod {
         PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new ListenerServer());
         if(event.getSide().isClient()){
         	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new ListenerClient());
+        	DocRegistry.DOCS.values().forEach(doc -> doc.linktextures());
         }
     }
 
