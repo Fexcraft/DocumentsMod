@@ -10,6 +10,7 @@ import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocMod;
+import net.fexcraft.mod.doc.DocPerms;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.DocumentItem;
@@ -46,7 +47,7 @@ public class DocEditorContainer extends GenericContainer {
 		}
 		if(cap.getDocument() == null){
 			Print.chat(player, "item.missing.doc");
-			Print.chat(player, stack.getTagCompound());
+			if(Static.dev()) Print.chat(player, stack.getTagCompound());
 			player.closeScreen();
 		}
 		doc = cap.getDocument();
@@ -60,6 +61,10 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
+			if(!DocPerms.hasPerm(player, "document.issue", cap.getDocument().id)){
+				Print.chat(player, "&cno permission");
+				return;
+			}
 			cap.issueBy(player, player.world.isRemote);
 			if(side.isServer()){
 				packet.setString("player_name", cap.getValues().get("player_name"));
@@ -75,6 +80,10 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(!packet.hasKey("field")) return;
+		if(!DocPerms.hasPerm(player, "document.edit", cap.getDocument().id)){
+			Print.chat(player, "&cno permission");
+			return;
+		}
 		String field = packet.getString("field");
 		FieldData data = doc.fields.get(field);
 		String value = packet.getString("value");

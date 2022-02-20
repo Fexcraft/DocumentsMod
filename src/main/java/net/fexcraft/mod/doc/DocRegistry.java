@@ -22,7 +22,8 @@ public class DocRegistry {
 	public static String player_img_url = "https://crafatar.com/avatars/<UUID>?size=32";
 	public static boolean use_resourcepacks = false;
 	public static JsonMap confmap;
-	private static File folder, file;
+	protected static File folder;
+	private static File file;
 
 	public static void init(FMLPreInitializationEvent event){
 		file = new File(folder = event.getModConfigurationDirectory(), "/documents.json");

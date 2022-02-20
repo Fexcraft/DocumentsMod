@@ -27,6 +27,7 @@ public class DocMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
         DocRegistry.init(event);
+        DocPerms.loadperms();
         CapabilityManager.INSTANCE.register(DocItemCapability.class, new DocItemHandler.Storage(), new DocItemHandler.Callable());
         MinecraftForge.EVENT_BUS.register(new DocEventHandler());
         if(event.getSide().isClient()){
