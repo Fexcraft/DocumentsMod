@@ -79,7 +79,8 @@ public class DocView extends GenericGui<DocEditorContainer> {
 					val = container.cap.getValues().get("issuer_name");
 				}
 				else val = field.getValue(container.cap);
-				BasicText text = new BasicText(guiLeft + x, guiTop + y, sx, field.color, Formatter.format(I18n.format(val)));
+				String format = field.format == null ? "" : field.format;
+				BasicText text = new BasicText(guiLeft + x, guiTop + y, sx, field.color, Formatter.format(format + I18n.format(val)));
 				if(field.fontscale > 0) text.scale(field.fontscale);
 				if(field.autoscale) text.autoscale();
 				texts.put("field-" + df.id, text);
