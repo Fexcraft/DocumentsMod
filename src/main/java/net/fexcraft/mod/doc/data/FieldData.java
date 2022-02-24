@@ -16,7 +16,7 @@ public class FieldData {
 	public final FieldType type;
 	public int posx, posy, sizex, sizey;
 	public float fontscale;
-	public String value, name, key;
+	public String value, name, key, format;
 	public Integer color;
 	public boolean can_empty, autoscale;
 	public ArrayList<String> description = new ArrayList<>();
@@ -39,6 +39,7 @@ public class FieldData {
 		}
 		autoscale = map.getBoolean("auto_scale", fontscale == 0);
 		color = map.has("font_color") ? new RGB(map.get("font_color").string_value()).packed : null;
+		format = map.getString("format", null);
 	}
 
 	public FieldData(String key, FieldType type){
