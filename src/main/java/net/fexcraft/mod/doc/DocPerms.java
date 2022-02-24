@@ -9,6 +9,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class DocPerms {
@@ -42,11 +43,13 @@ public class DocPerms {
 	}
 
 	public static boolean hasPerm(EntityPlayer player, String node){
+		if(Static.getServer() != null && Static.getServer().isSinglePlayer()) return true;
 		UUID uuid = player.getGameProfile().getId();
 		return perms.containsKey(uuid) && perms.get(uuid).contains(node);
 	}
 
 	public static boolean hasPerm(EntityPlayer player, String node, String suffix){
+		if(Static.getServer() != null && Static.getServer().isSinglePlayer()) return true;
 		UUID uuid = player.getGameProfile().getId();
 		return perms.containsKey(uuid) && (perms.get(uuid).contains(node + ".*") || perms.get(uuid).contains(node + "." + suffix));
 	}
