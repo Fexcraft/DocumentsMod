@@ -20,7 +20,7 @@ public class DocRegistry {
 	public static final ConcurrentHashMap<UUID, JsonMap> PLAYERS = new ConcurrentHashMap<>();
 	public static ResourceLocation STONE = new ResourceLocation("minecraft:textures/blocks/stone.png");
 	public static String player_img_url = "https://crafatar.com/avatars/<UUID>?size=32";
-	public static boolean use_resourcepacks = false;
+	public static boolean use_resourcepacks = true;
 	public static JsonMap confmap;
 	protected static File folder;
 	private static File file;
