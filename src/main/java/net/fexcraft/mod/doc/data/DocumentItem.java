@@ -27,9 +27,9 @@ public class DocumentItem extends Item {
 	public static DocumentItem INSTANCE;
 
 	public DocumentItem(){
-		this.setRegistryName(DocMod.MODID, "document");
-		this.setTranslationKey(DocMod.MODID + ".document");
-		this.hasSubtypes = true;
+		setRegistryName(DocMod.MODID, "document");
+		setTranslationKey(DocMod.MODID + ".document");
+		hasSubtypes = true;
 	}
 
 	@SideOnly(Side.CLIENT)
