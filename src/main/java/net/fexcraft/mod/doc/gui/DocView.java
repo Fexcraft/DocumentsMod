@@ -73,10 +73,10 @@ public class DocView extends GenericGui<DocEditorContainer> {
 			else{
 				String val = null;
 				if(field.type == FieldType.ISSUER){
-					val = container.cap.getIssuer().toString();
+					val = container.cap.getValue("issuer");
 				}
 				else if(field.type == FieldType.ISSUER_NAME){
-					val = container.cap.getValues().get("issuer_name");
+					val = container.cap.getValue("issuer_name");
 				}
 				else val = field.getValue(container.cap);
 				String format = field.format == null ? "" : field.format;

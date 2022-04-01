@@ -48,11 +48,11 @@ public class FieldData {
 	}
 
 	public String getValue(DocItemCapability cap){
-		String val = cap.getValues().get(key);
+		String val = cap.getValue(key);
 		if(val == null && value != null) val = value;
 		if(type.number()) return val == null ? "0" : val;
 		if(type == FieldType.JOIN_DATE){
-			JsonMap pd = DocRegistry.getPlayerData(cap.getValues().get("uuid"));
+			JsonMap pd = DocRegistry.getPlayerData(cap.getValue("uuid"));
 			try{
 				return LocalDate.ofEpochDay(new Date(pd.getLong("joined", Time.getDate())).getTime() / 86400000).toString();
 			}
@@ -61,10 +61,10 @@ public class FieldData {
 			}
 		}
 		else if(type == FieldType.PLAYER_NAME){
-			return cap.getValues().get("player_name");
+			return cap.getValue("player_name");
 		}
 		else if(type == FieldType.PLAYER_IMG){
-			return DocRegistry.player_img_url.replace("<UUID>", cap.getValues().get("uuid"));
+			return DocRegistry.player_img_url.replace("<UUID>", cap.getValue("uuid"));
 		}
 		else if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
 			try{

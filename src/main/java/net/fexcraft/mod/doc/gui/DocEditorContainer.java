@@ -13,7 +13,6 @@ import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.DocPerms;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.data.Document;
-import net.fexcraft.mod.doc.data.DocumentItem;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,9 +41,6 @@ public class DocEditorContainer extends GenericContainer {
 			Print.chat(player, "item.missing.cap");
 			player.closeScreen();
 		}
-		if(cap.getDocument() == null && stack.hasTagCompound() && stack.getTagCompound().hasKey(DocumentItem.NBTKEY)){
-			cap.reload(stack.getTagCompound().getString(DocumentItem.NBTKEY));
-		}
 		if(cap.getDocument() == null){
 			Print.chat(player, "item.missing.doc");
 			if(Static.dev()) Print.chat(player, stack.getTagCompound());
@@ -67,13 +63,11 @@ public class DocEditorContainer extends GenericContainer {
 			}
 			cap.issueBy(player, player.world.isRemote);
 			if(side.isServer()){
-				packet.setString("player_name", cap.getValues().get("player_name"));
-				Print.debug(cap.getValues().keySet());
+				packet.setString("player_name", cap.getValue("player_name"));
 				send(Side.CLIENT, packet);
 			}
 			else{
-				cap.getValues().put("player_name", packet.getString("player_name"));
-				Print.debug(cap.getValues().keySet());
+				cap.setValue("player_name", packet.getString("player_name"));
 				player.closeScreen();
 				Print.chat(player, Formatter.format(net.minecraft.client.resources.I18n.format("documents.editor.signed")));
 			}
@@ -126,12 +120,12 @@ public class DocEditorContainer extends GenericContainer {
 					Print.chat(player, "Error: " + e.getMessage());
 				}
 			}
-			cap.getValues().put(field, value);
+			cap.setValue(field, value);
 			packet.setString("value", value);
 			send(Side.CLIENT, packet);
 		}
 		else{
-			cap.getValues().put(field, value);
+			cap.setValue(field, value);
 			gui.statustext = null;
 		}
 	}

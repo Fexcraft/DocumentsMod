@@ -3,21 +3,13 @@ package net.fexcraft.mod.doc.cap;
 import static net.fexcraft.mod.doc.cap.DocItemCapability.CAPABILITY;
 import static net.fexcraft.mod.doc.data.DocumentItem.NBTKEY;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import com.mojang.authlib.GameProfile;
-
-import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.data.DocumentItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -55,12 +47,12 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 
 		@Override
 		public NBTBase writeNBT(Capability<DocItemCapability> capability, DocItemCapability instance, EnumFacing side){
-			return instance.write();
+			return new NBTTagCompound();
 		}
 
 		@Override
 		public void readNBT(Capability<DocItemCapability> capability, DocItemCapability instance, EnumFacing side, NBTBase nbt){
-			instance.read((NBTTagCompound)nbt);
+			//
 		}
 		
 	}
@@ -78,17 +70,54 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 		
 		private ItemStack stack;
 		private Document doc;
-		private HashMap<String, String> values = new HashMap<>();
-		private NBTTagCompound save;
-		private UUID issuer;
-		private long issued;
+		private boolean issued;
 
 		public void setup(ItemStack stack){
-			if(!stack.hasTagCompound()) return;
+			this.stack = stack;
+			if(!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+			if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTKEY)) return;
 			doc = DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
 		}
 
 		@Override
+		public void parse(NBTTagCompound compound){
+			doc = DocRegistry.DOCS.get(compound.getString(NBTKEY));
+			issued = compound.getBoolean("issued");
+		}
+
+		@Override
+		public Document getDocument(){
+			if(doc == null){
+				if(stack.getTagCompound().hasKey(DocumentItem.NBTKEY)){
+					parse(stack.getTagCompound());
+				}
+			}
+			return doc;
+		}
+
+		@Override
+		public boolean isIssued(){
+			return issued;
+		}
+
+		@Override
+		public String getValue(String key){
+			if(!stack.getTagCompound().hasKey("value:" + key)) return null;
+			return stack.getTagCompound().getString("value:" + key);
+		}
+
+		@Override
+		public void setValue(String key, String val){
+			stack.getTagCompound().setString("value:" + key, val);
+		}
+
+		@Override
+		public void issueBy(EntityPlayer player, boolean client){
+			// TODO Auto-generated method stub
+			
+		}
+
+		/*@Override
 		public NBTBase write(){
 			NBTTagCompound compound = new NBTTagCompound();
 			if(doc == null) return compound;
@@ -169,7 +198,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 			if(client) return;
 			GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(values.get("uuid")));
 			values.put("player_name", gp.getName());
-		}
+		}*/
 		
 	}
 

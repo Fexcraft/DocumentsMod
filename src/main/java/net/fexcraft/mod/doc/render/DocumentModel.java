@@ -20,11 +20,7 @@ public class DocumentModel implements FCLItemModel {
 	public void renderItem(TransformType type, ItemStack item, EntityLivingBase entity){
 		if(item.getItem() instanceof DocumentItem == false){ return; }
 		DocItemCapability cap = item.getCapability(DocItemCapability.CAPABILITY, null);
-		if(cap == null) return;
-		if(cap.getDocument() == null && item.hasTagCompound() && item.getTagCompound().hasKey(DocumentItem.NBTKEY)){
-			cap.reload(item.getTagCompound().getString(DocumentItem.NBTKEY));
-			return;
-		}
+		if(cap == null || cap.getDocument() == null) return;
 		//
 		boolean rd3 = type == TransformType.THIRD_PERSON_LEFT_HAND || type == TransformType.THIRD_PERSON_RIGHT_HAND;
 		GL11.glPushMatrix();

@@ -3,7 +3,6 @@ package net.fexcraft.mod.doc;
 import net.fexcraft.lib.mc.api.registry.fCommand;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
-import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.DocumentItem;
 import net.minecraft.command.CommandBase;
@@ -72,7 +71,6 @@ public class DocCommand extends CommandBase {
 				NBTTagCompound com = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
 				com.setString("documents:type", args[1]);
 				stack.setTagCompound(com);
-				stack.getCapability(DocItemCapability.CAPABILITY, null).reload(args[1]);
 				((EntityPlayer)sender).inventory.addItemStackToInventory(stack);
 				return;
 			}
