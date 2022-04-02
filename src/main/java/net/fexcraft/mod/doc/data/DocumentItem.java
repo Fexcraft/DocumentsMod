@@ -51,7 +51,7 @@ public class DocumentItem extends Item {
 			tooltip.add(Formatter.format("&c&l&mNO TYPE FOUND"));
 			tooltip.add(stack.getTagCompound() == null ? "no tags" : stack.getTagCompound().toString());
 		}
-		tooltip.add(stack.getTagCompound().toString());
+		//tooltip.add(stack.getTagCompound().toString());
 	}
 
 	@Override
