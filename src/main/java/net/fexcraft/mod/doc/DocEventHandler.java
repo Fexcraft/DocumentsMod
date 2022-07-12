@@ -36,7 +36,12 @@ public class DocEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void regModels(net.minecraftforge.client.event.ModelRegistryEvent event){
-		if(DocRegistry.useRS()) net.minecraftforge.client.model.ModelLoader.setCustomMeshDefinition(DocumentItem.INSTANCE, new net.fexcraft.mod.doc.DocItemMeshDef());
+		if(DocRegistry.useRS()){
+			net.minecraftforge.client.model.ModelLoader.setCustomMeshDefinition(DocumentItem.INSTANCE, new net.fexcraft.mod.doc.DocItemMeshDef());
+			for(String key : DocRegistry.DOCS.keySet()){
+				net.minecraft.client.renderer.block.model.ModelBakery.registerItemVariants(DocumentItem.INSTANCE, new ResourceLocation(DocMod.MODID, key));
+			}
+		}
 		else net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(DocumentItem.INSTANCE, 0, new net.minecraft.client.renderer.block.model.ModelResourceLocation("documents:models/item/document", "inventory"));
 	}
 	
