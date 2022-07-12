@@ -30,7 +30,7 @@ public class DocRegistry {
 		if(!file.exists()){
 			JsonMap map = new JsonMap();
 			map.add("comment", "If you need help filling out this config file, visit the wiki!");
-			map.add("wiki", "https://fexcraft.net/wiki/documents");
+			map.add("wiki", "https://fexcraft.net/wiki/mod/documents");
 			map.add("warning", "A copy of this file's content is sent to the clients connecting to your server. DO NOT HOLD SENSITIVE DATA IN THIS FILE.");
 			map.add("player_img_url", player_img_url);
 			map.add("use_resourcepacks", use_resourcepacks);
