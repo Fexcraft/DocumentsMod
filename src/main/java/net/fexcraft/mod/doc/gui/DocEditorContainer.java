@@ -105,6 +105,7 @@ public class DocEditorContainer extends GenericContainer {
 				catch(Exception e){
 					e.printStackTrace();
 					Print.chat(player, "Error: " + e.getMessage());
+					return;
 				}
 			}
 			else if(data.type == FieldType.UUID){
@@ -118,6 +119,7 @@ public class DocEditorContainer extends GenericContainer {
 				catch(Exception e){
 					e.printStackTrace();
 					Print.chat(player, "Error: " + e.getMessage());
+					return;
 				}
 			}
 			cap.setValue(field, value);
