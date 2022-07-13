@@ -125,7 +125,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 			setValue("issuer_name", player.getGameProfile().getName());
 			if(client) return;
 			GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(getValue("uuid")));
-			setValue("player_name", gp.getName());
+			setValue("player_name", gp == null ? "DocError[GP]" : gp.getName());
 		}
 		
 	}
