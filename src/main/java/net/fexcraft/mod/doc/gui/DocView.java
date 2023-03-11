@@ -7,7 +7,6 @@ import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.tmt.ModelBase;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.data.DocPage;
 import net.fexcraft.mod.doc.data.DocPage.DocPageField;
@@ -111,10 +110,10 @@ public class DocView extends GenericGui<DocEditorContainer> {
 	@Override
 	public void drawbackground(float ticks, int mx, int my){
 		for(int i = 0; i < images.size(); i++){
-			ModelBase.bindTexture(images.get(i));
+			mc.renderEngine.bindTexture(images.get(i));
 			int[] imgloc = imgpos.get(i);
 			drawScaledCustomSizeModalRect(guiLeft + imgloc[0], guiTop + imgloc[1], 0, 0, 1, 1, imgloc[2], imgloc[3], 1, 1);
-			ModelBase.bindTexture(texloc);
+			mc.renderEngine.bindTexture(texloc);
 		}
 	}
 	
@@ -126,9 +125,9 @@ public class DocView extends GenericGui<DocEditorContainer> {
 
 		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
 			if(!visible) return;
-			ModelBase.bindTexture(DocEditor.TEXTURE);
+			gui.mc.renderEngine.bindTexture(DocEditor.TEXTURE);
 			super.draw(gui, pticks, mouseX, mouseY);
-			ModelBase.bindTexture(gui.getTexLoc());
+			gui.mc.renderEngine.bindTexture(gui.getTexLoc());
 		}
 		
 	}
