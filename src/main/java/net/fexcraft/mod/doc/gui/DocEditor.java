@@ -8,7 +8,6 @@ import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.tmt.ModelBase;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -195,9 +194,9 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 	public void drawbackground(float ticks, int mx, int my){
 		boolean ex = selected > -1 && data != null;
 		if(ex && data.type.image()){
-			ModelBase.bindTexture(tempimg);
+			mc.renderEngine.bindTexture(tempimg);
 			drawScaledCustomSizeModalRect(guiLeft + 199, guiTop + 9, 0, 0, 1, 1, 48, 48, 1, 1);
-			ModelBase.bindTexture(texloc);
+			mc.renderEngine.bindTexture(texloc);
 		}
 	}
 	
