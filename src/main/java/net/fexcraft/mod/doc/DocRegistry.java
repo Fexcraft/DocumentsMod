@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.app.json.JsonMap;
@@ -35,104 +36,82 @@ public class DocRegistry {
 			map.add("player_img_url", player_img_url);
 			map.add("use_resourcepacks", use_resourcepacks);
 			map.addMap("documents");
-			map.getMap("documents").add("example_id", JsonHandler.parse(
-					  "	{\r\n"
-					+ "		\"size\": [ 188, 104 ],\r\n"
-					+ "		\"name\": \"Example ID Card\",\r\n"
-					+ "		\"description\":[\r\n"
-					+ "			\"documents.example_id.desc0\",\r\n"
-					+ "			\"documents.example_id.desc1\",\r\n"
-					+ "			\"documents.example_id.desc2\"\r\n"
-					+ "		],\r\n"
-					+ "		\"fields\": {\r\n"
-					+ "			\"info1\":{\r\n"
-					+ "				\"type\": \"INFO_TEXT\",\r\n"
-					+ "				\"position\": [ 62, 25 ],\r\n"
-					+ "				\"size\": [ 115, 5 ],\r\n"
-					+ "				\"value\": \"documents.example_id.info1\",\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.info1.desc\"\r\n"
-					+ "				],\r\n"
-					+ "				\"font_scale\": 0.5\r\n"
-					+ "			},\r\n"
-					+ "			\"uuid\":{\r\n"
-					+ "				\"type\": \"UUID\",\r\n"
-					+ "				\"comment0\": \"hidden technical field\",\r\n"
-					+ "				\"comment1\": \"You can enter PLAYER NAME into the field, or player UUID.\",\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.uuid.desc0\",\r\n"
-					+ "					\"documents.example_id.uuid.desc1\",\r\n"
-					+ "					\"documents.example_id.uuid.desc2\"\r\n"
-					+ "				]\r\n"
-					+ "			},\r\n"
-					+ "			\"name\":{\r\n"
-					+ "				\"type\": \"PLAYER_NAME\",\r\n"
-					+ "				\"position\": [ 62, 30 ],\r\n"
-					+ "				\"size\": [ 114, 8 ],\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.name.desc\"\r\n"
-					+ "				]\r\n"
-					+ "			},\r\n"
-					+ "			\"info2\":{\r\n"
-					+ "				\"type\": \"INFO_TEXT\",\r\n"
-					+ "				\"position\": [ 62, 41 ],\r\n"
-					+ "				\"size\": [ 115, 5 ],\r\n"
-					+ "				\"value\": \"documents.example_id.info2\",\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.info2.desc\"\r\n"
-					+ "				],\r\n"
-					+ "				\"font_scale\": 0.5\r\n"
-					+ "			},\r\n"
-					+ "			\"joined\":{\r\n"
-					+ "				\"type\": \"JOIN_DATE\",\r\n"
-					+ "				\"position\": [ 62, 46 ],\r\n"
-					+ "				\"size\": [ 114, 8 ],\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.joined.desc\"\r\n"
-					+ "				]\r\n"
-					+ "			},\r\n"
-					+ "			\"info3\":{\r\n"
-					+ "				\"type\": \"INFO_TEXT\",\r\n"
-					+ "				\"position\": [ 62, 57 ],\r\n"
-					+ "				\"size\": [ 115, 5 ],\r\n"
-					+ "				\"value\": \"documents.example_id.info3\",\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.info2.desc\"\r\n"
-					+ "				],\r\n"
-					+ "				\"font_scale\": 0.5\r\n"
-					+ "			},\r\n"
-					+ "			\"expiry\":{\r\n"
-					+ "				\"type\": \"DATE\",\r\n"
-					+ "				\"position\": [ 62, 62 ],\r\n"
-					+ "				\"size\": [ 114, 8 ],\r\n"
-					+ "				\"description\": [\r\n"
-					+ "					\"documents.example_id.expiry.desc\"\r\n"
-					+ "				]\r\n"
-					+ "			},\r\n"
-					+ "			\"img\":{\r\n"
-					+ "				\"type\": \"PLAYER_IMG\",\r\n"
-					+ "				\"position\": [ 9, 9 ],\r\n"
-					+ "				\"size\": [ 48, 48 ]\r\n"
-					+ "			}\r\n"
-					+ "		},\r\n"
-					+ "		\"textures\": {\r\n"
-					+ "			\"maintex\": \"documents:textures/gui/example_id.png\"\r\n"
-					+ "		},\r\n"
-					+ "		\"pages\": {\r\n"
-					+ "			\"main\": {\r\n"
-					+ "				\"fields\": [\r\n"
-					+ "					\"info1\",\r\n"
-					+ "					\"info2\",\r\n"
-					+ "					\"info3\",\r\n"
-					+ "					\"name\",\r\n"
-					+ "					\"joined\",\r\n"
-					+ "					\"expiry\",\r\n"
-					+ "					\"img\"\r\n"
-					+ "				],\r\n"
-					+ "				\"texture\": \"maintex\"\r\n"
-					+ "			}\r\n"
-					+ "		}\r\n"
-					+ "	},", true));
+			JsonMap exid = new JsonMap();
+			exid.add("size", new JsonArray(188, 104));
+			exid.add("name", "Example ID Card");
+			JsonArray desc = new JsonArray();
+			exid.add("description", new JsonArray(
+					"documents.example_id.desc0",
+					"documents.example_id.desc1",
+					"documents.example_id.desc2"
+			));
+			JsonMap fields = new JsonMap();
+			JsonMap info1 = new JsonMap();
+			info1.add("type", "INFO_TEXT");
+			info1.add("position", new JsonArray(62, 25));
+			info1.add("size", new JsonArray(115, 5));
+			info1.add("value", "documents.example_id.info1");
+			info1.add("description", new JsonArray("documents.example_id.info1.desc"));
+			info1.add("font_scale", 0.5f);
+			fields.add("info1", info1);
+			JsonMap uuid = new JsonMap();
+			uuid.add("type", "UUID");
+			uuid.add("comment0", "hidden technical field");
+			uuid.add("comment1", "You can enter PLAYER NAME into the field, or player UUID.");
+			uuid.add("description", new JsonArray(
+					"documents.example_id.uuid.desc0",
+					"documents.example_id.uuid.desc1",
+					"documents.example_id.uuid.desc2"
+			));
+			fields.add("uuid", uuid);
+			JsonMap name = new JsonMap();
+			name.add("type", "PLAYER_NAME");
+			name.add("position", new JsonArray(62, 30));
+			name.add("size", new JsonArray(114, 8));
+			name.add("description", new JsonArray("documents.example_id.name.desc"));
+			fields.add("name", name);
+			JsonMap info2 = new JsonMap();
+			info2.add("type", "INFO_TEXT");
+			info2.add("position", new JsonArray(62, 41));
+			info2.add("size", new JsonArray(115, 5));
+			info2.add("value", "documents.example_id.info2");
+			info2.add("description", new JsonArray("documents.example_id.info2.desc"));
+			info2.add("font_scale", 0.5f);
+			fields.add("info2", info2);
+			JsonMap joined = new JsonMap();
+			joined.add("type", "JOIN_DATE");
+			joined.add("position", new JsonArray(62, 46));
+			joined.add("size", new JsonArray(114, 8));
+			joined.add("description", new JsonArray("documents.example_id.joined.desc"));
+			fields.add("joined", joined);
+			JsonMap info3 = new JsonMap();
+			info3.add("type", "INFO_TEXT");
+			info3.add("position", new JsonArray(62, 57));
+			info3.add("size", new JsonArray(115, 5));
+			info3.add("value", "documents.example_id.info3");
+			info3.add("description", new JsonArray("documents.example_id.info3.desc"));
+			info3.add("font_scale", 0.5f);
+			fields.add("info3", info3);
+			JsonMap expiry = new JsonMap();
+			expiry.add("type", "DATE");
+			expiry.add("position", new JsonArray(62, 62));
+			expiry.add("size", new JsonArray(114, 8));
+			expiry.add("description", new JsonArray("documents.example_id.expiry.desc"));
+			fields.add("expiry", expiry);
+			JsonMap image = new JsonMap();
+			image.add("type", "PLAYER_IMG");
+			image.add("position", new JsonArray(9, 9));
+			image.add("size", new JsonArray(48, 48));
+			fields.add("img", image);
+			exid.add("fields", fields);
+			exid.add("textures", new JsonMap("maintex", "documents:textures/gui/example_id.png"));
+			JsonMap pages = new JsonMap();
+			JsonMap main = new JsonMap();
+			main.add("fields", new JsonArray("info1", "info2", "info3", "name", "joined", "expiry", "img"));
+			main.add("texture", "maintex");
+			pages.add("main", main);
+			exid.add("pages", pages);
+			map.getMap("documents").add("example_id", exid);
 			JsonHandler.print(file, map, PrintOption.SPACED);
 		}
 		confmap = JsonHandler.parse(file);
