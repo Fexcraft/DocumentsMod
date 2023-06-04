@@ -57,7 +57,7 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 			int I = i;
 			this.buttons.put("f" + i, fieldbuttons[i] = new BasicButton("f" + i, guiLeft + 17, guiTop + 8 + i * 10, 17, 8 + i * 10, 48, 8, true){
 				public boolean onclick(int mx, int my, int mb){
-					if(I + scroll >= fieldbuttons.length) return true;
+					if(I + scroll >= fieldkeys.length) return true;
 					data = container.doc.fields.get(fieldkeys[selected = I + scroll]);
 					if(data.type.image()){
 						if(data.value.startsWith("external;")){
