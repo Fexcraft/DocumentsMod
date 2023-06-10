@@ -26,6 +26,7 @@ public class DocPerms {
 			JsonArray array = new JsonArray();
 			array.add("command.get.*");
 			array.add("command.reload-perms");
+			array.add("command.reload-docs");
 			array.add("document.edit.*");
 			array.add("document.issue.*");
 			map.getMap("players").add("61699b2e-d327-4a01-9f1e-0ea8c3f06bc6", array);
