@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.data.Document;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -124,6 +125,11 @@ public class DocRegistry {
 		DOCS.clear();
 		if(map.has("documents")) parseDocs(map.get("documents").asMap());
 		player_img_url = map.getString("player_img_url", player_img_url);
+	}
+
+	public static void reload(){
+		load(confmap = JsonHandler.parse(file));
+		Print.debug(confmap);
 	}
 	
 	private static void parseDocs(JsonMap map){
