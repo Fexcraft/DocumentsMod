@@ -1,6 +1,10 @@
 package net.fexcraft.mod.doc;
 
+import net.fexcraft.app.json.JsonHandler;
+import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.lib.mc.api.registry.fCommand;
+import net.fexcraft.lib.mc.network.PacketHandler;
+import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
@@ -35,6 +39,7 @@ public class DocCommand extends CommandBase {
 			Print.chat(sender, "/documents get");
 			Print.chat(sender, "/documents uuid");
 			Print.chat(sender, "/documents reload-perms");
+			Print.chat(sender, "/documents reload-docs");
 			Print.chat(sender, "&7============");
 			return;
 		}
@@ -81,6 +86,22 @@ public class DocCommand extends CommandBase {
 				}
 				DocPerms.loadperms();
 				Print.chat(sender, "&apermissions reloaded");
+				return;
+			}
+			case "reload-docs":{
+				if(!sp && !DocPerms.hasPerm(player, "command.reload-docs") && !Static.isOp(player)){
+					Print.chat(sender, "&cno permission");
+					return;
+				}
+				DocRegistry.reload();
+				NBTTagCompound com = new NBTTagCompound();
+				com.setString("target_listener", "docmod");
+				com.setString("task", "sync");
+				com.setString("config", JsonHandler.toString(DocRegistry.confmap, PrintOption.FLAT));
+				server.getPlayerList().getPlayers().forEach(splayer -> {
+					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
+				});
+				Print.chat(sender, "&adocuments reloaded");
 				return;
 			}
 			default: return;
