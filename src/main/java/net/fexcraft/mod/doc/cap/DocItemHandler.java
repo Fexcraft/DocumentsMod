@@ -74,32 +74,31 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 	public static class Implementation implements DocItemCapability {
 		
 		private ItemStack stack;
-		private NBTTagCompound copy;
-		private Document doc;
 
 		public void setup(ItemStack stack){
 			this.stack = stack;
 			if(!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
-			if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTKEY)) return;
-			doc = DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+			//if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTKEY)) return;
+			//doc = DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
 		}
 
 		@Override
 		public void parse(NBTTagCompound compound){
-			if(!compound.hasKey(NBTKEY)) return;
-			doc = DocRegistry.DOCS.get(compound.getString(NBTKEY));
-			copy = compound.copy();
+			//if(!compound.hasKey(NBTKEY)) return;
+			//doc = DocRegistry.DOCS.get(compound.getString(NBTKEY));
+			//copy = compound.copy();
 		}
 
 		@Override
 		public Document getDocument(){
-			if(doc == null){
+			return DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+			/*if(doc == null){
 				parse(stack.getTagCompound());
 			}
 			if(!stack.getTagCompound().equals(copy)){
 				parse(stack.getTagCompound());
 			}
-			return doc;
+			return doc;*/
 		}
 
 		@Override
