@@ -4,9 +4,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
-
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.gui.GenericContainer;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocMod;
