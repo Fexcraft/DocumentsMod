@@ -3,9 +3,9 @@ package net.fexcraft.mod.doc.gui;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.data.DocPage;
