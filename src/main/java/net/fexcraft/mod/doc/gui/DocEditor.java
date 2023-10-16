@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.minecraft.client.resources.I18n;
