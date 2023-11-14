@@ -20,7 +20,7 @@ public class DocMod {
 	
     public static final String MODID = "documents";
     public static final String NAME = "Documents Mod";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.1.1";
     @Mod.Instance(MODID)
     private static DocMod INSTANCE;
 
