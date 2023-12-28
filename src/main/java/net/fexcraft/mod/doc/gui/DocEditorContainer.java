@@ -85,6 +85,7 @@ public class DocEditorContainer extends GenericContainer {
 			if(data.type.number()){
 				try{
 					if(data.type == FieldType.INTEGER){
+						if(value.contains(".")) value = value.substring(0, value.indexOf("."));
 						Integer.parseInt(value);
 					}
 					else{
