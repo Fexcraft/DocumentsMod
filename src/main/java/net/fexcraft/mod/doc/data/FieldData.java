@@ -64,7 +64,9 @@ public class FieldData {
 			return cap.getValue("player_name");
 		}
 		else if(type == FieldType.PLAYER_IMG){
-			return DocRegistry.player_img_url.replace("<UUID>", cap.getValue("uuid"));
+			return DocRegistry.player_img_url
+				.replace("<UUID>", cap.getValue("uuid"))
+				.replace("<NAME>", cap.getValue("player_name"));
 		}
 		else if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
 			try{
