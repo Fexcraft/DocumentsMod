@@ -59,7 +59,16 @@ public class DocumentItem extends Item {
 		if(stack.hasTagCompound() && DocRegistry.useRS()){
 			return "item.documents." + stack.getTagCompound().getString(NBTKEY);
 		}
-		return this.getTranslationKey();
+		return getTranslationKey();
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack stack){
+		if(stack.hasTagCompound() && !DocRegistry.useRS()){
+			Document doc = DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+			if(doc != null) return doc.name;
+		}
+		return super.getItemStackDisplayName(stack);
 	}
 
 	@Override
