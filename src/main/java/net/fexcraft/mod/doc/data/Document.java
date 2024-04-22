@@ -23,6 +23,7 @@ public class Document {
 	public ArrayList<String> description = new ArrayList<>();
 	public ResourceLocation itemicon;
 	public String icon;
+	public String name;
 
 	public Document(String key, JsonMap map){
 		id = key;
@@ -72,6 +73,7 @@ public class Document {
 			map.get("description").asArray().value.forEach(elm -> description.add(elm.string_value()));
 		}
 		icon = map.getString("icon", "minecraft:textures/items/paper.png");
+		name = map.getString("name", "Unnamed Document");
 	}
 	
 	public void linktextures(){
