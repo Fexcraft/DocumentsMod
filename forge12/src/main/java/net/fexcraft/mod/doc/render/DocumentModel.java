@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.fexcraft.lib.mc.render.FCLItemModel;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
-import net.fexcraft.mod.doc.data.DocumentItem;
+import net.fexcraft.mod.doc.DocumentItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +28,7 @@ public class DocumentModel implements FCLItemModel {
 		GL11.glRotatef(180, 1, 0, 0);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		if(rd3) GL11.glScalef(.5f, .5f, .5f);
-		Minecraft.getMinecraft().renderEngine.bindTexture(cap.getDocument().itemicon);
+		Minecraft.getMinecraft().renderEngine.bindTexture(cap.getDocument().itemicon.local());
 		model.render(1f);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glPopMatrix();
