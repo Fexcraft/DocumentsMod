@@ -17,6 +17,19 @@ version = '1.1.2b'
 group = 'net.fexcraft.mod.docs' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'DocsMod'
 
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src/main/java'
+            srcDirs += new File(file('..'), "/neutral/src")
+        }
+        resources {
+            srcDirs += 'src/main/resources'
+            srcDirs += new File(file('..'), "/neutral/res")
+        }
+    }
+}
+
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
