@@ -46,7 +46,7 @@ public class DocView extends GenericGui<DocEditorContainer> {
 		pageid = entry.getKey();
 		xSize = page.sizex > 0 ? page.sizex : doc.sizex;
 		ySize = page.sizey > 0 ? page.sizey : doc.sizey;
-		texloc = doc.textures.get(page.texture);
+		texloc = doc.textures.get(page.texture).local();
 	}
 	
 	@Override
