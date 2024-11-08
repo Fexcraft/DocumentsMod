@@ -1,7 +1,7 @@
 package net.fexcraft.mod.doc.cap;
 
 import static net.fexcraft.mod.doc.cap.DocItemCapability.CAPABILITY;
-import static net.fexcraft.mod.doc.data.DocumentItem.NBTKEY;
+import static net.fexcraft.mod.doc.DocumentItem.NBTKEY;
 
 import java.util.UUID;
 
