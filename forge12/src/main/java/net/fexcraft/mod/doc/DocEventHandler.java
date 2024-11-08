@@ -5,7 +5,6 @@ import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.mod.doc.cap.DocItemHandler;
-import net.fexcraft.mod.doc.data.DocumentItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
