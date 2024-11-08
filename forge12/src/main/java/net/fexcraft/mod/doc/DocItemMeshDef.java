@@ -1,6 +1,5 @@
 package net.fexcraft.mod.doc;
 
-import net.fexcraft.mod.doc.data.DocumentItem;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
