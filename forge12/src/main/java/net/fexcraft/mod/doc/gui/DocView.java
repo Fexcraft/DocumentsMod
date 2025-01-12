@@ -30,17 +30,17 @@ public class DocView extends GenericGui<DocEditorContainer> {
 
 	public DocView(EntityPlayer player, int pageidx){
 		super(DocRegistry.STONE.local(), new DocEditorContainer(player), player);
-		if(container.cap == null){
+		if(container.app == null){
 			Print.bar(player, "item.missing.cap");
 			player.closeScreen();
 			mc.currentScreen = null;
 		}
-		if(container.cap.getDocument() == null){
+		if(container.app.getDocument() == null){
 			Print.bar(player, "item.missing.doc");
 			player.closeScreen();
 			mc.currentScreen = null;
 		}
-		doc = container.cap.getDocument();
+		doc = container.app.getDocument();
 		Entry<String, DocPage> entry = (Entry<String, DocPage>)doc.pages.entrySet().toArray()[this.pageidx = pageidx];
 		page = entry.getValue();
 		pageid = entry.getKey();
@@ -60,7 +60,7 @@ public class DocView extends GenericGui<DocEditorContainer> {
 			if(field.type.image()){
 				ResourceLocation imgloc = null;
 				if(field.type == FieldType.PLAYER_IMG){
-					imgloc = ExternalTextureHelper.get(field.getValue(container.cap));
+					imgloc = ExternalTextureHelper.get(field.getValue(container.app));
 				}
 				else if(field.value.startsWith("external;")){
 					imgloc = ExternalTextureHelper.get(field.value.substring(9));
@@ -72,12 +72,12 @@ public class DocView extends GenericGui<DocEditorContainer> {
 			else{
 				String val = null;
 				if(field.type == FieldType.ISSUER){
-					val = container.cap.getValue("issuer");
+					val = container.app.getValue("issuer");
 				}
 				else if(field.type == FieldType.ISSUER_NAME){
-					val = container.cap.getValue("issuer_name");
+					val = container.app.getValue("issuer_name");
 				}
-				else val = field.getValue(container.cap);
+				else val = field.getValue(container.app);
 				String format = field.format == null ? "" : field.format;
 				BasicText text = new BasicText(guiLeft + x, guiTop + y, sx, field.color, Formatter.format(format + I18n.format(val)));
 				if(field.fontscale > 0) text.scale(field.fontscale);
