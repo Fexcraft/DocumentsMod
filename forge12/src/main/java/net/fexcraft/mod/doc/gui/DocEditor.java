@@ -36,11 +36,11 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		super(TEXTURE, new DocEditorContainer(player), player);
 		xSize = 256;
 		ySize = 104;
-		if(container.cap == null){
+		if(container.app == null){
 			Print.bar(player, "item.missing.cap");
 			player.closeScreen();
 		}
-		if(container.cap.getDocument() == null){
+		if(container.app.getDocument() == null){
 			Print.bar(player, "item.missing.doc");
 			player.closeScreen();
 		}
@@ -68,11 +68,11 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 					field.setVisible(false);
 					nfield.setVisible(false);
 					if(data.type.number()){
-						nfield.setText(data.getValue(container.cap));
+						nfield.setText(data.getValue(container.app));
 						nfield.setVisible(true);
 					}
 					else if(data.type.editable){
-						field.setText(data.getValue(container.cap));
+						field.setText(data.getValue(container.app));
 						field.setVisible(true);
 					}
 					statustext = null;
@@ -177,7 +177,7 @@ public class DocEditor extends GenericGui<DocEditorContainer> {
 		for(String str : fieldkeys){
 			FieldData data = container.doc.fields.get(str);
 			if(!data.type.editable) continue;
-			if(data.value == null && container.cap.getValue(str) == null && !data.can_empty){
+			if(data.value == null && container.app.getValue(str) == null && !data.can_empty){
 				todo++;
 				if(eg == null) eg = str;
 			}
