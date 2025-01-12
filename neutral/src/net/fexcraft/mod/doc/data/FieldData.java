@@ -1,6 +1,7 @@
 package net.fexcraft.mod.doc.data;
 
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,13 +16,22 @@ import net.fexcraft.mod.doc.DocRegistry;
  * @author Ferdinand Calo' (FEX___96)
  */
 public class FieldData {
-	
+
+	private DateFormat df;
 	public final FieldType type;
-	public int posx, posy, sizex, sizey;
+	public final String key;
+	public int posx;
+	public int posy;
+	public int sizex;
+	public int sizey;
 	public float fontscale;
-	public String value, name, key, format;
+	public String value;
+	public String name;
+	public String format;
+	public String prefix;
 	public Integer color;
-	public boolean can_empty, autoscale;
+	public boolean can_empty;
+	public boolean autoscale;
 	public ArrayList<String> description = new ArrayList<>();
 
 	public FieldData(String key, JsonMap map){
@@ -42,7 +52,9 @@ public class FieldData {
 		}
 		autoscale = map.getBoolean("auto_scale", fontscale == 0);
 		color = map.has("font_color") ? new RGB(map.get("font_color").string_value()).packed : null;
+		prefix = map.getString("prefix", null);
 		format = map.getString("format", null);
+		if(type.date()) df = format == null ? DocConfig.DATE_FORMAT : new SimpleDateFormat(format);
 	}
 
 	public FieldData(String key, FieldType type){
@@ -57,7 +69,7 @@ public class FieldData {
 		if(type == FieldType.JOIN_DATE){
 			JsonMap pd = DocRegistry.getPlayerData(cap.getValue("uuid"));
 			try{
-				return LocalDate.ofEpochDay(new Date(pd.getLong("joined", Time.getDate())).getTime() / 86400000).toString();
+				return df.format(new Date(pd.getLong("joined", Time.getDate())));
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -73,7 +85,7 @@ public class FieldData {
 		}
 		else if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
 			try{
-				return LocalDate.ofEpochDay(Long.parseLong(val) / 86400000).toString();
+				return df.format(new Date(Long.parseLong(val)));
 			}
 			catch(Exception e){
 				e.printStackTrace();
