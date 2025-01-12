@@ -55,18 +55,18 @@ public class DocumentItem extends Item {
 
 	@Override
 	public String getTranslationKey(ItemStack stack){
-		if(stack.hasTagCompound() && DocRegistry.useRS()){
+		//if(stack.hasTagCompound() && DocRegistry0.useRS()){
 			return "item.documents." + stack.getTagCompound().getString(NBTKEY);
-		}
-		return getTranslationKey();
+		//}
+		//return getTranslationKey();
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack){
-		if(stack.hasTagCompound() && !DocRegistry.useRS()){
-			Document doc = DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+		/*if(stack.hasTagCompound() && !DocRegistry0.useRS()){
+			Document doc = DocRegistry0.DOCS.get(stack.getTagCompound().getString(NBTKEY));
 			if(doc != null) return doc.name;
-		}
+		}*/
 		return super.getItemStackDisplayName(stack);
 	}
 
