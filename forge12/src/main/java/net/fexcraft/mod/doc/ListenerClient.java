@@ -15,12 +15,11 @@ public class ListenerClient implements IPacketListener<PacketNBTTagCompound> {
 	@Override
 	public void process(PacketNBTTagCompound packet, Object[] objs){
 		String task = packet.nbt.getString("task");
-		//EntityPlayer player = (EntityPlayer)objs[0];
 		switch(task){
 			case "sync":{
 				JsonMap map = JsonHandler.parse(packet.nbt.getString("config"), true).asMap();
-				DocRegistry.load(map);
-            	DocRegistry.DOCUMENTS.values().forEach(doc -> doc.linktextures());
+				DocRegistry.parseDocs(map);
+            	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
 				return;
 			}
 			default: return;
