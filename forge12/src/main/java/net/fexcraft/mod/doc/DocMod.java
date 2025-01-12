@@ -3,8 +3,8 @@ package net.fexcraft.mod.doc;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
 import net.fexcraft.mod.doc.gui.GuiHandler;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,9 +29,9 @@ public class DocMod {
         DocRegistry.init(event.getModConfigurationDirectory());
         DocPerms.loadperms();
         MinecraftForge.EVENT_BUS.register(new DocEventHandler());
-        /*if(event.getSide().isClient()){
-        	if(DocRegistry0.noRS()) net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), net.fexcraft.mod.doc.render.DocumentModel.INSTANCE);
-        }*/
+        if(event.getSide().isClient()){
+        	net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), net.fexcraft.mod.doc.render.DocumentModel.INSTANCE);
+        }
     }
 
     @EventHandler
@@ -40,7 +40,7 @@ public class DocMod {
         PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new ListenerServer());
         if(event.getSide().isClient()){
         	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new ListenerClient());
-        	DocRegistry.DOCUMENTS.values().forEach(doc -> doc.linktextures());
+        	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
         }
     }
 
