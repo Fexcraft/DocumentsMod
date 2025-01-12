@@ -91,7 +91,7 @@ public class DocItemHandler implements ICapabilitySerializable<NBTBase>{
 
 		@Override
 		public Document getDocument(){
-			return DocRegistry.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+			return DocRegistry.DOCUMENTS.get(stack.getTagCompound().getString(NBTKEY));
 			/*if(doc == null){
 				parse(stack.getTagCompound());
 			}
