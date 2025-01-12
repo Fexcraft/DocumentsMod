@@ -8,6 +8,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.mod.doc.DocConfig;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.cap.DocItemCapability;
 
@@ -67,7 +68,7 @@ public class FieldData {
 			return cap.getValue("player_name");
 		}
 		else if(type == FieldType.PLAYER_IMG){
-			return DocRegistry.player_img_url
+			return DocConfig.PLAYER_IMG_URL
 				.replace("<UUID>", cap.getValue("uuid"))
 				.replace("<NAME>", cap.getValue("player_name"));
 		}
