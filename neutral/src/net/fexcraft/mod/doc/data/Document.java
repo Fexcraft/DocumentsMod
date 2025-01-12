@@ -60,7 +60,7 @@ public class Document {
 				rawtextures.put(entry.getKey(), entry.getValue().string_value());
 			});
 		}
-		else rawtextures.put("main", DocRegistry.STONE.toString());
+		else rawtextures.put("main", DocRegistry.STONE.colon());
 		if(map.has("pages")){
 			map.get("pages").asMap().entries().forEach(entry -> {
 				pages.put(entry.getKey(), new DocPage(entry.getKey(), entry.getValue().asMap()));
