@@ -36,7 +36,7 @@ public class DocRegistry {
         if(!DOCS_FOLDER.exists()){
             try{
                 DOCS_FOLDER.mkdirs();
-                JsonMap map = JsonHandler.parse(DocRegistry.class.getClassLoader().getResourceAsStream("data/documents/defaults/example_id.json"));
+                JsonMap map = JsonHandler.parse(Documents.getResource("data/documents/defaults/example_id.json"));
                 JsonHandler.print(new File(DOCS_FOLDER, "/example_id.json"), map, JsonHandler.PrintOption.SPACED);
             }
             catch (IOException e){
