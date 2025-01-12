@@ -10,7 +10,6 @@ import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocConfig;
 import net.fexcraft.mod.doc.DocRegistry;
-import net.fexcraft.mod.doc.cap.DocItemCapability;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -51,7 +50,7 @@ public class FieldData {
 		name = this.key = key;
 	}
 
-	public String getValue(DocItemCapability cap){
+	public String getValue(DocStackApp cap){
 		String val = cap.getValue(key);
 		if(val == null && value != null) val = value;
 		if(type.number()) return val == null ? "0" : val;
