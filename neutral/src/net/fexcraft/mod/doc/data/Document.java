@@ -9,6 +9,8 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.DocRegistry;
+import net.fexcraft.mod.doc.Documents;
+import net.fexcraft.mod.fcl.util.ExternalTextures;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
@@ -81,7 +83,7 @@ public class Document {
 	}
 	
 	public void linktextures(){
-		if(icon.startsWith("external;")) itemicon = IDLManager.getIDLCached(ExternalTextureHelper.get(icon.substring(9)).toString());
+		if(icon.startsWith("external;")) itemicon = Documents.getTexture(icon.substring(9));
 		else itemicon = IDLManager.getIDLCached(icon);
 		//
 		for(Entry<String, String> entry : rawtextures.entrySet()){
@@ -89,7 +91,7 @@ public class Document {
 			String str = entry.getValue();
 			if(str.startsWith("external;")){
 				str = str.substring(9);
-				resloc = IDLManager.getIDLCached(ExternalTextureHelper.get(str).toString());
+				resloc = Documents.getTexture(str);
 			}
 			else resloc = IDLManager.getIDLCached(str);
 			textures.put(entry.getKey(), resloc);
