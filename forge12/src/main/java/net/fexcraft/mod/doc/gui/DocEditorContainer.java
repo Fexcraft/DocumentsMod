@@ -58,7 +58,7 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
-			if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.issue", app.getDocument().id)){
+			if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.issue", app.getDocument().id.colon())){
 				Print.chat(player, "&cno permission");
 				return;
 			}
@@ -75,7 +75,7 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(!packet.hasKey("field")) return;
-		if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.edit", app.getDocument().id)){
+		if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.edit", app.getDocument().id.colon())){
 			Print.chat(player, "&cno permission");
 			return;
 		}
