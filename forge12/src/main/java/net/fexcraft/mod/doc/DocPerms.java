@@ -18,7 +18,7 @@ public class DocPerms {
 	
 	public static void loadperms(){
 		perms.clear();
-		File file = new File(DocRegistry.folder, "document_perms.json");
+		File file = new File(DocRegistry.FOLDER, "document_perms.json");
 		JsonMap map = JsonHandler.parse(file);
 		if(map.empty() || !map.has("players")){
 			map.addMap("players");
