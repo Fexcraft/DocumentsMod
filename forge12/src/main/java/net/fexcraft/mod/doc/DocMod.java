@@ -2,8 +2,6 @@ package net.fexcraft.mod.doc;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
-import net.fexcraft.mod.doc.cap.DocItemCapability;
-import net.fexcraft.mod.doc.cap.DocItemHandler;
 import net.fexcraft.mod.doc.gui.GuiHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -30,7 +28,6 @@ public class DocMod {
         CONFIG = new DocConfig(new File(event.getModConfigurationDirectory(), "/documents_config.json"));
         DocRegistry.init(event.getModConfigurationDirectory());
         DocPerms.loadperms();
-        CapabilityManager.INSTANCE.register(DocItemCapability.class, new DocItemHandler.Storage(), new DocItemHandler.Callable());
         MinecraftForge.EVENT_BUS.register(new DocEventHandler());
         /*if(event.getSide().isClient()){
         	if(DocRegistry0.noRS()) net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), net.fexcraft.mod.doc.render.DocumentModel.INSTANCE);
