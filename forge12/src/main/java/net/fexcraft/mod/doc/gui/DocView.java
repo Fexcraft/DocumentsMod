@@ -29,7 +29,7 @@ public class DocView extends GenericGui<DocEditorContainer> {
 	public ArrayList<int[]> imgpos = new ArrayList<>();
 
 	public DocView(EntityPlayer player, int pageidx){
-		super(DocRegistry.STONE, new DocEditorContainer(player), player);
+		super(DocRegistry.STONE.local(), new DocEditorContainer(player), player);
 		if(container.cap == null){
 			Print.bar(player, "item.missing.cap");
 			player.closeScreen();
