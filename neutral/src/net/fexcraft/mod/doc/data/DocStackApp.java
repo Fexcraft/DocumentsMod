@@ -6,11 +6,13 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.uni.Appendable;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 
 import java.util.UUID;
 
-import static net.fexcraft.mod.doc.DocRegistry.NBTKEY;
+import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
+import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_DATA;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -27,7 +29,7 @@ public class DocStackApp implements Appendable<StackWrapper> {
 
     @Override
     public Appendable<StackWrapper> create(StackWrapper type){
-        return new DocStackApp(type);
+        return type.getItem().direct() instanceof DocItem ? new DocStackApp(type) : null;
     }
 
     @Override
@@ -36,20 +38,22 @@ public class DocStackApp implements Appendable<StackWrapper> {
     }
 
     public Document getDocument(){
-        return DocRegistry.DOCUMENTS.get(stack.getTag().getString(NBTKEY));
+        return DocRegistry.getDocument(stack.getTag().getString(NBTKEY_TYPE));
     }
 
     public boolean isIssued(){
-        return stack.getTag().has("document:issued");
+        return getValue("issued") != null;
     }
 
     public String getValue(String key){
-        if(!stack.getTag().has("document:" + key)) return null;
-        return stack.getTag().getString("document:" + key);
+        TagCW com = stack.getTag().getCompound(NBTKEY_DATA);
+        if(com == null || !com.has(key)) return null;
+        return com.getString(key);
     }
 
     public void setValue(String key, String val){
-        stack.getTag().set("document:" + key, val);
+        if(!stack.getTag().has(NBTKEY_DATA)) stack.getTag().set(NBTKEY_DATA, TagCW.create());
+        stack.getTag().getCompound(NBTKEY_DATA).set(key, val);
     }
 
     public void issueBy(EntityW player, boolean client){
