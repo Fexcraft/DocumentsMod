@@ -8,6 +8,8 @@ import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -47,8 +49,8 @@ public class DocCommand extends CommandBase {
 		switch(args[0]){
 			case "list":{
 				Print.chat(sender, "&7============");
-				for(String str : DocRegistry.DOCS.keySet()){
-					Print.chat(sender, str);
+				for(IDL str : DocRegistry.DOCUMENTS.keySet()){
+					Print.chat(sender, str.colon());
 				}
 				return;
 			}
@@ -62,7 +64,7 @@ public class DocCommand extends CommandBase {
 					Print.chat(sender, "missing argumment");
 					return;
 				}
-				Document doc = DocRegistry.DOCS.get(args[1]);
+				Document doc = DocRegistry.DOCUMENTS.get(IDLManager.getIDL(args[1]));
 				if(doc == null){
 					Print.chat(sender, "not found");
 					return;
@@ -96,7 +98,7 @@ public class DocCommand extends CommandBase {
 				NBTTagCompound com = new NBTTagCompound();
 				com.setString("target_listener", "docmod");
 				com.setString("task", "sync");
-				com.setString("config", JsonHandler.toString(DocRegistry.confmap, PrintOption.FLAT));
+				com.setString("config", JsonHandler.toString(DocRegistry.CONF_MAP, PrintOption.FLAT));
 				server.getPlayerList().getPlayers().forEach(splayer -> {
 					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
 				});
