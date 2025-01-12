@@ -4,10 +4,14 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.doc.data.DocItem;
 import net.fexcraft.mod.doc.data.DocStackApp;
+import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.ui.DocUI;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -65,10 +69,10 @@ public class DocumentItem extends Item implements DocItem {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack){
-		/*if(stack.hasTagCompound() && !DocRegistry0.useRS()){
-			Document doc = DocRegistry0.DOCS.get(stack.getTagCompound().getString(NBTKEY));
+		if(stack.hasTagCompound()){
+			Document doc = DocRegistry.getDocument(stack.getTagCompound().getString(NBTKEY_TYPE));
 			if(doc != null) return doc.name;
-		}*/
+		}
 		return super.getItemStackDisplayName(stack);
 	}
 
@@ -81,7 +85,7 @@ public class DocumentItem extends Item implements DocItem {
 				Print.chat(player, "item.missing.doc");
 				return super.onItemRightClick(world, player, hand);
 			}
-			player.openGui(Documents.getInstance(), cap.isIssued() ? 1 : 0, world, 0, 0, 0);
+			UniEntity.getEntity(player).openUI(cap.isIssued() ? DocUI.VIEWER : DocUI.EDITOR, V3I.NULL);
 			return new ActionResult(EnumActionResult.SUCCESS, stack);
 		}
         return super.onItemRightClick(world, player, hand);
