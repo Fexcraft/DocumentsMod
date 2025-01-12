@@ -3,7 +3,6 @@ package net.fexcraft.mod.doc;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
-import net.fexcraft.mod.doc.gui.GuiHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -35,7 +34,7 @@ public class Documents {
         DocPerms.loadperms();
         MinecraftForge.EVENT_BUS.register(new DocEventHandler());
         if(event.getSide().isClient()){
-        	net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), net.fexcraft.mod.doc.render.DocumentModel.INSTANCE);
+        	net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), DocumentModel.INSTANCE);
         }
         DocUI.register(this);
     }

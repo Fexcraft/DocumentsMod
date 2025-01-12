@@ -1,4 +1,4 @@
-package net.fexcraft.mod.doc.gui;
+package net.fexcraft.mod.doc;
 
 import net.fexcraft.mod.uni.ui.UIUtils;
 import net.minecraft.entity.player.EntityPlayer;

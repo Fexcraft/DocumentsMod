@@ -1,4 +1,4 @@
-package net.fexcraft.mod.doc.render;
+package net.fexcraft.mod.doc;
 
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.mc.render.FCLItemModel;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
-import net.fexcraft.mod.doc.DocumentItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.EntityLivingBase;
