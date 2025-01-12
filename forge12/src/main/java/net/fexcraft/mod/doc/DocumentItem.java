@@ -28,8 +28,8 @@ public class DocumentItem extends Item implements DocItem {
 	public static DocumentItem INSTANCE;
 
 	public DocumentItem(){
-		setRegistryName(DocMod.MODID, "document");
-		setTranslationKey(DocMod.MODID + ".document");
+		setRegistryName(Documents.MODID, "document");
+		setTranslationKey(Documents.MODID + ".document");
 		hasSubtypes = true;
 	}
 
@@ -81,7 +81,7 @@ public class DocumentItem extends Item implements DocItem {
 				Print.chat(player, "item.missing.doc");
 				return super.onItemRightClick(world, player, hand);
 			}
-			player.openGui(DocMod.getInstance(), cap.isIssued() ? 1 : 0, world, 0, 0, 0);
+			player.openGui(Documents.getInstance(), cap.isIssued() ? 1 : 0, world, 0, 0, 0);
 			return new ActionResult(EnumActionResult.SUCCESS, stack);
 		}
         return super.onItemRightClick(world, player, hand);
