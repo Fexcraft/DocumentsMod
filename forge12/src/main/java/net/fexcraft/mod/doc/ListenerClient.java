@@ -20,7 +20,7 @@ public class ListenerClient implements IPacketListener<PacketNBTTagCompound> {
 			case "sync":{
 				JsonMap map = JsonHandler.parse(packet.nbt.getString("config"), true).asMap();
 				DocRegistry.load(map);
-            	DocRegistry.DOCS.values().forEach(doc -> doc.linktextures());
+            	DocRegistry.DOCUMENTS.values().forEach(doc -> doc.linktextures());
 				return;
 			}
 			default: return;
