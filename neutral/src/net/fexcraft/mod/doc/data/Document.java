@@ -7,10 +7,8 @@ import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.Documents;
-import net.fexcraft.mod.fcl.util.ExternalTextures;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
