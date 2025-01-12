@@ -4,6 +4,8 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.uni.ConfigBase;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -15,6 +17,7 @@ public class DocConfig extends ConfigBase  {
     public static String DEF_ISSUER_TYPE;
     public static String DEF_ISSUER_UUID;
     public static String DEF_ISSUER_NAME;
+    public static DateFormat DATE_FORMAT;
 
     public DocConfig(File fl){
         super(fl, "Custom Documents Mod");
@@ -37,7 +40,10 @@ public class DocConfig extends ConfigBase  {
         );
         entries.add(new ConfigEntry(this, gen, "date_format", "dd.MMM.yyyy")
             .info("Default (Java) date format to be used on documents fields without an own format specified.")
-            .cons((entry, map) -> DEF_DATEFORMAT = entry.getString(map))
+            .cons((entry, map) -> {
+                DEF_DATEFORMAT = entry.getString(map);
+                DATE_FORMAT = new SimpleDateFormat(DEF_DATEFORMAT);
+            })
             .req(true, false)
         );
         String iss = "default_issuer";
