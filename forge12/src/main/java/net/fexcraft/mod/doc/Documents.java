@@ -2,7 +2,10 @@ package net.fexcraft.mod.doc;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
+import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.gui.GuiHandler;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -14,13 +17,13 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 
-@Mod(modid = DocMod.MODID, name = DocMod.NAME, version = "2.0", dependencies = "required-after:fcl")
-public class DocMod {
+@Mod(modid = Documents.MODID, name = Documents.NAME, version = "2.0", dependencies = "required-after:fcl")
+public class Documents {
 	
     public static final String MODID = "documents";
     public static final String NAME = "Documents Mod";
     @Mod.Instance(MODID)
-    private static DocMod INSTANCE;
+    private static Documents INSTANCE;
     public static DocConfig CONFIG;
 
     @EventHandler
@@ -44,8 +47,12 @@ public class DocMod {
         }
     }
 
-	public static DocMod getInstance(){
+	public static Documents getInstance(){
 		return INSTANCE;
 	}
+
+    public static IDL getTexture(String str){
+        return IDLManager.getIDLCached(ExternalTextureHelper.get(str).toString());
+    }
 	
 }
