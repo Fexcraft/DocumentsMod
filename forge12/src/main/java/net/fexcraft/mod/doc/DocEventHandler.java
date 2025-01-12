@@ -31,7 +31,7 @@ public class DocEventHandler {
 	public void regModels(net.minecraftforge.client.event.ModelRegistryEvent event){
 		//if(DocRegistry0.useRS()){
 			net.minecraftforge.client.model.ModelLoader.setCustomMeshDefinition(DocumentItem.INSTANCE, new net.fexcraft.mod.doc.DocItemMeshDef());
-			for(IDL key : DocRegistry.DOCUMENTS.keySet()){
+			for(IDL key : DocRegistry.getDocuments().keySet()){
 				net.minecraft.client.renderer.block.model.ModelBakery.registerItemVariants(DocumentItem.INSTANCE, new ResourceLocation(key.colon()));
 			}
 		//}
@@ -45,7 +45,7 @@ public class DocEventHandler {
 		NBTTagCompound com = new NBTTagCompound();
 		com.setString("target_listener", "docmod");
 		com.setString("task", "sync");
-		com.setString("config", JsonHandler.toString(DocRegistry.CONF_MAP, PrintOption.FLAT));
+		com.setString("config", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
 		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), (EntityPlayerMP)event.player);
 	}
 	
