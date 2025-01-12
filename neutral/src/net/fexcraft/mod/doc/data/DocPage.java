@@ -11,9 +11,10 @@ import net.fexcraft.app.json.JsonMap;
 public class DocPage {
 	
 	public ArrayList<DocPageField> fields = new ArrayList<>();
-	public String texture;
 	public final String id;
-	public int sizex, sizey;
+	public String texture;
+	public int sizex;
+	public int sizey;
 
 	public DocPage(String key, JsonMap map){
 		id = key;
