@@ -10,6 +10,9 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -44,7 +47,7 @@ public class DocCommand extends CommandBase {
 			Print.chat(sender, "&7============");
 			return;
 		}
-		EntityPlayer player = (EntityPlayer)sender;
+		EntityW player = UniEntity.getEntity(sender);
 		boolean sp = server.isSinglePlayer();
 		switch(args[0]){
 			case "list":{
@@ -56,7 +59,7 @@ public class DocCommand extends CommandBase {
 			}
 			case "uuid":{
 				Print.chat(sender, "&7============");
-				Print.chat(sender, player.getGameProfile().getId().toString());
+				Print.chat(sender, player.getUUID().toString());
 				return;
 			}
 			case "get":{
@@ -81,7 +84,7 @@ public class DocCommand extends CommandBase {
 				return;
 			}
 			case "reload-perms":{
-				if(!sp && !DocPerms.hasPerm(player, "command.reload-perms") && !Static.isOp(player)){
+				if(!sp && !DocPerms.hasPerm(player, "command.reload-perms") && !Static.isOp((EntityPlayer)sender)){
 					Print.chat(sender, "&cno permission");
 					return;
 				}
@@ -90,7 +93,7 @@ public class DocCommand extends CommandBase {
 				return;
 			}
 			case "reload-docs":{
-				if(!sp && !DocPerms.hasPerm(player, "command.reload-docs") && !Static.isOp(player)){
+				if(!sp && !DocPerms.hasPerm(player, "command.reload-docs") && !Static.isOp((EntityPlayer)sender)){
 					Print.chat(sender, "&cno permission");
 					return;
 				}
