@@ -1,0 +1,100 @@
+{
+    "comment": "If you need help filling out this config file, visit the wiki!",
+    "wiki": "https://fexcraft.net/wiki/mod/documents",
+    "id": "documents:example_id",
+    "name": "Example ID Card",
+    "size": [ 188, 104 ],
+    "description": [
+        "documents.example_id.desc0",
+        "documents.example_id.desc1",
+        "documents.example_id.desc2"
+    ],
+    "fields": {
+        "info1": {
+            "type": "INFO_TEXT",
+            "position": [ 62, 25 ],
+            "size": [ 115, 5 ],
+            "value": "documents.example_id.info1",
+            "description": [
+                "documents.example_id.info1.desc"
+            ],
+            "font_scale": 0.5
+        },
+        "uuid": {
+            "type": "UUID",
+            "comment0": "hidden technical field",
+            "comment1": "You can enter PLAYER NAME into the field, or player UUID.",
+            "description": [
+                "documents.example_id.uuid.desc0",
+                "documents.example_id.uuid.desc1",
+                "documents.example_id.uuid.desc2"
+            ]
+        },
+        "name": {
+            "type": "PLAYER_NAME",
+            "position": [ 62, 30 ],
+            "size": [ 114, 8 ],
+            "description": [
+                "documents.example_id.name.desc"
+            ]
+        },
+        "info2": {
+            "type": "INFO_TEXT",
+            "position": [ 62, 41 ],
+            "size": [ 115, 5 ],
+            "value": "documents.example_id.info2",
+            "description": [
+                "documents.example_id.info2.desc"
+            ],
+            "font_scale": 0.5
+        },
+        "joined": {
+            "type": "JOIN_DATE",
+            "position": [ 62, 46 ],
+            "size": [ 114, 8 ],
+            "description": [
+                "documents.example_id.joined.desc"
+            ]
+        },
+        "info3": {
+            "type": "INFO_TEXT",
+            "position": [ 62, 57 ],
+            "size": [ 115, 5 ],
+            "value": "documents.example_id.info3",
+            "description": [
+                "documents.example_id.info3.desc"
+            ],
+            "font_scale": 0.5
+        },
+        "expiry": {
+            "type": "DATE",
+            "position": [ 62, 62 ],
+            "size": [ 114, 8 ],
+            "description": [
+                "documents.example_id.expiry.desc"
+            ]
+        },
+        "img": {
+            "type": "PLAYER_IMG",
+            "position": [ 9, 9 ],
+            "size": [ 48, 48 ]
+        }
+    },
+    "textures": {
+        "maintex": "documents:textures/gui/example_id.png"
+    },
+    "pages": {
+        "main": {
+            "fields": [
+                "info1",
+                "info2",
+                "info3",
+                "name",
+                "joined",
+                "expiry",
+                "img"
+            ],
+            "texture": "maintex"
+        }
+    }
+}
