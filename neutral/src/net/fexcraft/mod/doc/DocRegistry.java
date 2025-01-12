@@ -3,11 +3,13 @@ package net.fexcraft.mod.doc;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 
 import java.io.File;
@@ -24,11 +26,13 @@ public class DocRegistry {
     public static final LinkedHashMap<IDL, Document> DOCUMENTS = new LinkedHashMap<>();
     public static final ConcurrentHashMap<UUID, JsonMap> PLAYERS = new ConcurrentHashMap<>();
     public static final IDL STONE = IDLManager.getIDLCached("textures/blocks/stone.png");
+    public static String NBTKEY = "documents:type";
     public static File FOLDER;
     private static File CONF_FILE;
     public static JsonMap CONF_MAP;
 
     public static void init(File conf){
+        StackWrapper.register(new DocStackApp(null));
         FOLDER = conf;
         CONF_FILE = new File(FOLDER, "/documents.json");
         if(!CONF_FILE.exists()){
