@@ -1,10 +1,11 @@
 package net.fexcraft.mod.doc.render;
 
+import net.fexcraft.mod.doc.data.DocStackApp;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.mc.render.FCLItemModel;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
-import net.fexcraft.mod.doc.cap.DocItemCapability;
 import net.fexcraft.mod.doc.DocumentItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -19,7 +20,7 @@ public class DocumentModel implements FCLItemModel {
 	@Override
 	public void renderItem(TransformType type, ItemStack item, EntityLivingBase entity){
 		if(item.getItem() instanceof DocumentItem == false){ return; }
-		DocItemCapability cap = item.getCapability(DocItemCapability.CAPABILITY, null);
+		DocStackApp cap = StackWrapper.wrapAndGetApp(item, DocStackApp.class);
 		if(cap == null || cap.getDocument() == null) return;
 		//
 		boolean rd3 = type == TransformType.THIRD_PERSON_LEFT_HAND || type == TransformType.THIRD_PERSON_RIGHT_HAND;
