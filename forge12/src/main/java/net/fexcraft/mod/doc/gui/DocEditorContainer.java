@@ -10,10 +10,12 @@ import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocMod;
 import net.fexcraft.mod.doc.DocPerms;
-import net.fexcraft.mod.doc.cap.DocItemCapability;
+import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
+import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,30 +24,30 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DocEditorContainer extends GenericContainer {
 	
-	protected DocItemCapability cap;
-	protected ItemStack stack;
+	protected DocStackApp app;
+	protected StackWrapper stack;
 	protected Document doc;
 	@SideOnly(Side.CLIENT)
 	protected DocEditor gui;
 
 	public DocEditorContainer(EntityPlayer player){
 		super(player);
-		ItemStack stack = player.getHeldItemMainhand();
-		if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("documents:type")){
+		stack = StackWrapper.wrap(player.getHeldItemMainhand());
+		if(!stack.hasTag() || !stack.getTag().has("documents:type")){
 			Print.chat(player, "item.missing.type/item.invalid");
 			player.closeScreen();
 		}
-		cap = stack.getCapability(DocItemCapability.CAPABILITY, null);
-		if(cap == null){
+		app = stack.appended.get(DocStackApp.class);
+		if(app == null){
 			Print.chat(player, "item.missing.cap");
 			player.closeScreen();
 		}
-		if(cap.getDocument() == null){
+		if(app.getDocument() == null){
 			Print.chat(player, "item.missing.doc");
-			if(Static.dev()) Print.chat(player, stack.getTagCompound());
+			if(Static.dev()) Print.chat(player, stack.getTag());
 			player.closeScreen();
 		}
-		doc = cap.getDocument();
+		doc = app.getDocument();
 	}
 
 	@Override
@@ -56,24 +58,24 @@ public class DocEditorContainer extends GenericContainer {
 			return;
 		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
-			if(side.isServer() && !DocPerms.hasPerm(player, "document.issue", cap.getDocument().id)){
+			if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.issue", app.getDocument().id)){
 				Print.chat(player, "&cno permission");
 				return;
 			}
-			cap.issueBy(player, player.world.isRemote);
+			app.issueBy(UniEntity.getEntity(player), player.world.isRemote);
 			if(side.isServer()){
-				packet.setString("player_name", cap.getValue("player_name"));
+				packet.setString("player_name", app.getValue("player_name"));
 				send(Side.CLIENT, packet);
 			}
 			else{
-				cap.setValue("player_name", packet.getString("player_name"));
+				app.setValue("player_name", packet.getString("player_name"));
 				player.closeScreen();
 				Print.chat(player, Formatter.format(net.minecraft.client.resources.I18n.format("documents.editor.signed")));
 			}
 			return;
 		}
 		if(!packet.hasKey("field")) return;
-		if(side.isServer() && !DocPerms.hasPerm(player, "document.edit", cap.getDocument().id)){
+		if(side.isServer() && !DocPerms.hasPerm(UniEntity.getEntity(player), "document.edit", app.getDocument().id)){
 			Print.chat(player, "&cno permission");
 			return;
 		}
@@ -122,12 +124,12 @@ public class DocEditorContainer extends GenericContainer {
 					return;
 				}
 			}
-			cap.setValue(field, value);
+			app.setValue(field, value);
 			packet.setString("value", value);
 			send(Side.CLIENT, packet);
 		}
 		else{
-			cap.setValue(field, value);
+			app.setValue(field, value);
 			gui.statustext = null;
 		}
 	}
