@@ -1,0 +1,37 @@
+{
+	"item.documents.example_id": "Example ID Card Item",
+	"item.documents.document": "Document",
+
+	"documents.item.issued": "Issued Document",
+	"documents.item.blank": "Blank Document",
+	"documents.editor.confirm_value": "Confirm/Apply Value",
+	"documents.editor.confirm": "Confirm and Sign Document",
+	"documents.editor.cancel": "Cancel and Exit",
+	"documents.editor.status.todo": "%s fields left to fill out, e.g. %s",
+	"documents.editor.status.done": "All fields are filled out.",
+	"documents.editor.status.incomplete": "Please fill all fields out.",
+	"documents.editor.signed": "\u00A7aDocument Signed.",
+	"documents.editor.noperm": "\u00A7cNo permission.",
+
+	"documents.cmd.no_permission": "\u00A7cNo permission.",
+	"documents.cmd.perms_reloaded": "\u00A7aPermissions reloaded.",
+	"documents.cmd.docs_reloaded": "\u00A7aDocuments config reloaded.",
+	"documents.cmd.doc_not_found": "\u00A7eDocument not found.",
+	"documents.cmd.added": "\u00A7aAdded a blank document to your inventory.",
+
+	"documents.example_id.desc0": "Example Document",
+	"documents.example_id.desc1": "If you still see this file in-game your server's",
+	"documents.example_id.desc2": "documents config may not be fully setup.",
+	"documents.example_id.info1.desc": "Uneditable Info Field",
+	"documents.example_id.info1": "Employee Name",
+	"documents.example_id.uuid.desc0": "Technical Hidden Field for Player UUID",
+	"documents.example_id.uuid.desc1": "You can enter PLAYER NAME into the field,",
+	"documents.example_id.uuid.desc2": "it will get automatically converted to UUID.",
+	"documents.example_id.name.desc": "Automatic Field based on UUID",
+	"documents.example_id.info2.desc": "Uneditable Info Field",
+	"documents.example_id.info2": "Joined",
+	"documents.example_id.joined.desc": "Automatic Join Date Field",
+	"documents.example_id.info3.desc": "Uneditable Info Field",
+	"documents.example_id.info3": "Valid Thru",
+	"documents.example_id.expiry.desc": "Editable Date Field"
+}
