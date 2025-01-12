@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
+import java.io.InputStream;
 
 @Mod(modid = Documents.MODID, name = Documents.NAME, version = "2.0", dependencies = "required-after:fcl")
 public class Documents {
@@ -40,7 +41,6 @@ public class Documents {
     @EventHandler
     public void init(FMLInitializationEvent event){
 		NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
-        PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new ListenerServer());
         if(event.getSide().isClient()){
         	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new ListenerClient());
         	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
@@ -53,6 +53,10 @@ public class Documents {
 
     public static IDL getTexture(String str){
         return IDLManager.getIDLCached(ExternalTextureHelper.get(str).toString());
+    }
+
+    public static InputStream getResource(String str){
+        return DocRegistry.class.getClassLoader().getResourceAsStream(str);
     }
 	
 }
