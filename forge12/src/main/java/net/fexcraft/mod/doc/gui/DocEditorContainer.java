@@ -8,7 +8,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
-import net.fexcraft.mod.doc.DocMod;
+import net.fexcraft.mod.doc.Documents;
 import net.fexcraft.mod.doc.DocPerms;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
@@ -17,7 +17,6 @@ import net.fexcraft.mod.doc.data.FieldType;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,7 +53,7 @@ public class DocEditorContainer extends GenericContainer {
 	protected void packet(Side side, NBTTagCompound packet, EntityPlayer player){
 		if(packet.hasKey("open_page")){
 			if(side.isClient()) return;
-			player.openGui(DocMod.getInstance(), 1, player.world, packet.getInteger("open_page"), 0, 0);
+			player.openGui(Documents.getInstance(), 1, player.world, packet.getInteger("open_page"), 0, 0);
 			return;
 		}
 		if(packet.hasKey("issue") && packet.getBoolean("issue")){
