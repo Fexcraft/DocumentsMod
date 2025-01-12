@@ -4,7 +4,6 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
-import net.fexcraft.mod.doc.cap.DocItemHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,13 +20,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DocEventHandler {
-	
-	@SubscribeEvent
-	public void onAttach(AttachCapabilitiesEvent<ItemStack> event){
-		if(event.getObject().getItem() instanceof DocumentItem){
-			event.addCapability(new ResourceLocation("documents:item"), new DocItemHandler(event.getObject()));
-		}
-	}
 	
 	@SubscribeEvent
 	public void regItems(RegistryEvent.Register<Item> event){
