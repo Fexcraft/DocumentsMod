@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
+import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
+
 @fCommand
 public class DocCommand extends CommandBase {
 	
@@ -52,7 +54,7 @@ public class DocCommand extends CommandBase {
 		switch(args[0]){
 			case "list":{
 				Print.chat(sender, "&7============");
-				for(IDL str : DocRegistry.DOCUMENTS.keySet()){
+				for(IDL str : DocRegistry.getDocuments().keySet()){
 					Print.chat(sender, str.colon());
 				}
 				return;
@@ -67,7 +69,7 @@ public class DocCommand extends CommandBase {
 					Print.chat(sender, "missing argumment");
 					return;
 				}
-				Document doc = DocRegistry.DOCUMENTS.get(IDLManager.getIDL(args[1]));
+				Document doc = DocRegistry.getDocument(args[1]);
 				if(doc == null){
 					Print.chat(sender, "not found");
 					return;
@@ -78,7 +80,7 @@ public class DocCommand extends CommandBase {
 				}
 				ItemStack stack = new ItemStack(DocumentItem.INSTANCE);
 				NBTTagCompound com = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-				com.setString("documents:type", args[1]);
+				com.setString(NBTKEY_TYPE, args[1]);
 				stack.setTagCompound(com);
 				((EntityPlayer)sender).inventory.addItemStackToInventory(stack);
 				return;
@@ -101,7 +103,7 @@ public class DocCommand extends CommandBase {
 				NBTTagCompound com = new NBTTagCompound();
 				com.setString("target_listener", "docmod");
 				com.setString("task", "sync");
-				com.setString("config", JsonHandler.toString(DocRegistry.CONF_MAP, PrintOption.FLAT));
+				com.setString("config", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
 				server.getPlayerList().getPlayers().forEach(splayer -> {
 					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
 				});
