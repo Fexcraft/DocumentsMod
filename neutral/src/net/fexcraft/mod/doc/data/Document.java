@@ -17,7 +17,7 @@ import net.fexcraft.mod.uni.IDLManager;
  */
 public class Document {
 	
-	public final String id;
+	public final IDL id;
 	public int sizex, sizey;
 	public LinkedHashMap<String, FieldData> fields = new LinkedHashMap<>();
 	public HashMap<String, IDL> textures = new HashMap<>();
@@ -29,7 +29,7 @@ public class Document {
 	public String icon;
 	public String name;
 
-	public Document(String key, JsonMap map){
+	public Document(IDL key, JsonMap map){
 		id = key;
 		if(map.has("size")){
 			JsonArray array = map.getArray("size");
