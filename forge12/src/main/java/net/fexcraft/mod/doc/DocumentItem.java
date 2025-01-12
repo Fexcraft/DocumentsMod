@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.doc.data.DocItem;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.client.resources.I18n;
@@ -20,9 +21,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static net.fexcraft.mod.doc.DocRegistry.NBTKEY;
+import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
 
-public class DocumentItem extends Item {
+public class DocumentItem extends Item implements DocItem {
 
 	public static DocumentItem INSTANCE;
 
@@ -35,7 +36,7 @@ public class DocumentItem extends Item {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag){
-		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(NBTKEY)){
+		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(NBTKEY_TYPE)){
 			DocStackApp cap = StackWrapper.wrapAndGetApp(stack, DocStackApp.class);
 			if(cap != null && cap.getDocument() != null){
 				for(String str : cap.getDocument().description){
@@ -57,7 +58,7 @@ public class DocumentItem extends Item {
 	@Override
 	public String getTranslationKey(ItemStack stack){
 		if(stack.hasTagCompound()){
-			return "item.documents." + stack.getTagCompound().getString(NBTKEY);
+			return "item." + stack.getTagCompound().getString(NBTKEY_TYPE);
 		}
 		return getTranslationKey();
 	}
