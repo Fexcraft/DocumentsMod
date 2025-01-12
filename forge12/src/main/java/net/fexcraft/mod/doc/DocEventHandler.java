@@ -5,6 +5,8 @@ import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.mod.doc.cap.DocItemHandler;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,30 +37,30 @@ public class DocEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void regModels(net.minecraftforge.client.event.ModelRegistryEvent event){
-		if(DocRegistry.useRS()){
+		//if(DocRegistry0.useRS()){
 			net.minecraftforge.client.model.ModelLoader.setCustomMeshDefinition(DocumentItem.INSTANCE, new net.fexcraft.mod.doc.DocItemMeshDef());
-			for(String key : DocRegistry.DOCS.keySet()){
-				net.minecraft.client.renderer.block.model.ModelBakery.registerItemVariants(DocumentItem.INSTANCE, new ResourceLocation(DocMod.MODID, key));
+			for(IDL key : DocRegistry.DOCUMENTS.keySet()){
+				net.minecraft.client.renderer.block.model.ModelBakery.registerItemVariants(DocumentItem.INSTANCE, new ResourceLocation(key.colon()));
 			}
-		}
-		else net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(DocumentItem.INSTANCE, 0, new net.minecraft.client.renderer.block.model.ModelResourceLocation("documents:models/item/document", "inventory"));
+		//}
+		//else net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(DocumentItem.INSTANCE, 0, new net.minecraft.client.renderer.block.model.ModelResourceLocation("documents:models/item/document", "inventory"));
 	}
 	
 	@SubscribeEvent
 	public void onJoin(PlayerLoggedInEvent event){
 		if(event.player.world.isRemote) return;
-		DocRegistry.opj(event.player);
+		DocRegistry.onPlayerJoin(UniEntity.getEntity(event.player));
 		NBTTagCompound com = new NBTTagCompound();
 		com.setString("target_listener", "docmod");
 		com.setString("task", "sync");
-		com.setString("config", JsonHandler.toString(DocRegistry.confmap, PrintOption.FLAT));
+		com.setString("config", JsonHandler.toString(DocRegistry.CONF_MAP, PrintOption.FLAT));
 		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), (EntityPlayerMP)event.player);
 	}
 	
 	@SubscribeEvent
 	public void onJoin(PlayerLoggedOutEvent event){
 		if(event.player.world.isRemote) return;
-		DocRegistry.opl(event.player);
+		DocRegistry.onPlayerLeave(UniEntity.getEntity(event.player));
 	}
 
 }
