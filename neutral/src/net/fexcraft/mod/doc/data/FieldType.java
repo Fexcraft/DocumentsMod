@@ -37,7 +37,7 @@ public enum FieldType {
 	}
 	
 	public boolean date(){
-		return this == DATE || this == JOIN_DATE;
+		return this == DATE || this == JOIN_DATE || this == ISSUED;
 	}
 
 }
