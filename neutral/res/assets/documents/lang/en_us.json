@@ -10,6 +10,8 @@
   "ui.documents.editor.info": "ID: %s  Type: %s",
   "ui.documents.editor.no_permission": "No permission to issue this document type.",
   "ui.documents.editor.signed": "Document Signed",
+  "ui.documents.viewer.prev": "Previous Page",
+  "ui.documents.viewer.next": "Next Page",
 
   "documents.example_id.desc0": "Example Document",
   "documents.example_id.desc1": "If you still see this file ingame your server's",
