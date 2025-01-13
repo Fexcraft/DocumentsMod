@@ -45,10 +45,21 @@ public class DocStackApp implements Appendable<StackWrapper> {
         return getValue("issued") != null;
     }
 
+    public boolean hasValue(String key){
+        TagCW com = stack.getTag().getCompound(NBTKEY_DATA);
+        if(com == null) return false;
+        return com.has(key);
+    }
+
     public String getValue(String key){
         TagCW com = stack.getTag().getCompound(NBTKEY_DATA);
         if(com == null || !com.has(key)) return null;
         return com.getString(key);
+    }
+
+    public String getValueNN(String key){
+        String val = getValue(key);
+        return val == null ? "" : val;
     }
 
     public void setValue(String key, String val){
@@ -70,5 +81,4 @@ public class DocStackApp implements Appendable<StackWrapper> {
             setValue("player_name", getValue("uuid"));
         }
     }
-
 }
