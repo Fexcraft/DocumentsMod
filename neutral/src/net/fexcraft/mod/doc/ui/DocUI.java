@@ -14,6 +14,8 @@ public class DocUI {
 
     public static void register(Documents mod){
         UniReg.registerMod("documents", mod);
+        UniReg.registerUI(EDITOR, DocEditorUI.class);
+        UniReg.registerMenu(EDITOR, "documents:uis/editor", DocEditorCon.class);
     }
 
 }
