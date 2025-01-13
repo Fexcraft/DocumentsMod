@@ -3,13 +3,17 @@ item.documents.document.name=Document
 
 documents.item.issued=&aIssued Document
 documents.item.blank=&bBlank Document
-documents.editor.confirm_value=Confirm/Apply Value
-documents.editor.confirm=Confirm and Sign Document
-documents.editor.cancel=Cancel and Exit
-documents.editor.status.todo=%s fields left to fill out, e.g. &c%s
-documents.editor.status.done=&aAll fields are filled out.
-documents.editor.status.incomplete=&8Please fill all fields out.
-documents.editor.signed=&bDocument Signed.
+
+ui.documents.editor.change=Apply Value
+ui.documents.editor.prev=Previous Field
+ui.documents.editor.next=Next Field
+ui.documents.editor.cancel=Exit
+ui.documents.editor.confirm=Confirm / Issue Document
+ui.documents.editor.status.ok=All Fields filled, Document can be issued.
+ui.documents.editor.status.left=%s left to fill out, ex. %s
+ui.documents.editor.info=ID: %s  Type: %s
+ui.documents.editor.no_permission=No permission to issue this document type.
+ui.documents.editor.signed=Document Signed
 
 documents.example_id.desc0=Example Document
 documents.example_id.desc1=If you still see this file ingame your server's 
@@ -25,4 +29,5 @@ documents.example_id.info2=Joined
 documents.example_id.joined.desc=Automatic Join Date Field
 documents.example_id.info3.desc=Uneditable Info Field
 documents.example_id.info3=Valid Thru
-documents.example_id.expiry.desc=Editable Date Field
+documents.example_id.expiry.desc0=Editable Date Field
+documents.example_id.expiry.desc1=Format: YYYY-MM-DD
