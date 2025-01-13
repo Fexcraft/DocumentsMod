@@ -1,0 +1,36 @@
+{
+	"_info_": "Document Viewer UI",
+	"background": true,
+	"size": [ 256, 256 ],
+	"tabs": {
+		"viewer_buttons": {
+			"texture": "documents:textures/ui/editor.png",
+			"size": [ 1, 1 ],
+			"pos": [ 0, 0 ],
+			"absolute": true,
+			"buttons": [
+				"viewer_prev",
+				"viewer_next"
+			]
+		},
+		"main": {
+			"texture": "documents:textures/ui/editor.png",
+			"size": [ 256, 256 ],
+			"pos": [ 0, 0 ]
+		}
+	},
+	"buttons": {
+		"viewer_prev": {
+			"size": [ 22, 22 ],
+			"pos": [ 0, 0 ],
+			"uv": [ 0, 234 ],
+			"tooltip": "ui.documents.viewer.prev"
+		},
+		"viewer_next": {
+			"size": [ 22, 22 ],
+			"pos": [ 0, 0 ],
+			"uv": [ 24, 234 ],
+			"tooltip": "ui.documents.viewer.next"
+		}
+	}
+}
