@@ -89,7 +89,9 @@ public class DocEditorCon extends ContainerInterface {
                     }
                     else if(data.type == FieldType.UUID){
                         try{
-                            if(WrapperHolder.getUUIDFor(val) == null) UUID.fromString(val);
+                            UUID uuid = WrapperHolder.getUUIDFor(val);
+                            if(uuid == null) val = UUID.fromString(val).toString();
+                            else val = uuid.toString();
                         }
                         catch(Exception e){
                             e.printStackTrace();
