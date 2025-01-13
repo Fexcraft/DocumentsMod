@@ -8,10 +8,12 @@ import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.MessageSender;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -22,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
 import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
+import static net.fexcraft.mod.fcl.UniFCL.LOG;
 
 @fCommand
 public class DocCommand extends CommandBase {
@@ -40,16 +43,19 @@ public class DocCommand extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 0){
-			Print.chat(sender, "&7============");
+			Print.chat(sender, "&aGeneral:");
 			Print.chat(sender, "/documents list");
 			Print.chat(sender, "/documents get");
 			Print.chat(sender, "/documents uuid");
 			Print.chat(sender, "/documents reload-perms");
 			Print.chat(sender, "/documents reload-docs");
-			Print.chat(sender, "&7============");
+			Print.chat(sender, "&6Console/NPC");
+			Print.chat(sender, "/documents start <player/uuid> <doc-id>");
+			Print.chat(sender, "/documents set <player/uuid> <key> <value>");
+			Print.chat(sender, "/documents issue <player/uuid>");
 			return;
 		}
-		EntityW player = UniEntity.getEntity(sender);
+		EntityW player = sender instanceof EntityPlayer ? UniEntity.getEntity(sender) : null;
 		boolean sp = server.isSinglePlayer();
 		switch(args[0]){
 			case "list":{
@@ -108,6 +114,18 @@ public class DocCommand extends CommandBase {
 					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
 				});
 				Print.chat(sender, "&adocuments reloaded");
+				return;
+			}
+			case "start":{
+				DocCreator.start(player == null? LOG : player, args[1], args[2]);
+				return;
+			}
+			case "set":{
+				DocCreator.set(player == null? LOG : player, args[1], args[2], args[3]);
+				return;
+			}
+			case "issue":{
+				DocCreator.issue(player == null? LOG : player, args[1]);
 				return;
 			}
 			default: return;
