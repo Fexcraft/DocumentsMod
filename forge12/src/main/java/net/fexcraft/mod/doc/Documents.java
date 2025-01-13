@@ -6,6 +6,8 @@ import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.item.StackWrapper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -46,6 +48,7 @@ public class Documents {
         	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new ListenerClient());
         	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
         }
+        DocCreator.REFERENCE = StackWrapper.wrap(new ItemStack(DocumentItem.INSTANCE));
     }
 
 	public static Documents getInstance(){
