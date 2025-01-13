@@ -1,0 +1,103 @@
+{
+	"_info_": "Document Editor UI",
+	"background": true,
+	"size": [ 256, 104 ],
+	"tabs": {
+		"main": {
+			"texture": "documents:textures/ui/editor.png",
+			"size": [ 256, 104 ],
+			"pos": [ 0, 0 ],
+			"texts": [
+				"desc0", "desc1", "desc2", "desc3",
+				"info", "status"
+			],
+			"buttons": [
+				"change",
+				"prev",
+				"next",
+				"cancel",
+				"confirm"
+			],
+			"fields": [
+				"field"
+			]
+		}
+	},
+	"texts": {
+		"desc0": {
+			"size": [ 184, 8 ],
+			"pos": [ 11, 10 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"desc1": {
+			"size": [ 184, 8 ],
+			"pos": [ 11, 22 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"desc2": {
+			"size": [ 184, 8 ],
+			"pos": [ 11, 34 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"desc3": {
+			"size": [ 184, 8 ],
+			"pos": [ 11, 46 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"info": {
+			"size": [ 234, 8 ],
+			"pos": [ 11, 60 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"status": {
+			"size": [ 184, 8 ],
+			"pos": [ 36, 87 ],
+			"autoscale": true,
+			"color": "242424"
+		}
+	},
+	"buttons": {
+		"change": {
+			"size": [ 10, 10 ],
+			"pos": [ 237, 71 ],
+			"uv": [ 237, 71 ],
+			"tooltip": "ui.documents.editor.change"
+		},
+		"prev": {
+			"size": [ 12, 12 ],
+			"pos": [ 7, 85 ],
+			"uv": [ 7, 85 ],
+			"tooltip": "ui.documents.editor.prev"
+		},
+		"next": {
+			"size": [ 12, 12 ],
+			"pos": [ 20, 85 ],
+			"uv": [ 20, 85 ],
+			"tooltip": "ui.documents.editor.next"
+		},
+		"cancel": {
+			"size": [ 12, 12 ],
+			"pos": [ 224, 85 ],
+			"uv": [ 224, 85 ],
+			"tooltip": "ui.documents.editor.cancel"
+		},
+		"confirm": {
+			"size": [ 12, 12 ],
+			"pos": [ 237, 85 ],
+			"uv": [ 237, 85 ],
+			"tooltip": "ui.documents.editor.confirm"
+		}
+	},
+	"fields":{
+		"field": {
+			"size": [ 226, 10 ],
+			"pos": [ 9, 71 ],
+			"background": true
+		}
+	}
+}
