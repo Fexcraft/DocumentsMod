@@ -4,6 +4,7 @@
     "id": "documents:example_id",
     "name": "Example ID Card",
     "size": [ 188, 104 ],
+    "icon": "documents:textures/item/example_id.png",
     "description": [
         "documents.example_id.desc0",
         "documents.example_id.desc1",
