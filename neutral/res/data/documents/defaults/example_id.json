@@ -71,7 +71,8 @@
             "position": [ 62, 62 ],
             "size": [ 114, 8 ],
             "description": [
-                "documents.example_id.expiry.desc"
+                "documents.example_id.expiry.desc0",
+                "documents.example_id.expiry.desc1"
             ]
         },
         "img": {
@@ -81,7 +82,7 @@
         }
     },
     "textures": {
-        "maintex": "documents:textures/gui/example_id.png"
+        "maintex": "documents:textures/ui/example_id.png"
     },
     "pages": {
         "main": {
