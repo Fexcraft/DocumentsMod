@@ -47,7 +47,11 @@ public class Document {
 			});
 		}
 		if(!fields.containsKey("uuid")){
-			fields.put("uuid", new FieldData("uuid", FieldType.UUID));
+			FieldData data = new FieldData("uuid", FieldType.UUID);
+			data.description.add("documents.example_id.uuid.desc0");
+			data.description.add("documents.example_id.uuid.desc1");
+			data.description.add("documents.example_id.uuid.desc2");
+			fields.put("uuid", data);
 		}
 		if(!fields.containsKey("issued")){
 			fields.put("issued", new FieldData("issued", FieldType.ISSUED));
