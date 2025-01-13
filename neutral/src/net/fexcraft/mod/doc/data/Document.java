@@ -9,6 +9,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.Documents;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
@@ -80,12 +81,12 @@ public class Document {
 		if(map.has("description")){
 			map.get("description").asArray().value.forEach(elm -> description.add(elm.string_value()));
 		}
-		icon = map.getString("icon", "minecraft:textures/items/paper.png");
+		icon = map.getString("icon", "minecraft:textures/item" + (EnvInfo.is112() ? "s" : "") + "/paper.png");
 		name = map.getString("name", "Unnamed Document");
 	}
 	
 	public void linktextures(){
-		if(icon.startsWith("external;")) itemicon = Documents.getTexture(icon.substring(9));
+		if(icon.startsWith("external;") || icon.startsWith("http")) itemicon = Documents.getTexture(icon.replace("external;", ""));
 		else itemicon = IDLManager.getIDLCached(icon);
 		//
 		for(Entry<String, String> entry : rawtextures.entrySet()){
@@ -93,6 +94,9 @@ public class Document {
 			String str = entry.getValue();
 			if(str.startsWith("external;")){
 				str = str.substring(9);
+				resloc = Documents.getTexture(str);
+			}
+			else if(str.startsWith("http")){
 				resloc = Documents.getTexture(str);
 			}
 			else resloc = IDLManager.getIDLCached(str);
