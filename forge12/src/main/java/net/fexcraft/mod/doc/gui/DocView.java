@@ -27,6 +27,7 @@ public class DocView extends GenericGui<DocEditorContainer> {
 	public int pageidx;
 	public ArrayList<ResourceLocation> images = new ArrayList<>();
 	public ArrayList<int[]> imgpos = new ArrayList<>();
+	public static final ResourceLocation TEXTURE = new ResourceLocation("documents:textures/gui/editor.png");
 
 	public DocView(EntityPlayer player, int pageidx){
 		super(DocRegistry.STONE.local(), new DocEditorContainer(player), player);
@@ -125,7 +126,7 @@ public class DocView extends GenericGui<DocEditorContainer> {
 
 		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
 			if(!visible) return;
-			gui.mc.renderEngine.bindTexture(DocEditor.TEXTURE);
+			gui.mc.renderEngine.bindTexture(TEXTURE);
 			super.draw(gui, pticks, mouseX, mouseY);
 			gui.mc.renderEngine.bindTexture(gui.getTexLoc());
 		}
