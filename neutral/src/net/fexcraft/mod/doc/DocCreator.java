@@ -1,13 +1,10 @@
 package net.fexcraft.mod.doc;
 
-import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
-import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
