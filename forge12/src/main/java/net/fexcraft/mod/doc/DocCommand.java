@@ -109,7 +109,7 @@ public class DocCommand extends CommandBase {
 				NBTTagCompound com = new NBTTagCompound();
 				com.setString("target_listener", "docmod");
 				com.setString("task", "sync");
-				com.setString("config", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
+				com.setString("data", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
 				server.getPlayerList().getPlayers().forEach(splayer -> {
 					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
 				});
