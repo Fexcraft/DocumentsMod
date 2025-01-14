@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.doc.DocCreator;
 import net.fexcraft.mod.doc.DocPerms;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
@@ -61,44 +62,8 @@ public class DocEditorCon extends ContainerInterface {
                 String val = com.getString("val");
                 if(!data.type.editable) return;
                 if(!client){
-                    if(data.type.number()){
-                        try{
-                            if(data.type == FieldType.INTEGER){
-                                if(val.contains(".")) val = val.substring(0, val.indexOf("."));
-                                Integer.parseInt(val);
-                            }
-                            else{
-                                Float.parseFloat(val);
-                            }
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                            sendMsg("Error: " + e.getMessage());
-                            return;
-                        }
-                    }
-                    else if(data.type == FieldType.DATE){
-                        try{
-                            val = (LocalDate.parse(val).toEpochDay() * 86400000) + "";
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                            sendMsg("Error: " + e.getMessage());
-                            return;
-                        }
-                    }
-                    else if(data.type == FieldType.UUID){
-                        try{
-                            UUID uuid = WrapperHolder.getUUIDFor(val);
-                            if(uuid == null) val = UUID.fromString(val).toString();
-                            else val = uuid.toString();
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                            sendMsg("Error: " + e.getMessage());
-                            return;
-                        }
-                    }
+                    val = DocCreator.validate(str -> sendMsg(str), data, val);
+                    if(val == null) return;
                     doc.setValue(key, val);
                     com.set("val", val);
                     SEND_TO_CLIENT.accept(com, player);
@@ -115,19 +80,9 @@ public class DocEditorCon extends ContainerInterface {
                     player.entity.closeUI();
                     return;
                 }
-                int incomplete = 0;
-                String eg = null;
-                Document document = doc.getDocument();
-                for(String str : document.fields.keySet()){
-                    FieldData data = document.fields.get(str);
-                    if(!data.type.editable) continue;
-                    if(data.value == null && doc.getValue(str) == null && !data.can_empty){
-                        incomplete++;
-                        if(eg == null) eg = str;
-                    }
-                }
-                if(incomplete > 0){
-                    player.entity.send("ui.documents.editor.status.left", incomplete, eg);
+                Object[] inc = DocCreator.getIncomplete(doc);
+                if((int)inc[0] > 0){
+                    player.entity.send("ui.documents.editor.status.left", inc[0], inc[1]);
                     player.entity.closeUI();
                     break;
                 }
