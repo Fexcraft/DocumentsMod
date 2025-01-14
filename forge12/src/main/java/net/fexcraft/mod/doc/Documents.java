@@ -45,7 +45,7 @@ public class Documents {
     public void init(FMLInitializationEvent event){
 		NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
         if(event.getSide().isClient()){
-        	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new ListenerClient());
+        	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new DocClientListener());
         	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
         }
         DocCreator.REFERENCE = StackWrapper.wrap(new ItemStack(DocumentItem.INSTANCE));
