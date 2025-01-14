@@ -103,7 +103,11 @@ public class DocRegistry {
     }
 
     public static JsonMap getSyncMap(){
-        return new JsonMap();//TODO
+        JsonMap map = new JsonMap();
+        for(Document doc : DOCUMENTS.values()){
+            map.add(doc.id.colon(), doc.confmap);
+        }
+        return map;
     }
 
     public static Document getDocument(String key){
