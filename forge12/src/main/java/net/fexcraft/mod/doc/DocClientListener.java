@@ -5,7 +5,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 
-public class ListenerClient implements IPacketListener<PacketNBTTagCompound> {
+public class DocClientListener implements IPacketListener<PacketNBTTagCompound> {
 
 	@Override
 	public String getId(){
@@ -17,7 +17,7 @@ public class ListenerClient implements IPacketListener<PacketNBTTagCompound> {
 		String task = packet.nbt.getString("task");
 		switch(task){
 			case "sync":{
-				JsonMap map = JsonHandler.parse(packet.nbt.getString("config"), true).asMap();
+				JsonMap map = JsonHandler.parse(packet.nbt.getString("data"), true).asMap();
 				DocRegistry.parseDocs(map);
             	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
 				return;
