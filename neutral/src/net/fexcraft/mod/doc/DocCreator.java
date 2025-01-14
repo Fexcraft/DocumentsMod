@@ -1,14 +1,22 @@
 package net.fexcraft.mod.doc;
 
+import com.mojang.authlib.GameProfile;
+import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.data.FieldData;
+import net.fexcraft.mod.doc.data.FieldType;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
 
@@ -35,6 +43,8 @@ public class DocCreator {
         StackWrapper stack = REFERENCE.copy();
         stack.createTagIfMissing();
         stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
+        DocStackApp app = stack.appended.get(DocStackApp.class);
+        app.setValue("uuid", uuid.toString());
         CACHE.put(uuid, stack);
         sender.send("document creation for '"+ uuid +"' started");
     }
@@ -53,7 +63,14 @@ public class DocCreator {
         DocStackApp app = stack.appended.get(DocStackApp.class);
         Document doc = app.getDocument();
         if(!hasPerm(sender, doc)) return;
-        //TODO
+        if(!doc.fields.containsKey(key)){
+            sender.send("field key '"+ key + "' not found in document '" + doc.id + "' for" + uuid + "");
+            return;
+        }
+        val = DocCreator.validate(str -> sender.send(str), doc.fields.get(key), val);
+        if(val == null) return;
+        app.setValue(key, val);
+        sender.send("field '" + key+ "' value set to " + val);
     }
 
     public static void issue(MessageSender sender, String pid){
@@ -70,7 +87,20 @@ public class DocCreator {
         DocStackApp app = stack.appended.get(DocStackApp.class);
         Document doc = app.getDocument();
         if(!hasPerm(sender, doc)) return;
-        //TODO
+        Object[] inc = DocCreator.getIncomplete(app);
+        if((int)inc[0] > 0){
+            sender.send(inc[0] + " fields left to fill out, ex. " + inc[1]);
+            return;
+        }
+        if(sender instanceof EntityW) app.issueBy(sender.asEntity(), false);
+        else issueDoc(app, uuid);
+        EntityW player = WrapperHolder.getPlayer(uuid);
+        if(player == null){
+            sender.send("receiving player not found, are they online?");
+            return;
+        }
+        player.addStack(stack);
+        sender.send("document signed and delivered");
     }
 
     private static UUID parse(String string){
@@ -94,6 +124,71 @@ public class DocCreator {
             }
         }
         return true;
+    }
+
+    public static String validate(Consumer<String> errlog, FieldData data, String val){
+        if(data.type.number()){
+            try{
+                if(data.type == FieldType.INTEGER){
+                    if(val.contains(".")) val = val.substring(0, val.indexOf("."));
+                    Integer.parseInt(val);
+                }
+                else{
+                    Float.parseFloat(val);
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                errlog.accept("Error: " + e.getMessage());
+                return null;
+            }
+        }
+        else if(data.type == FieldType.DATE){
+            try{
+                val = (LocalDate.parse(val).toEpochDay() * 86400000) + "";
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                errlog.accept("Error: " + e.getMessage());
+                return null;
+            }
+        }
+        else if(data.type == FieldType.UUID){
+            try{
+                UUID uuid = WrapperHolder.getUUIDFor(val);
+                if(uuid == null) val = UUID.fromString(val).toString();
+                else val = uuid.toString();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                errlog.accept("Error: " + e.getMessage());
+                return null;
+            }
+        }
+        return val;
+    }
+
+    public static Object[] getIncomplete(DocStackApp doc){
+        int incomplete = 0;
+        String eg = null;
+        Document document = doc.getDocument();
+        for(String str : document.fields.keySet()){
+            FieldData data = document.fields.get(str);
+            if(!data.type.editable) continue;
+            if(data.value == null && doc.getValue(str) == null && !data.can_empty){
+                incomplete++;
+                if(eg == null) eg = str;
+            }
+        }
+        return new Object[]{ incomplete, eg };
+    }
+
+    private static void issueDoc(DocStackApp app, UUID uuid){
+        if(app.getValue("issuer") == null) app.setValue("issuer", DocConfig.DEF_ISSUER_UUID);
+        if(app.getValue("issued") == null) app.setValue("issued", Time.getDate() + "");
+        if(app.getValue("issuer_name") == null) app.setValue("issuer_name", DocConfig.DEF_ISSUER_NAME);
+        if(app.getValue("issuer_type") == null) app.setValue("issuer_type", DocConfig.DEF_ISSUER_TYPE);
+        if(app.getValue("player_name") == null) app.setValue("player_name", WrapperHolder.getNameFor(uuid));
     }
 
 }
