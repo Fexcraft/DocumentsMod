@@ -35,7 +35,7 @@ public class DocEventHandler {
 		NBTTagCompound com = new NBTTagCompound();
 		com.setString("target_listener", "docmod");
 		com.setString("task", "sync");
-		com.setString("config", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
+		com.setString("data", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
 		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), (EntityPlayerMP)event.player);
 	}
 	
