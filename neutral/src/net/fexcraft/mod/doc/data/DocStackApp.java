@@ -71,6 +71,7 @@ public class DocStackApp implements Appendable<StackWrapper> {
         setValue("issuer", player.getUUID().toString());
         setValue("issued", Time.getDate() + "");
         setValue("issuer_name", player.getName());
+        setValue("issuer_type", "player");
         if(client) return;
         try{
             GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(getValue("uuid")));
@@ -81,4 +82,5 @@ public class DocStackApp implements Appendable<StackWrapper> {
             setValue("player_name", getValue("uuid"));
         }
     }
+
 }
