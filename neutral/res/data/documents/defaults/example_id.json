@@ -1,4 +1,5 @@
 {
+    "warning": "This JSON is synchronized to clients as-is, do not hold sensitive data here!",
     "comment": "If you need help filling out this config file, visit the wiki!",
     "wiki": "https://fexcraft.net/wiki/mod/documents",
     "id": "documents:example_id",
