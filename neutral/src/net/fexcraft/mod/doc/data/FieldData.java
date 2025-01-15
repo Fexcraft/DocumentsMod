@@ -67,9 +67,9 @@ public class FieldData {
 		if(val == null && value != null) val = value;
 		if(type.number()) return val == null ? "0" : val;
 		if(type == FieldType.JOIN_DATE){
-			JsonMap pd = DocRegistry.getPlayerData(cap.getValue("uuid"));
+			DocPlayerData pd = DocRegistry.getPlayerData(cap.getValue("uuid"));
 			try{
-				return df.format(new Date(pd.getLong("joined", Time.getDate())));
+				return pd.getJoined(df);
 			}
 			catch(Exception e){
 				e.printStackTrace();
