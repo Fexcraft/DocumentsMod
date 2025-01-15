@@ -8,6 +8,7 @@ import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -126,6 +127,15 @@ public class DocCommand extends CommandBase {
 			}
 			case "issue":{
 				DocCreator.issue(player == null? LOG : player, args[1]);
+				return;
+			}
+			case "fill":{
+				int idx = DocRegistry.getDocumentIndex(args[1]);
+				if(idx < 0){
+					player.send("404: doc not found");
+					return;
+				}
+				player.openUI(DocUI.EDITOR, idx, 1, 0);
 				return;
 			}
 			default: return;
