@@ -27,6 +27,7 @@ public class Document {
 	public HashMap<String, ArrayList<String>> enums = new HashMap<>();
 	public ArrayList<String> description = new ArrayList<>();
 	public JsonMap confmap;
+	public boolean autoissue;
 	public IDL itemicon;
 	public String icon;
 	public String name;
@@ -34,6 +35,7 @@ public class Document {
 	public Document(IDL key, JsonMap map){
 		id = key;
 		confmap = map;
+		autoissue = map.getBoolean("auto-issue", false);
 		if(map.has("size")){
 			JsonArray array = map.getArray("size");
 			sizex = array.get(0).integer_value();
