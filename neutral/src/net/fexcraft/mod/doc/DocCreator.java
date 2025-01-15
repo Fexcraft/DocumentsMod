@@ -1,10 +1,7 @@
 package net.fexcraft.mod.doc;
 
 import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.mod.doc.data.DocStackApp;
-import net.fexcraft.mod.doc.data.Document;
-import net.fexcraft.mod.doc.data.FieldData;
-import net.fexcraft.mod.doc.data.FieldType;
+import net.fexcraft.mod.doc.data.*;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
@@ -37,13 +34,18 @@ public class DocCreator {
             return;
         }
         if(!hasPerm(sender, doc)) return;
+        StackWrapper stack = createNewStack(doc, uuid);
+        CACHE.put(uuid, stack);
+        sender.send("document creation for '"+ uuid +"' started");
+    }
+
+    public static StackWrapper createNewStack(Document doc, UUID uuid){
         StackWrapper stack = REFERENCE.copy();
         stack.createTagIfMissing();
         stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
         DocStackApp app = stack.appended.get(DocStackApp.class);
         app.setValue("uuid", uuid.toString());
-        CACHE.put(uuid, stack);
-        sender.send("document creation for '"+ uuid +"' started");
+        return stack;
     }
 
     public static void set(MessageSender sender, String pid, String key, String val){
@@ -90,7 +92,7 @@ public class DocCreator {
             return;
         }
         if(sender instanceof EntityW) app.issueBy(sender.asEntity(), false);
-        else issueDoc(app, uuid);
+        else issueDoc(app, uuid, sender);
         EntityW player = WrapperHolder.getPlayer(uuid);
         if(player == null){
             sender.send("receiving player not found, are they online?");
@@ -180,12 +182,17 @@ public class DocCreator {
         return new Object[]{ incomplete, eg };
     }
 
-    private static void issueDoc(DocStackApp app, UUID uuid){
+    public static void issueDoc(DocStackApp app, UUID uuid, MessageSender sender){
         if(app.getValue("issuer") == null) app.setValue("issuer", DocConfig.DEF_ISSUER_UUID);
         if(app.getValue("issued") == null) app.setValue("issued", Time.getDate() + "");
         if(app.getValue("issuer_name") == null) app.setValue("issuer_name", DocConfig.DEF_ISSUER_NAME);
         if(app.getValue("issuer_type") == null) app.setValue("issuer_type", DocConfig.DEF_ISSUER_TYPE);
         if(app.getValue("player_name") == null) app.setValue("player_name", WrapperHolder.getNameFor(uuid));
+        DocPlayerData dpd = DocRegistry.PLAYERS.get(uuid);
+        if(dpd != null){
+            dpd.addReceived(app.getDocument().id.colon());
+        }
+        else sender.send("ERROR - PLAYER DATA IS NULL");
     }
 
 }
