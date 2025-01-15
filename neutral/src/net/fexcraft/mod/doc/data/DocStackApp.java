@@ -81,6 +81,11 @@ public class DocStackApp implements Appendable<StackWrapper> {
             e.printStackTrace();
             setValue("player_name", getValue("uuid"));
         }
+        DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
+        if(dpd != null){
+            dpd.addReceived(stack.getTag().getString(NBTKEY_TYPE));
+        }
+        else player.send("ERROR - PLAYER DATA IS NULL");
     }
 
 }
