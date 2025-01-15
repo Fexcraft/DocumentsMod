@@ -24,7 +24,6 @@ public class DocEditorUI extends UserInterface {
 
     private ArrayList<String> keys = new ArrayList<>();
     private DocEditorCon con;
-    private Document doc;
     private FieldData field;
     private int incomplete;
     private int index = 0;
@@ -37,16 +36,15 @@ public class DocEditorUI extends UserInterface {
 
     @Override
     public void init(){
-        doc = con.doc.getDocument();
         keys.clear();
-        for(FieldData val : doc.fields.values()){
+        for(FieldData val : con.doc.fields.values()){
             if(val.type.editable) keys.add(val.key);
         }
         update();
     }
 
     protected void update(){
-        field = doc.fields.get(keys.get(index));
+        field = con.doc.fields.get(keys.get(index));
         for(int i = 0; i < 4; i++){
             if(i >= field.description.size()){
                 texts.get("desc" + i).value("");
@@ -56,13 +54,13 @@ public class DocEditorUI extends UserInterface {
                 texts.get("desc" + i).translate();
             }
         }
-        String str = con.doc.getValue(field.key);
+        String str = con.app.getValue(field.key);
         fields.get("field").text(str == null ? "" : str);
         texts.get("info").value("ui.documents.editor.info");
         texts.get("info").translate(field.key, field.type);
         updateStatus();
-        if(field.type.image() && !(field.type == FieldType.PLAYER_IMG && !con.doc.hasValue("uuid"))){
-            String img = field.getValue(con.doc);
+        if(field.type.image() && !(field.type == FieldType.PLAYER_IMG && !con.app.hasValue("uuid"))){
+            String img = field.getValue(con.app);
             if(img.startsWith("external;") || img.startsWith("http")){
                 image = Documents.getTexture(img.replace("external;", ""));
             }
@@ -74,10 +72,10 @@ public class DocEditorUI extends UserInterface {
     private void updateStatus(){
         incomplete = 0;
         String eg = null;
-        for(String str : doc.fields.keySet()){
-            FieldData data = doc.fields.get(str);
+        for(String str : con.doc.fields.keySet()){
+            FieldData data = con.doc.fields.get(str);
             if(!data.type.editable) continue;
-            if(data.value == null && con.doc.getValue(str) == null && !data.can_empty){
+            if(data.value == null && con.app.getValue(str) == null && !data.can_empty){
                 incomplete++;
                 if(eg == null) eg = str;
             }
