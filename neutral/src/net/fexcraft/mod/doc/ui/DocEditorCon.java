@@ -4,18 +4,15 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.doc.DocCreator;
 import net.fexcraft.mod.doc.DocPerms;
+import net.fexcraft.mod.doc.DocRegistry;
+import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
-import net.fexcraft.mod.doc.data.FieldType;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.world.WrapperHolder;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -23,13 +20,46 @@ import java.util.UUID;
 public class DocEditorCon extends ContainerInterface {
 
     protected StackWrapper stack;
-    protected DocStackApp doc;
+    protected DocStackApp app;
+    protected Document doc;
+    protected boolean noadm;
 
     public DocEditorCon(JsonMap map, UniEntity ply, V3I pos){
         super(map, ply, pos);
-        stack = player.entity.getHeldItem(true);
-        doc = stack.appended.get(DocStackApp.class);
-        if(doc == null || doc.getDocument() == null){
+        noadm = pos.y > 0;
+        if(noadm){
+            doc = DocRegistry.getDocumentByIndex(pos.x);
+            if(doc == null){
+                player.entity.send("404: doc not found");
+                player.entity.closeUI();
+                return;
+            }
+            if(!doc.autoissue){
+                player.entity.send("403: doc not for auto-issue");
+                player.entity.closeUI();
+                return;
+            }
+            if(!ply.entity.isOnClient()){
+                DocPlayerData dpd = DocRegistry.PLAYERS.get(player.entity.getUUID());
+                if(dpd == null){
+                    player.entity.send("404: player data not found");
+                    player.entity.closeUI();
+                    return;
+                }
+                if(dpd.hasReceived(doc.id.colon())){
+                    player.entity.send("403: doc already issued");
+                    player.entity.closeUI();
+                    return;
+                }
+            }
+            stack = DocCreator.createNewStack(doc, player.entity.getUUID());
+        }
+        else{
+            stack = player.entity.getHeldItem(true);
+        }
+        app = stack.appended.get(DocStackApp.class);
+        doc = app.getDocument();
+        if(app == null || app.getDocument() == null){
             player.entity.send("error.no_doc_data");
             player.entity.closeUI();
         }
@@ -52,42 +82,48 @@ public class DocEditorCon extends ContainerInterface {
                 break;
             }
             case "change":{
-                if(!client && !DocPerms.hasPerm(player.entity, "document.edit", doc.getDocument().id.colon())){
+                if(!client && !noadm && !DocPerms.hasPerm(player.entity, "document.edit", app.getDocument().id.colon())){
                     player.entity.send("ui.documents.editor.no_permission");
                     player.entity.closeUI();
                     return;
                 }
                 String key = com.getString("key");
-                FieldData data = doc.getDocument().fields.get(key);
+                FieldData data = app.getDocument().fields.get(key);
                 String val = com.getString("val");
                 if(!data.type.editable) return;
                 if(!client){
                     val = DocCreator.validate(str -> sendMsg(str), data, val);
                     if(val == null) return;
-                    doc.setValue(key, val);
+                    app.setValue(key, val);
                     com.set("val", val);
                     SEND_TO_CLIENT.accept(com, player);
                 }
                 else{
-                    doc.setValue(key, val);
+                    app.setValue(key, val);
                     ((DocEditorUI)ui).update();
                 }
                 break;
             }
             case "issue":{
-                if(!client && !DocPerms.hasPerm(player.entity, "document.issue", doc.getDocument().id.colon())){
+                if(!client && !noadm && !DocPerms.hasPerm(player.entity, "document.issue", app.getDocument().id.colon())){
                     player.entity.send("ui.documents.editor.no_permission");
                     player.entity.closeUI();
                     return;
                 }
-                Object[] inc = DocCreator.getIncomplete(doc);
+                Object[] inc = DocCreator.getIncomplete(app);
                 if((int)inc[0] > 0){
                     player.entity.send("ui.documents.editor.status.left", inc[0], inc[1]);
                     player.entity.closeUI();
                     break;
                 }
                 if(!client){
-                    doc.issueBy(player.entity, client);
+                    if(noadm){
+                        DocCreator.issueDoc(app, player.entity.getUUID(), player.entity);
+                        player.entity.addStack(stack);
+                    }
+                    else{
+                        app.issueBy(player.entity, client);
+                    }
                     player.entity.send("ui.documents.editor.signed");
                     player.entity.closeUI();
                 }
