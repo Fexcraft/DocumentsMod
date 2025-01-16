@@ -1,8 +1,8 @@
 package net.fexcraft.mod.doc;
 
-import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
+import com.google.common.io.Files;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -13,11 +13,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 @Mod(modid = Documents.MODID, name = Documents.NAME, version = "2.0", dependencies = "required-after:fcl")
@@ -44,11 +46,12 @@ public class Documents {
     @EventHandler
     public void init(FMLInitializationEvent event){
 		NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
-        if(event.getSide().isClient()){
-        	PacketHandler.registerListener(PacketHandlerType.NBT, Side.CLIENT, new DocClientListener());
-        	DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
-        }
         DocCreator.REFERENCE = StackWrapper.wrap(new ItemStack(DocumentItem.INSTANCE));
+    }
+
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event){
+        DocPacketHandler.INSTANCE = new DocPacketHandler12();
     }
 
 	public static Documents getInstance(){
@@ -56,7 +59,15 @@ public class Documents {
 	}
 
     public static IDL getTexture(String str){
+        if(str.contains("external;")) str = str.substring(9);
         return IDLManager.getIDLCached(ExternalTextureHelper.get(str).toString());
+    }
+
+    public static byte[] getServerTexture(String str) throws IOException {
+        File folder = new File(DocRegistry.CONF_FOLDER, "/documents_images/");
+        if(!folder.exists()) folder.mkdirs();
+        File file = new File(folder, str.split(":")[1]);
+        return Files.toByteArray(file);
     }
 
     public static InputStream getResource(String str){
