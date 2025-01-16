@@ -7,6 +7,7 @@ import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -65,12 +66,13 @@ public class DocRegistry {
         }
     }
 
-    public static void parseDocs(JsonMap map){
-        if(!WrapperHolder.isSinglePlayer()) DOCUMENTS.clear();
-        map.entries().forEach(entry -> {
+    public static void parseDocs(JsonMap sync){
+        //if(!WrapperHolder.isSinglePlayer()) DOCUMENTS.clear();
+        sync.entries().forEach(entry -> {
             try{
+                JsonMap map = entry.getValue().asMap();;
                 IDL id = IDLManager.getIDLCached(map.get("id").string_value());
-                DOCUMENTS.put(id, new Document(id, entry.getValue().asMap()));
+                DOCUMENTS.put(id, new Document(id, map));
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -79,6 +81,8 @@ public class DocRegistry {
     }
 
     public static void onPlayerJoin(EntityW player){
+        DocPacketHandler.INSTANCE.sendSync(player, getSyncMap());
+        //
         File file = new File(CONF_FOLDER, "/documents_players/" + player.getUUID().toString() + ".json");
         DocPlayerData dpd = new DocPlayerData(file.exists() ? JsonHandler.parse(file) : new JsonMap(), player);
         PLAYERS.put(player.getUUID(), dpd);
