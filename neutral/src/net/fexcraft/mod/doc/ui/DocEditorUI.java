@@ -2,9 +2,9 @@ package net.fexcraft.mod.doc.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.doc.Documents;
-import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -61,8 +61,11 @@ public class DocEditorUI extends UserInterface {
         updateStatus();
         if(field.type.image() && !(field.type == FieldType.PLAYER_IMG && !con.app.hasValue("uuid"))){
             String img = field.getValue(con.app);
-            if(img.startsWith("external;") || img.startsWith("http")){
-                image = Documents.getTexture(img.replace("external;", ""));
+            if(img.startsWith("http")){
+                image = Documents.getTexture(img);
+            }
+            else if(img.startsWith("server:")){
+                image = DocPacketHandler.INSTANCE.requestServerTexture(img);
             }
             else image = IDLManager.getIDLCached(img);
         }
