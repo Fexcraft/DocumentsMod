@@ -99,6 +99,7 @@ public class DocCreator {
             return;
         }
         player.addStack(stack);
+        CACHE.remove(uuid);
         sender.send("document signed and delivered");
     }
 
