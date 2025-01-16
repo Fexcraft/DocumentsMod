@@ -3,12 +3,12 @@ package net.fexcraft.mod.doc.ui;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.lib.mc.gui.GenericGui;
 import net.fexcraft.mod.doc.Documents;
 import net.fexcraft.mod.doc.data.DocPage;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -50,16 +50,14 @@ public class DocViewerUI extends UserInterface {
             int sy = df.sy > -1 ? df.sy : field.sizey;
             if(field.type.image()){
                 IDL imgloc = null;
-                if(field.type == FieldType.PLAYER_IMG){
-                    imgloc = Documents.getTexture(field.getValue(con.doc));
+                String value = field.getValue(con.doc);
+                if(value.startsWith("http")){
+                    imgloc = Documents.getTexture(value);
                 }
-                else if(field.value.startsWith("external;")){
-                    imgloc = Documents.getTexture(field.value.substring(9));
+                else if(value.startsWith("server:")){
+                    imgloc = DocPacketHandler.INSTANCE.requestServerTexture(value);
                 }
-                else if(field.value.startsWith("http")){
-                    imgloc = Documents.getTexture(field.value);
-                }
-                else imgloc = IDLManager.getIDLCached(field.value);
+                else imgloc = IDLManager.getIDLCached(value);
                 images.add(imgloc);
                 imgpos.add(new int[]{ x, y, sx, sy });
             }
