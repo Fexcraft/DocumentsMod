@@ -8,6 +8,7 @@ import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.data.Document;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
@@ -46,8 +47,10 @@ public class DocCommand extends CommandBase {
 		if(args.length == 0){
 			Print.chat(sender, "&aGeneral:");
 			Print.chat(sender, "/documents list");
-			Print.chat(sender, "/documents get");
 			Print.chat(sender, "/documents uuid");
+			Print.chat(sender, "/documents fill <doc-id>");
+			Print.chat(sender, "&cOperator:");
+			Print.chat(sender, "/documents get <doc-id>");
 			Print.chat(sender, "/documents reload-perms");
 			Print.chat(sender, "/documents reload-docs");
 			Print.chat(sender, "&6Console/NPC");
@@ -107,13 +110,7 @@ public class DocCommand extends CommandBase {
 					return;
 				}
 				DocRegistry.reload();
-				NBTTagCompound com = new NBTTagCompound();
-				com.setString("target_listener", "docmod");
-				com.setString("task", "sync");
-				com.setString("data", JsonHandler.toString(DocRegistry.getSyncMap(), PrintOption.FLAT));
-				server.getPlayerList().getPlayers().forEach(splayer -> {
-					PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com), splayer);
-				});
+				DocPacketHandler.INSTANCE.sendSync(player, DocRegistry.getSyncMap());
 				Print.chat(sender, "&adocuments reloaded");
 				return;
 			}
