@@ -110,7 +110,7 @@ public class DocCommand extends CommandBase {
 					return;
 				}
 				DocRegistry.reload();
-				DocPacketHandler.INSTANCE.sendSync(player, DocRegistry.getSyncMap());
+				DocRegistry.sendSync();
 				Print.chat(sender, "&adocuments reloaded");
 				return;
 			}
