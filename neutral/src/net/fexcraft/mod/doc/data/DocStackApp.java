@@ -1,13 +1,12 @@
 package net.fexcraft.mod.doc.data;
 
-import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.uni.Appendable;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 
 import java.util.UUID;
 
@@ -74,8 +73,7 @@ public class DocStackApp implements Appendable<StackWrapper> {
         setValue("issuer_type", "player");
         if(client) return;
         try{
-            GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(getValue("uuid")));
-            setValue("player_name", gp.getName());
+            setValue("player_name", WrapperHolder.getNameFor(UUID.fromString(getValue("uuid"))));
         }
         catch(Exception e){
             e.printStackTrace();
