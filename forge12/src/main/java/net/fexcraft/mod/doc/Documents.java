@@ -1,6 +1,5 @@
 package net.fexcraft.mod.doc;
 
-import com.google.common.io.Files;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
@@ -16,10 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 @Mod(modid = Documents.MODID, name = Documents.NAME, version = "2.0", dependencies = "required-after:fcl")
@@ -61,13 +58,6 @@ public class Documents {
     public static IDL getTexture(String str){
         if(str.contains("external;")) str = str.substring(9);
         return IDLManager.getIDLCached(ExternalTextureHelper.get(str).toString());
-    }
-
-    public static byte[] getServerTexture(String str) throws IOException {
-        File folder = new File(DocRegistry.CONF_FOLDER, "/documents_images/");
-        if(!folder.exists()) folder.mkdirs();
-        File file = new File(folder, str.split(":")[1]);
-        return Files.toByteArray(file);
     }
 
     public static InputStream getResource(String str){
