@@ -2,19 +2,11 @@ package net.fexcraft.mod.doc.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.doc.DocPerms;
 import net.fexcraft.mod.doc.data.DocStackApp;
-import net.fexcraft.mod.doc.data.Document;
-import net.fexcraft.mod.doc.data.FieldData;
-import net.fexcraft.mod.doc.data.FieldType;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.world.WrapperHolder;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
