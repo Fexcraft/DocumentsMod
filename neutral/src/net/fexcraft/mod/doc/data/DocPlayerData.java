@@ -1,7 +1,6 @@
 package net.fexcraft.mod.doc.data;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.uni.world.EntityW;
