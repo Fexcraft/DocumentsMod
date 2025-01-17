@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc;
 
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
+import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.packet.PacketImg;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -38,9 +39,9 @@ public class PacketImgHandler {
         public IMessage onMessage(I12_PacketImg packet, MessageContext ctx){
             FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
                 try{
-                    byte[] tex = Documents.getServerTexture(packet.loc);
+                    byte[] tex = DocRegistry.getServerTexture(packet.loc);
                     EntityW player = UniEntity.getEntity(ctx.getServerHandler().player);
-                    DocPacketHandler12.INSTANCE.sendImg(player, packet.loc, tex);
+                    DocPacketHandler.INSTANCE.sendImg(player, packet.loc, tex);
                 }
                 catch(IOException e){
                     throw new RuntimeException(e);
