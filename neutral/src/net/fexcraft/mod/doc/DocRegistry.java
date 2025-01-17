@@ -1,5 +1,6 @@
 package net.fexcraft.mod.doc;
 
+import com.google.common.io.Files;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
@@ -10,6 +11,7 @@ import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -37,14 +39,14 @@ public class DocRegistry {
     public static void init(File conf){
         StackWrapper.register(new DocStackApp(null));
         CONF_FOLDER = conf;
-        DOCS_FOLDER = new File(CONF_FOLDER, "/documents/");
+        DOCS_FOLDER = new File(CONF_FOLDER, "/documents_types/");
         if(!DOCS_FOLDER.exists()){
             try{
                 DOCS_FOLDER.mkdirs();
                 JsonMap map = JsonHandler.parse(Documents.getResource("data/documents/defaults/example_id.json"));
                 JsonHandler.print(new File(DOCS_FOLDER, "/example_id.json"), map, JsonHandler.PrintOption.SPACED);
             }
-            catch (IOException e){
+            catch(IOException e){
                 throw new RuntimeException(e);
             }
         }
@@ -159,6 +161,20 @@ public class DocRegistry {
             index++;
         }
         return null;
+    }
+
+    public static byte[] getServerTexture(String loc) throws IOException {
+        File folder = new File(DocRegistry.CONF_FOLDER, "/documents_images/");
+        if(!folder.exists()) folder.mkdirs();
+        File file = new File(folder, loc.split(":")[1]);
+        return Files.toByteArray(file);
+    }
+
+    public static void sendSync(){
+        JsonMap sync = getSyncMap();
+        for(UniEntity player : WrapperHolder.getPlayers()){
+            DocPacketHandler.INSTANCE.sendSync(player.entity, sync);
+        }
     }
 
 }
