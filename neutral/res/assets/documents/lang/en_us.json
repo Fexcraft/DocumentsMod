@@ -28,5 +28,11 @@
   "documents.example_id.info3.desc": "Uneditable Info Field",
   "documents.example_id.info3": "Valid Thru",
   "documents.example_id.expiry.desc0": "Editable Date Field",
-  "documents.example_id.expiry.desc1": "Format: YYYY-MM-DD"
+  "documents.example_id.expiry.desc1": "Format: YYYY-MM-DD",
+
+  "documents.cmd.no_permission": "\u00A7cNo permission.",
+  "documents.cmd.perms_reloaded": "\u00A7aPermissions reloaded.",
+  "documents.cmd.docs_reloaded": "\u00A7aDocuments config reloaded.",
+  "documents.cmd.doc_not_found": "\u00A7eDocument not found.",
+  "documents.cmd.added": "\u00A7aAdded a blank document to your inventory."
 }
