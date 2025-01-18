@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "documents",
+	"version": "${version}",
+	"name": "Custom Documents Mod",
+	"description": "Create custom Documents for your Server/Project!",
+	"authors": [
+		"Ferdinand Calo' (FEX___96)"
+	],
+	"contact": {
+		"homepage": "https://fexcraft.net/wiki/mod/documents",
+		"sources": "https://github.com/Fexcraft/DocumentsMod"
+	},
+	"license": "ARR",
+	"icon": "documents.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.fexcraft.mod.doc.Documents"
+		],
+		"client": [
+			"net.fexcraft.mod.doc.DocumentsClient"
+		]
+	},
+	"mixins": [
+		"documents.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"fcl": "*"
+	}
+}
