@@ -10,7 +10,7 @@ import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 
@@ -19,7 +19,7 @@ import net.fexcraft.mod.uni.ui.ContainerInterface;
  */
 public class DocEditorCon extends ContainerInterface {
 
-    protected StackWrapper stack;
+    protected UniStack unistk;
     protected DocStackApp app;
     protected Document doc;
     protected boolean noadm;
@@ -52,12 +52,12 @@ public class DocEditorCon extends ContainerInterface {
                     return;
                 }
             }
-            stack = DocCreator.createNewStack(doc, player.entity.getUUID());
+            unistk = UniStack.get(DocCreator.createNewStack(doc, player.entity.getUUID()));
         }
         else{
-            stack = player.entity.getHeldItem(true);
+            unistk = UniStack.get(player.entity.getHeldItem(true));
         }
-        app = stack.appended.get(DocStackApp.class);
+        app = unistk.appended.get(DocStackApp.class);
         doc = app.getDocument();
         if(app == null || app.getDocument() == null){
             player.entity.send("error.no_doc_data");
@@ -69,7 +69,7 @@ public class DocEditorCon extends ContainerInterface {
     public void packet(TagCW com, boolean client){
         switch(com.getString("cargo")){
             case "tag":{
-                stack.setTag(com.getCompound("tag"));
+                unistk.stack.setTag(com.getCompound("tag"));
                 break;
             }
             case "msg":{
@@ -119,7 +119,7 @@ public class DocEditorCon extends ContainerInterface {
                 if(!client){
                     if(noadm){
                         DocCreator.issueDoc(app, player.entity.getUUID(), player.entity);
-                        player.entity.addStack(stack);
+                        player.entity.addStack(unistk.stack);
                     }
                     else{
                         app.issueBy(player.entity, client);
