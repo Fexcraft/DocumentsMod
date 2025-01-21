@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc;
 
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.mc.render.FCLItemModel;
@@ -19,7 +20,7 @@ public class DocumentModel implements FCLItemModel {
 	@Override
 	public void renderItem(TransformType type, ItemStack item, EntityLivingBase entity){
 		if(item.getItem() instanceof DocumentItem == false){ return; }
-		DocStackApp cap = StackWrapper.wrapAndGetApp(item, DocStackApp.class);
+		DocStackApp cap = UniStack.getApp(item, DocStackApp.class);
 		if(cap == null || cap.getDocument() == null) return;
 		//
 		boolean rd3 = type == TransformType.THIRD_PERSON_LEFT_HAND || type == TransformType.THIRD_PERSON_RIGHT_HAND;
