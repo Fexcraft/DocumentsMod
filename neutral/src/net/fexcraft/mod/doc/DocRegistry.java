@@ -13,6 +13,7 @@ import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 
@@ -37,7 +38,7 @@ public class DocRegistry {
     private static File DOCS_FOLDER;
 
     public static void init(File conf){
-        StackWrapper.register(new DocStackApp(null));
+        UniStack.register(new DocStackApp(null));
         CONF_FOLDER = conf;
         DOCS_FOLDER = new File(CONF_FOLDER, "/documents_types/");
         if(!DOCS_FOLDER.exists()){
