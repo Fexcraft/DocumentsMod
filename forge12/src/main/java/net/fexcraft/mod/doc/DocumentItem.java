@@ -13,6 +13,7 @@ import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +42,7 @@ public class DocumentItem extends Item implements DocItem {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag){
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(NBTKEY_TYPE)){
-			DocStackApp cap = StackWrapper.wrapAndGetApp(stack, DocStackApp.class);
+			DocStackApp cap = UniStack.getApp(stack, DocStackApp.class);
 			if(cap != null && cap.getDocument() != null){
 				for(String str : cap.getDocument().description){
 					tooltip.add(Formatter.format(I18n.format(str)));
@@ -80,7 +81,7 @@ public class DocumentItem extends Item implements DocItem {
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		if(hand == EnumHand.MAIN_HAND){
 			ItemStack stack = player.getHeldItemMainhand();
-			DocStackApp cap = StackWrapper.wrapAndGetApp(stack, DocStackApp.class);
+			DocStackApp cap = UniStack.getApp(stack, DocStackApp.class);
 			if(cap == null || cap.getDocument() == null){
 				Print.chat(player, "item.missing.doc");
 				return super.onItemRightClick(world, player, hand);
