@@ -5,6 +5,7 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 
@@ -13,12 +14,12 @@ import net.fexcraft.mod.uni.ui.ContainerInterface;
  */
 public class DocViewerCon extends ContainerInterface {
 
-    protected StackWrapper stack;
+    protected UniStack stack;
     protected DocStackApp doc;
 
     public DocViewerCon(JsonMap map, UniEntity ply, V3I pos){
         super(map, ply, pos);
-        stack = player.entity.getHeldItem(true);
+        stack = UniStack.get(player.entity.getHeldItem(true));
         doc = stack.appended.get(DocStackApp.class);
         if(doc == null || doc.getDocument() == null){
             player.entity.send("error.no_doc_data");
