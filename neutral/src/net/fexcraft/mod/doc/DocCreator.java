@@ -3,6 +3,7 @@ package net.fexcraft.mod.doc;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.data.*;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -19,7 +20,7 @@ import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
  */
 public class DocCreator {
 
-    public static ConcurrentHashMap<UUID, StackWrapper> CACHE = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<UUID, UniStack> CACHE = new ConcurrentHashMap<>();
     public static StackWrapper REFERENCE;
 
     public static void start(MessageSender sender, String pid, String doc_id){
@@ -34,18 +35,18 @@ public class DocCreator {
             return;
         }
         if(!hasPerm(sender, doc)) return;
-        StackWrapper stack = createNewStack(doc, uuid);
+        UniStack stack = createNewStack(doc, uuid);
         CACHE.put(uuid, stack);
         sender.send("document creation for '"+ uuid +"' started");
     }
 
-    public static StackWrapper createNewStack(Document doc, UUID uuid){
-        StackWrapper stack = REFERENCE.copy();
-        stack.createTagIfMissing();
-        stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
-        DocStackApp app = stack.appended.get(DocStackApp.class);
+    public static UniStack createNewStack(Document doc, UUID uuid){
+        UniStack uni = UniStack.get(REFERENCE.copy());
+        uni.stack.createTagIfMissing();
+        uni.stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
+        DocStackApp app = uni.getApp(DocStackApp.class);
         app.setValue("uuid", uuid.toString());
-        return stack;
+        return uni;
     }
 
     public static void set(MessageSender sender, String pid, String key, String val){
@@ -54,12 +55,12 @@ public class DocCreator {
             sender.send("player not found / invalid uuid");
             return;
         }
-        StackWrapper stack = CACHE.get(uuid);
+        UniStack stack = CACHE.get(uuid);
         if(stack == null){
             sender.send("no document in creation cache for " + uuid + "");
             return;
         }
-        DocStackApp app = stack.appended.get(DocStackApp.class);
+        DocStackApp app = stack.getApp(DocStackApp.class);
         Document doc = app.getDocument();
         if(!hasPerm(sender, doc)) return;
         if(!doc.fields.containsKey(key)){
@@ -78,12 +79,12 @@ public class DocCreator {
             sender.send("player not found / invalid uuid");
             return;
         }
-        StackWrapper stack = CACHE.get(uuid);
+        UniStack stack = CACHE.get(uuid);
         if(stack == null){
             sender.send("no document in creation cache for " + uuid + "");
             return;
         }
-        DocStackApp app = stack.appended.get(DocStackApp.class);
+        DocStackApp app = stack.getApp(DocStackApp.class);
         Document doc = app.getDocument();
         if(!hasPerm(sender, doc)) return;
         Object[] inc = DocCreator.getIncomplete(app);
@@ -98,7 +99,7 @@ public class DocCreator {
             sender.send("receiving player not found, are they online?");
             return;
         }
-        player.addStack(stack);
+        player.addStack(stack.stack);
         CACHE.remove(uuid);
         sender.send("document signed and delivered");
     }
