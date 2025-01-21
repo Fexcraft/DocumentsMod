@@ -3,7 +3,7 @@ package net.fexcraft.mod.doc.data;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.uni.Appendable;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -16,19 +16,19 @@ import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_DATA;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class DocStackApp implements Appendable<StackWrapper> {
+public class DocStackApp implements Appendable<UniStack> {
 
-    private final StackWrapper stack;
+    private final UniStack uni;
 
-    public DocStackApp(StackWrapper type){
-        stack = type;
-        if(stack == null) return;
-        stack.createTagIfMissing();
+    public DocStackApp(UniStack type){
+        uni = type;
+        if(uni == null) return;
+        uni.stack.createTagIfMissing();
     }
 
     @Override
-    public Appendable<StackWrapper> create(StackWrapper type){
-        return type.getItem().direct() instanceof DocItem ? new DocStackApp(type) : null;
+    public Appendable<UniStack> create(UniStack type){
+        return type.stack.getItem().direct() instanceof DocItem ? new DocStackApp(type) : null;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DocStackApp implements Appendable<StackWrapper> {
     }
 
     public Document getDocument(){
-        return DocRegistry.getDocument(stack.getTag().getString(NBTKEY_TYPE));
+        return DocRegistry.getDocument(uni.stack.getTag().getString(NBTKEY_TYPE));
     }
 
     public boolean isIssued(){
@@ -45,13 +45,13 @@ public class DocStackApp implements Appendable<StackWrapper> {
     }
 
     public boolean hasValue(String key){
-        TagCW com = stack.getTag().getCompound(NBTKEY_DATA);
+        TagCW com = uni.stack.getTag().getCompound(NBTKEY_DATA);
         if(com == null) return false;
         return com.has(key);
     }
 
     public String getValue(String key){
-        TagCW com = stack.getTag().getCompound(NBTKEY_DATA);
+        TagCW com = uni.stack.getTag().getCompound(NBTKEY_DATA);
         if(com == null || !com.has(key)) return null;
         return com.getString(key);
     }
@@ -62,8 +62,8 @@ public class DocStackApp implements Appendable<StackWrapper> {
     }
 
     public void setValue(String key, String val){
-        if(!stack.getTag().has(NBTKEY_DATA)) stack.getTag().set(NBTKEY_DATA, TagCW.create());
-        stack.getTag().getCompound(NBTKEY_DATA).set(key, val);
+        if(!uni.stack.getTag().has(NBTKEY_DATA)) uni.stack.getTag().set(NBTKEY_DATA, TagCW.create());
+        uni.stack.getTag().getCompound(NBTKEY_DATA).set(key, val);
     }
 
     public void issueBy(EntityW player, boolean client){
@@ -81,7 +81,7 @@ public class DocStackApp implements Appendable<StackWrapper> {
         }
         DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
         if(dpd != null){
-            dpd.addReceived(stack.getTag().getString(NBTKEY_TYPE));
+            dpd.addReceived(uni.stack.getTag().getString(NBTKEY_TYPE));
         }
         else player.send("ERROR - PLAYER DATA IS NULL");
     }
