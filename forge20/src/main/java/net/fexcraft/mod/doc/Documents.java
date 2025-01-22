@@ -8,6 +8,7 @@ import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
@@ -72,7 +73,7 @@ public class Documents {
 		@SubscribeEvent
 		public static void onServerStarting(ServerStartingEvent event){
 			DocRegistry.init(FMLPaths.CONFIGDIR.get().toFile());
-			DocCreator.REFERENCE = StackWrapper.wrap(new ItemStack(DocumentItem.INSTANCE));
+			DocCreator.REFERENCE = UniStack.createStack(new ItemStack(DocumentItem.INSTANCE));
 		}
 
 		@SubscribeEvent
