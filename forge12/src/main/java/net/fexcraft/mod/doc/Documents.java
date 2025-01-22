@@ -6,6 +6,7 @@ import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,7 +44,7 @@ public class Documents {
     @EventHandler
     public void init(FMLInitializationEvent event){
 		NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
-        DocCreator.REFERENCE = StackWrapper.wrap(new ItemStack(DocumentItem.INSTANCE));
+        DocCreator.REFERENCE = UniStack.createStack(new ItemStack(DocumentItem.INSTANCE));
     }
 
     @EventHandler
