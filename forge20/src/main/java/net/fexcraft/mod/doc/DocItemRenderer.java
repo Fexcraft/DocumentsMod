@@ -11,6 +11,7 @@ import net.fexcraft.mod.fcl.util.FCLRenderTypes;
 import net.fexcraft.mod.fcl.util.Renderer120;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,7 +34,7 @@ public class DocItemRenderer {
 	public static final NonNullLazy<BlockEntityWithoutLevelRenderer> RENDERER = NonNullLazy.of(() -> new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()){
 		@Override
 		public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource src, int v0, int v1){
-			DocStackApp app = StackWrapper.wrapAndGetApp(stack, DocStackApp.class);
+			DocStackApp app = UniStack.getApp(stack, DocStackApp.class);
 			texture = DocRegistry.STONE;
 			if(app != null){
 				doc = app.getDocument();
