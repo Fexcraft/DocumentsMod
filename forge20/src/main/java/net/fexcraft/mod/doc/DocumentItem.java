@@ -7,6 +7,7 @@ import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,8 +36,9 @@ public class DocumentItem extends Item implements DocItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag){
-		StackWrapper wrapper = StackWrapper.wrap(stack);
-		DocStackApp app = wrapper.appended.get(DocStackApp.class);
+		UniStack uni = UniStack.get(stack);
+		if(uni == null) return;
+		DocStackApp app = uni.appended.get(DocStackApp.class);
 		if(app == null){
 			list.add(Component.literal("no document app"));
 			return;
@@ -68,7 +70,7 @@ public class DocumentItem extends Item implements DocItem {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
 		if(world.isClientSide) return InteractionResultHolder.pass(player.getItemInHand(hand));
 		ItemStack stack = player.getItemInHand(hand);
-		DocStackApp cap = StackWrapper.wrapAndGetApp(stack, DocStackApp.class);
+		DocStackApp cap = UniStack.getApp(stack, DocStackApp.class);
 		if(cap == null || cap.getDocument() == null){
 			player.sendSystemMessage(Component.literal("no document data"));
 			return InteractionResultHolder.fail(stack);
