@@ -2,8 +2,8 @@ package net.fexcraft.mod.doc;
 
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.data.*;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
 import net.fexcraft.mod.uni.world.WrapperHolder;
