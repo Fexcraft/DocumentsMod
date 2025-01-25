@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
@@ -12,8 +11,7 @@ import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 
