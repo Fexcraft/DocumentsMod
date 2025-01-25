@@ -1,8 +1,7 @@
 package net.fexcraft.mod.doc;
 
 import net.fexcraft.mod.doc.data.DocStackApp;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniStack;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.mc.render.FCLItemModel;
