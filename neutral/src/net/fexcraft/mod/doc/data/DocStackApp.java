@@ -3,7 +3,7 @@ package net.fexcraft.mod.doc.data;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.uni.Appendable;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
