@@ -114,7 +114,7 @@ public class DocRegistry {
         DocPlayerData map = PLAYERS.get(uuid);
         if(map == null){
             File file = new File(CONF_FOLDER, "/documents_players/" + string + ".json");
-            PLAYERS.put(uuid, new DocPlayerData(file.exists() ? JsonHandler.parse(file) : new JsonMap(), uuid));
+            PLAYERS.put(uuid, map = new DocPlayerData(file.exists() ? JsonHandler.parse(file) : new JsonMap(), uuid));
         }
         return map;
     }
