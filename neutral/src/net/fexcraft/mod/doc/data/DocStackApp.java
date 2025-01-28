@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc.data;
 
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.mod.doc.DocRegistry;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.Appendable;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -81,9 +82,13 @@ public class DocStackApp implements Appendable<UniStack> {
         }
         DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
         if(dpd != null){
+            if(dpd.map().has("joined")) setValue("player_joined", dpd.map().get("joined").string_value());
             dpd.addReceived(uni.stack.getTag().getString(NBTKEY_TYPE));
         }
-        else player.send("ERROR - PLAYER DATA IS NULL");
+        else{
+            setValue("player_joined", Time.getDate() + "");
+            player.send("ERROR - PLAYER DATA IS NULL");
+        }
     }
 
 }
