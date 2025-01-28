@@ -192,9 +192,13 @@ public class DocCreator {
         if(app.getValue("player_name") == null) app.setValue("player_name", WrapperHolder.getNameFor(uuid));
         DocPlayerData dpd = DocRegistry.PLAYERS.get(uuid);
         if(dpd != null){
+            if(dpd.map().has("joined")) app.setValue("player_joined", dpd.map().get("joined").string_value());
             dpd.addReceived(app.getDocument().id.colon());
         }
-        else sender.send("ERROR - PLAYER DATA IS NULL");
+        else{
+            app.setValue("player_joined", Time.getDate() + "");
+            sender.send("ERROR - PLAYER DATA IS NULL");
+        }
     }
 
 }
