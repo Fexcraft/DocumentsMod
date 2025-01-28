@@ -62,7 +62,8 @@ public class DocumentsCommand {
 					return -1;
 				}
 				else{
-					if(!DocPerms.hasPerm(UniEntity.getEntity(cmd.getSource().getPlayerOrException()), "command.get", doc.id.colon())){
+					boolean perm = DocPerms.hasPerm(UniEntity.getEntity(cmd.getSource().getPlayerOrException()), "command.get", doc.id.colon());
+					if(!(perm || cmd.getSource().hasPermission(4))){
 						cmd.getSource().sendSystemMessage(Component.translatable("documents.cmd.no_permission"));
 						return -1;
 					}
@@ -100,33 +101,51 @@ public class DocumentsCommand {
 				.then(Commands.argument("player", EntityArgument.player())
 				.then(Commands.argument("doc", StringArgumentType.greedyString())
 				.executes(cmd -> {
-				Document doc = DocRegistry.getDocument(cmd.getArgument("doc", String.class));
-				if(doc == null){
-					cmd.getSource().sendFailure(Component.translatable("documents.cmd.doc_not_found"));
-					return -1;
-				}
-				Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
-				Player player = cmd.getArgument("player", Player.class);
-				DocCreator.start(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(), doc.id.colon());
-				return 0;
+					try{
+						Document doc = DocRegistry.getDocument(cmd.getArgument("doc", String.class));
+						if(doc == null){
+							cmd.getSource().sendFailure(Component.translatable("documents.cmd.doc_not_found"));
+							return -1;
+						}
+						Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
+						Player player = EntityArgument.getPlayer(cmd, "player");
+						DocCreator.start(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(), doc.id.colon());
+					}
+					catch(Exception e){
+						cmd.getSource().sendFailure(Component.literal("error, check log"));
+						e.printStackTrace();
+					}
+					return 0;
 				}))))
 			.then(Commands.literal("set")
 				.then(Commands.argument("player", EntityArgument.player())
-				.then(Commands.argument("key", StringArgumentType.greedyString())
-				.then(Commands.argument("value", StringArgumentType.greedyString())
+				.then(Commands.argument("key", StringArgumentType.string())
+				.then(Commands.argument("value", StringArgumentType.string())
 				.executes(cmd -> {
-					Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
-					Player player = cmd.getArgument("player", Player.class);
-					DocCreator.set(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(),
-						cmd.getArgument("keu", String.class), cmd.getArgument("value", String.class));
+					try{
+						Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
+						Player player = EntityArgument.getPlayer(cmd, "player");
+						DocCreator.set(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(),
+							cmd.getArgument("key", String.class), cmd.getArgument("value", String.class));
+					}
+					catch(Exception e){
+						cmd.getSource().sendFailure(Component.literal("error, check log"));
+						e.printStackTrace();
+					}
 					return 0;
 				})))))
 			.then(Commands.literal("issue")
 				.then(Commands.argument("player", EntityArgument.player())
 				.executes(cmd -> {
-					Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
-					Player player = cmd.getArgument("player", Player.class);
-					DocCreator.issue(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString());
+					try{
+						Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
+						Player player = EntityArgument.getPlayer(cmd, "player");
+						DocCreator.issue(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString());
+					}
+					catch(Exception e){
+						cmd.getSource().sendFailure(Component.literal("error, check log"));
+						e.printStackTrace();
+					}
 					return 0;
 				})))
 			.executes(cmd -> {
