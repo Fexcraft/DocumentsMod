@@ -1,6 +1,7 @@
 package net.fexcraft.mod.doc;
 
 import com.mojang.logging.LogUtils;
+import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.util.ExternalTextures;
@@ -55,6 +56,7 @@ public class Documents {
 		CONFIG = new DocConfig(new File(FMLPaths.CONFIGDIR.get().toFile(), "/documents_config.json"));
 		DocPerms.loadperms();
 		DocUI.register(this);
+		UniStack.register(new DocStackApp(null));
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event){
