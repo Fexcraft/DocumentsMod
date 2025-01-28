@@ -66,15 +66,10 @@ public class FieldData {
 		if(val == null && value != null) val = value;
 		if(type.number()) return val == null ? "0" : val;
 		if(type == FieldType.JOIN_DATE){
-			DocPlayerData pd = DocRegistry.getPlayerData(cap.getValue("uuid"));
-			try{
-				return pd.getJoined(df);
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
+			val = cap.getValue("player_joined");
+			if(val == null) val = "0";
 		}
-		else if(type == FieldType.PLAYER_NAME){
+		if(type == FieldType.PLAYER_NAME){
 			return cap.getValue("player_name");
 		}
 		else if(type == FieldType.PLAYER_IMG){
@@ -82,7 +77,7 @@ public class FieldData {
 				.replace("<UUID>", cap.getValue("uuid"))
 				.replace("<NAME>", cap.getValueNN("player_name"));
 		}
-		else if((type == FieldType.DATE || type == FieldType.ISSUED) && val != null){
+		else if(type.date() && val != null){
 			try{
 				return df.format(new Date(Long.parseLong(val)));
 			}
