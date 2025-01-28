@@ -36,7 +36,10 @@ public class DocumentItem extends Item implements DocItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag){
 		UniStack uni = UniStack.get(stack);
-		if(uni == null) return;
+		if(uni == null){
+			list.add(Component.literal("no fcl cap"));
+			return;
+		}
 		DocStackApp app = uni.appended.get(DocStackApp.class);
 		if(app == null){
 			list.add(Component.literal("no document app"));
