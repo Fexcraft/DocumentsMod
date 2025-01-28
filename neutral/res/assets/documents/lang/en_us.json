@@ -1,5 +1,7 @@
 {
   "item.documents.document": "Document",
+  "documents.item.issued": "\u00A7aIssued Document",
+  "documents.item.blank": "\u00A7bBlank Document",
   "ui.documents.editor.change": "Apply Value",
   "ui.documents.editor.prev": "Previous Field",
   "ui.documents.editor.next": "Next Field",
