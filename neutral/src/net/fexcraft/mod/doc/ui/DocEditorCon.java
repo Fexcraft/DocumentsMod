@@ -69,7 +69,7 @@ public class DocEditorCon extends ContainerInterface {
     public void packet(TagCW com, boolean client){
         switch(com.getString("cargo")){
             case "tag":{
-                unistk.stack.setTag(com.getCompound("tag"));
+                unistk.stack.updateTag(com.getCompound("tag"));
                 break;
             }
             case "msg":{
