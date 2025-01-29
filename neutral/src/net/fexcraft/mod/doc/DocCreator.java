@@ -42,8 +42,7 @@ public class DocCreator {
 
     public static UniStack createNewStack(Document doc, UUID uuid){
         UniStack uni = UniStack.get(REFERENCE.copy());
-        uni.stack.createTagIfMissing();
-        uni.stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
+        uni.stack.updateTag(tag -> tag.set(NBTKEY_TYPE, doc.id.colon()));
         DocStackApp app = uni.getApp(DocStackApp.class);
         app.setValue("uuid", uuid.toString());
         return uni;
