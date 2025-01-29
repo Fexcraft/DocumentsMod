@@ -23,8 +23,6 @@ public class DocStackApp implements Appendable<UniStack> {
 
     public DocStackApp(UniStack type){
         uni = type;
-        if(uni == null) return;
-        uni.stack.createTagIfMissing();
     }
 
     @Override
@@ -38,7 +36,7 @@ public class DocStackApp implements Appendable<UniStack> {
     }
 
     public Document getDocument(){
-        return DocRegistry.getDocument(uni.stack.getTag().getString(NBTKEY_TYPE));
+        return DocRegistry.getDocument(uni.stack.directTag().getString(NBTKEY_TYPE));
     }
 
     public boolean isIssued(){
@@ -46,13 +44,13 @@ public class DocStackApp implements Appendable<UniStack> {
     }
 
     public boolean hasValue(String key){
-        TagCW com = uni.stack.getTag().getCompound(NBTKEY_DATA);
+        TagCW com = uni.stack.directTag().getCompound(NBTKEY_DATA);
         if(com == null) return false;
         return com.has(key);
     }
 
     public String getValue(String key){
-        TagCW com = uni.stack.getTag().getCompound(NBTKEY_DATA);
+        TagCW com = uni.stack.directTag().getCompound(NBTKEY_DATA);
         if(com == null || !com.has(key)) return null;
         return com.getString(key);
     }
@@ -63,8 +61,10 @@ public class DocStackApp implements Appendable<UniStack> {
     }
 
     public void setValue(String key, String val){
-        if(!uni.stack.getTag().has(NBTKEY_DATA)) uni.stack.getTag().set(NBTKEY_DATA, TagCW.create());
-        uni.stack.getTag().getCompound(NBTKEY_DATA).set(key, val);
+        if(!uni.stack.directTag().has(NBTKEY_DATA)){
+            uni.stack.updateTag(tag -> tag.set(NBTKEY_DATA, TagCW.create()));
+        }
+        uni.stack.updateTag(tag -> tag.getCompound(NBTKEY_DATA).set(key, val));
     }
 
     public void issueBy(EntityW player, boolean client){
@@ -83,7 +83,7 @@ public class DocStackApp implements Appendable<UniStack> {
         DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
         if(dpd != null){
             if(dpd.map().has("joined")) setValue("player_joined", dpd.map().get("joined").string_value());
-            dpd.addReceived(uni.stack.getTag().getString(NBTKEY_TYPE));
+            dpd.addReceived(uni.stack.directTag().getString(NBTKEY_TYPE));
         }
         else{
             setValue("player_joined", Time.getDate() + "");
