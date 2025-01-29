@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "net.fexcraft.mod.doc.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
