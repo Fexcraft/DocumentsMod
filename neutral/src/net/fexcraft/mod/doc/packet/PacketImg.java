@@ -2,7 +2,6 @@ package net.fexcraft.mod.doc.packet;
 
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.mod.uni.packet.PacketBase;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 
 import java.nio.charset.StandardCharsets;
 
