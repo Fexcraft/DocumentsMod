@@ -49,13 +49,13 @@ public class DocumentItem extends Item implements DocItem {
 		Document doc = app.getDocument();
 		if(doc == null){
 			list.add(Component.literal("no document data"));
-			list.add(Component.literal(com.toString()));
+			list.add(Component.literal(com == null ? "no tag" : com.toString()));
 		}
 		else{
 			for(String str : doc.description){
 				list.add(Component.translatable(str));
 			}
-			list.add(Component.translatable(com.getBoolean("document:issued") ? "documents.item.issued" : "documents.item.blank"));
+			list.add(Component.translatable(app.isIssued() ? "documents.item.issued" : "documents.item.blank"));
 		}
 	}
 
