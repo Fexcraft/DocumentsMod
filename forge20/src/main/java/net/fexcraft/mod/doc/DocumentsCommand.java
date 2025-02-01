@@ -68,11 +68,10 @@ public class DocumentsCommand {
 						return -1;
 					}
 					StackWrapper stack = DocCreator.REFERENCE.copy();
-					stack.createTagIfMissing();
-					stack.getTag().set(NBTKEY_TYPE, doc.id.colon());
+					stack.updateTag(tag -> tag.set(NBTKEY_TYPE, doc.id.colon()));
 					cmd.getSource().getPlayerOrException().addItem(stack.local());
 					cmd.getSource().sendSystemMessage(Component.translatable("documents.cmd.added"));
-					if(EnvInfo.DEV) Documents.LOGGER.info(stack.getTag().toString());
+					if(EnvInfo.DEV) Documents.LOGGER.info(stack.directTag().toString());
 				}
 				return 0;
 			})))
