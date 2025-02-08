@@ -54,7 +54,6 @@ public class Documents {
 		eventbus.addListener(this::addCreative);
 		//
 		CONFIG = new DocConfig(new File(FMLPaths.CONFIGDIR.get().toFile(), "/documents_config.json"));
-		DocPerms.loadperms();
 		DocUI.register(this);
 		UniStack.register(new DocStackApp(null));
 	}
@@ -74,6 +73,7 @@ public class Documents {
 		@SubscribeEvent
 		public static void onServerStarting(ServerStartingEvent event){
 			DocRegistry.init(FMLPaths.CONFIGDIR.get().toFile());
+			DocPerms.loadperms();
 			DocCreator.REFERENCE = UniStack.createStack(new ItemStack(DocumentItem.INSTANCE));
 		}
 
