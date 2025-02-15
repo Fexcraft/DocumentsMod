@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.packet.PacketImg;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -57,7 +58,9 @@ public class PacketImgHandler {
 
         @Override
         public IMessage onMessage(I12_PacketImg packet, MessageContext ctx){
-            ExternalTextureHelper.get(packet.loc, packet.img);
+            net.minecraft.client.Minecraft.getMinecraft().addScheduledTask(() -> {
+                ExternalTextureHelper.get(packet.loc, packet.img);
+            });
             return null;
         }
 
