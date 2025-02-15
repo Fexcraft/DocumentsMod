@@ -67,7 +67,9 @@ public class Document {
 		}
 		if(map.has("textures")){
 			map.get("textures").asMap().entries().forEach(entry -> {
-				rawtextures.put(entry.getKey(), entry.getValue().string_value());
+				String tex = entry.getValue().string_value();
+				if(tex.startsWith("external;")) tex = tex.substring(9);
+				rawtextures.put(entry.getKey(), tex);
 			});
 		}
 		else rawtextures.put("main", DocRegistry.STONE.colon());
