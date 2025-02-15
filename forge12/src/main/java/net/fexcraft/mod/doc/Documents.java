@@ -27,12 +27,12 @@ public class Documents {
     @Mod.Instance(MODID)
     private static Documents INSTANCE;
     public static DocConfig CONFIG;
+    private File cfgfolder;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        CONFIG = new DocConfig(new File(event.getModConfigurationDirectory(), "/documents_config.json"));
-        DocRegistry.init(event.getModConfigurationDirectory());
-        DocPerms.loadperms();
+        cfgfolder = event.getModConfigurationDirectory();
+        CONFIG = new DocConfig(new File(cfgfolder, "/documents_config.json"));
         MinecraftForge.EVENT_BUS.register(new DocEventHandler());
         if(event.getSide().isClient()){
         	net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(new ResourceLocation("documents:document"), DocumentModel.INSTANCE);
@@ -44,6 +44,8 @@ public class Documents {
     public void init(FMLInitializationEvent event){
 		NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
         DocCreator.REFERENCE = UniStack.createStack(new ItemStack(DocumentItem.INSTANCE));
+        DocRegistry.init(cfgfolder);
+        DocPerms.loadperms();
     }
 
     @EventHandler
