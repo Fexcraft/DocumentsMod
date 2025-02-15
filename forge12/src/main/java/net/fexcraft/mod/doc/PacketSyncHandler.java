@@ -28,10 +28,18 @@ public class PacketSyncHandler implements IMessageHandler<PacketSyncHandler.I12_
 
     @Override
     public IMessage onMessage(I12_PacketSync packet, MessageContext ctx){
-        FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-            DocRegistry.parseDocs(packet.map);
-            DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
-        });
+        if(ctx.side.isClient()){
+            net.minecraft.client.Minecraft.getMinecraft().addScheduledTask(() -> {
+                DocRegistry.parseDocs(packet.map);
+                DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
+            });
+        }
+        else{
+            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+                DocRegistry.parseDocs(packet.map);
+                DocRegistry.getDocuments().values().forEach(doc -> doc.linktextures());
+            });
+        }
         return null;
     }
 
