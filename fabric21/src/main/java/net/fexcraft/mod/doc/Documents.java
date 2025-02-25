@@ -42,7 +42,6 @@ public class Documents implements ModInitializer {
 	@Override
 	public void onInitialize(){
 		CONFIG = new DocConfig(new File(FabricLoader.getInstance().getConfigDir().toFile(), "/documents_config.json"));
-		DocPerms.loadperms();
 		DocUI.register(this);
 		DocPacketHandler.INSTANCE = new DocPacketHandler21();
 		UniStack.register(new DocStackApp(null));
@@ -52,6 +51,7 @@ public class Documents implements ModInitializer {
 		//
 		ServerLifecycleEvents.SERVER_STARTING.register(event -> {
 			DocRegistry.init(FabricLoader.getInstance().getConfigDir().toFile());
+			DocPerms.loadperms();
 			DocCreator.REFERENCE = UniStack.createStack(new ItemStack(DOCUMENT));
 		});
 		ServerPlayConnectionEvents.JOIN.register((lis, sender, server) -> {
