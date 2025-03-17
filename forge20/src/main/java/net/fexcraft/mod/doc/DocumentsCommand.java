@@ -2,12 +2,15 @@ package net.fexcraft.mod.doc;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.fexcraft.mod.doc.data.DocItem;
+import net.fexcraft.mod.doc.data.DocStackApp;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -147,6 +150,32 @@ public class DocumentsCommand {
 					}
 					return 0;
 				})))
+			.then(Commands.literal("confirm-issued")
+				.then(Commands.argument("player", EntityArgument.player())
+					.then(Commands.argument("doc", StringArgumentType.greedyString())
+						.executes(cmd -> {
+							try{
+								Document doc = DocRegistry.getDocument(cmd.getArgument("doc", String.class));
+								if(doc == null){
+									cmd.getSource().sendSystemMessage(Component.translatable("false"));
+									return -1;
+								}
+								Player player = EntityArgument.getPlayer(cmd, "player");
+								if(player.getMainHandItem().getItem() instanceof DocItem){
+									DocStackApp app = UniStack.get(player.getMainHandItem()).getApp(DocStackApp.class);
+									if(app.getDocument().id.equals(doc.id) && app.isIssued() && app.getValue("uuid").equals(player.getGameProfile().getId().toString())){
+										cmd.getSource().sendSystemMessage(Component.literal("true"));
+									}
+								}
+								cmd.getSource().sendSystemMessage(Component.translatable("false"));
+								return -1;
+							}
+							catch(Exception e){
+								cmd.getSource().sendSystemMessage(Component.literal("error"));
+								e.printStackTrace();
+							}
+							return 0;
+						}))))
 			.executes(cmd -> {
 				cmd.getSource().sendSystemMessage(Component.literal("\u00A7aGeneral:"));
 				cmd.getSource().sendSystemMessage(Component.literal("/documents list"));
