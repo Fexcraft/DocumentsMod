@@ -13,8 +13,4 @@ public abstract class DocPacketHandler {
 
     public abstract void sendSync(EntityW player, JsonMap map);
 
-    public abstract void sendImg(EntityW player, String loc, byte[] img);
-
-    public abstract IDL requestServerTexture(String str);
-
 }
