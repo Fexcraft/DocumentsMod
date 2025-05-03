@@ -5,6 +5,7 @@ import net.fexcraft.mod.doc.Documents;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
+import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -65,7 +66,7 @@ public class DocEditorUI extends UserInterface {
                 image = Documents.getTexture(img);
             }
             else if(img.startsWith("server:")){
-                image = DocPacketHandler.INSTANCE.requestServerTexture(img);
+                image = UniFCL.requestServerFile(null, img);
             }
             else image = IDLManager.getIDLCached(img);
         }
