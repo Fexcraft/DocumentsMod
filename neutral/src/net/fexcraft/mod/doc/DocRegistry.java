@@ -162,13 +162,6 @@ public class DocRegistry {
         return null;
     }
 
-    public static byte[] getServerTexture(String loc) throws IOException {
-        File folder = new File(DocRegistry.CONF_FOLDER, "/documents_images/");
-        if(!folder.exists()) folder.mkdirs();
-        File file = new File(folder, loc.split(":")[1]);
-        return Files.toByteArray(file);
-    }
-
     public static void sendSync(){
         JsonMap sync = getSyncMap();
         for(UniEntity player : WrapperHolder.getPlayers()){
