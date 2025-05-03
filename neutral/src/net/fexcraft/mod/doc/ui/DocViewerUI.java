@@ -9,6 +9,7 @@ import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.data.FieldData;
 import net.fexcraft.mod.doc.data.FieldType;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
+import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -55,7 +56,7 @@ public class DocViewerUI extends UserInterface {
                     imgloc = Documents.getTexture(value);
                 }
                 else if(value.startsWith("server:")){
-                    imgloc = DocPacketHandler.INSTANCE.requestServerTexture(value);
+                    imgloc = UniFCL.requestServerFile(null, value);
                 }
                 else imgloc = IDLManager.getIDLCached(value);
                 images.add(imgloc);
