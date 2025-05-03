@@ -26,33 +26,6 @@ public class DocPacketHandler20 extends DocPacketHandler {
             .simpleChannel();
 
     public DocPacketHandler20(){
-        CHANNEL.registerMessage(1, PacketImg.class, PacketImg::encode, buffer -> {
-            PacketImg pkt = new PacketImg();
-            pkt.decode(buffer);
-            return pkt;
-        }, (packet, context) -> {
-            context.get().enqueueWork(() -> {
-                if(context.get().getDirection().getOriginationSide().isClient()){
-                    try{
-                        byte[] tex = DocRegistry.getServerTexture(packet.loc);
-                        EntityW player = UniEntity.getEntity(context.get().getSender());
-                        DocPacketHandler.INSTANCE.sendImg(player, packet.loc, tex);
-                    }
-                    catch(Exception e){
-                        throw new RuntimeException(e);
-                    }
-                }
-                else{
-					try{
-						ExternalTextures.get(packet.loc, packet.img);
-					}
-					catch(IOException e){
-						e.printStackTrace();
-					}
-				}
-            });
-            context.get().setPacketHandled(true);
-        });
         CHANNEL.registerMessage(2, PacketSync.class, PacketSync::encode, buffer -> {
             PacketSync pkt = new PacketSync();
             pkt.decode(buffer);
@@ -71,22 +44,6 @@ public class DocPacketHandler20 extends DocPacketHandler {
     @Override
     public void sendSync(EntityW player, JsonMap map){
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.local()), new PacketSync().fill(map));
-    }
-
-    @Override
-    public void sendImg(EntityW player, String loc, byte[] img){
-        if(player.isOnClient()){
-            CHANNEL.sendToServer(new PacketImg().fill(loc));
-        }
-        else{
-            CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.local()), new PacketImg().fill(loc, img));
-        }
-    }
-
-    @Override
-    public IDL requestServerTexture(String str){
-        CHANNEL.sendToServer(new PacketImg().fill(str));
-        return IDLManager.getIDLCached(str);
     }
 
 }
