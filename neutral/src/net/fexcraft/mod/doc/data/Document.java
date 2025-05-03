@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.doc.DocRegistry;
 import net.fexcraft.mod.doc.Documents;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
+import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -94,7 +95,7 @@ public class Document {
 	
 	public void linktextures(){
 		if(icon.startsWith("http")) itemicon = Documents.getTexture(icon);
-		else if(icon.startsWith("server:")) itemicon = DocPacketHandler.INSTANCE.requestServerTexture(icon);
+		else if(icon.startsWith("server:")) itemicon = UniFCL.requestServerFile(null, icon);
 		else itemicon = IDLManager.getIDLCached(icon);
 		//
 		for(Entry<String, String> entry : rawtextures.entrySet()){
@@ -104,7 +105,7 @@ public class Document {
 				resloc = Documents.getTexture(str);
 			}
 			else if(str.startsWith("server:")){
-				resloc = DocPacketHandler.INSTANCE.requestServerTexture(str);
+				resloc = UniFCL.requestServerFile(null, str);
 			}
 			else resloc = IDLManager.getIDLCached(str);
 			textures.put(entry.getKey(), resloc);
