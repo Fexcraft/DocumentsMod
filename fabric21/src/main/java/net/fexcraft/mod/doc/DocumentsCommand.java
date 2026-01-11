@@ -2,6 +2,7 @@ package net.fexcraft.mod.doc;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.FCL;
@@ -56,6 +57,19 @@ public class DocumentsCommand {
 							player.send("404: doc not found");
 							return -1;
 						}
+						if(!doc.autoissue){
+							player.send("403: doc not for auto-issue");
+							return -1;
+						}
+						DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
+						if(dpd == null){
+							player.send("404: player data not found");
+							return -1;
+						}
+						if(dpd.hasReceived(doc.id.colon())){
+							player.send("403: doc already issued");
+							return -1;
+						}
 						player.openUI(DocUI.EDITOR, idx, 1, 0);
 						return 0;
 					})))
@@ -66,8 +80,7 @@ public class DocumentsCommand {
 					return -1;
 				}
 				else{
-					boolean perm = DocPerms.hasPerm(UniEntity.getEntity(cmd.getSource().getPlayerOrException()), "command.get", doc.id.colon());
-					if(!(perm || cmd.getSource().hasPermission(4))){
+					if(!DocPerms.hasPerm(UniEntity.getEntity(cmd.getSource().getPlayerOrException()), "command.get", doc.id.colon())){
 						cmd.getSource().sendSystemMessage(Component.translatable("documents.cmd.no_permission"));
 						return -1;
 					}
@@ -81,7 +94,7 @@ public class DocumentsCommand {
 			})))
 			.then(Commands.literal("reload-perms").executes(cmd -> {
 				Player entity = cmd.getSource().getPlayerOrException();
-				if(!DocPerms.hasPerm(UniEntity.getEntity(entity), "command.reload-perms") && !entity.hasPermissions(4)){
+				if(!DocPerms.hasPerm(UniEntity.getEntity(entity), "command.reload-perms")){
 					cmd.getSource().sendFailure(Component.translatable("documents.cmd.no_permission"));
 					return 1;
 				}
@@ -91,7 +104,7 @@ public class DocumentsCommand {
 			}))
 			.then(Commands.literal("reload-docs").executes(cmd -> {
 				Player entity = cmd.getSource().getPlayerOrException();
-				if(!DocPerms.hasPerm(UniEntity.getEntity(entity), "command.reload-docs") && !entity.hasPermissions(4)){
+				if(!DocPerms.hasPerm(UniEntity.getEntity(entity), "command.reload-docs")){
 					cmd.getSource().sendFailure(Component.translatable("documents.cmd.no_permission"));
 					return 1;
 				}
