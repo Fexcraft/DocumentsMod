@@ -29,29 +29,6 @@ public class DocEditorCon extends ContainerInterface {
         noadm = pos.y > 0;
         if(noadm){
             doc = DocRegistry.getDocumentByIndex(pos.x);
-            if(doc == null){
-                player.entity.send("404: doc not found");
-                player.entity.closeUI();
-                return;
-            }
-            if(!doc.autoissue){
-                player.entity.send("403: doc not for auto-issue");
-                player.entity.closeUI();
-                return;
-            }
-            if(!ply.entity.isOnClient()){
-                DocPlayerData dpd = DocRegistry.PLAYERS.get(player.entity.getUUID());
-                if(dpd == null){
-                    player.entity.send("404: player data not found");
-                    player.entity.closeUI();
-                    return;
-                }
-                if(dpd.hasReceived(doc.id.colon())){
-                    player.entity.send("403: doc already issued");
-                    player.entity.closeUI();
-                    return;
-                }
-            }
             unistk = UniStack.get(DocCreator.createNewStack(doc, player.entity.getUUID()));
         }
         else{
