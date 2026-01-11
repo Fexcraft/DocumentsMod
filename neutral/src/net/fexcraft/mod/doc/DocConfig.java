@@ -21,6 +21,7 @@ public class DocConfig extends ConfigBase  {
     public static String DEF_ISSUER_NAME;
     public static DateFormat DATE_FORMAT;
     public static JsonArray FILL_MESSAGE;
+    public static int MIN_OP_LVL;
 
     public DocConfig(File fl){
         super(fl, "Custom Documents Mod");
@@ -37,7 +38,8 @@ public class DocConfig extends ConfigBase  {
     protected void fillEntries(){
         String gen = "general";
         entries.add(new ConfigEntry(this, gen, "player_img_url", "https://crafatar.com/avatars/<UUID>?size=32")
-            .info("Service URL with which Player Images are retrieved. <UUID> gets auto replaced with the player's UUID, <NAME> with the name.")
+            .info("Service URL with which Player Images are retrieved.",
+                "<UUID> gets auto replaced with the player's UUID, <NAME> with the name.")
             .cons((entry, map) -> PLAYER_IMG_URL = entry.getString(map))
             .req(true, false)
         );
@@ -57,14 +59,21 @@ public class DocConfig extends ConfigBase  {
                 .cons((entry, map) -> FILL_MESSAGE = entry.getJson(map).asArray())
                 .req(true, false)
         );
+        entries.add(new ConfigEntry(this, gen, "min_op_level", 4)
+                .info("Minimum Operator level to get and issue documents without being in the dedicated perm file.")
+                .cons((entry, map) -> MIN_OP_LVL = entry.getInteger(map))
+                .req(true, false)
+        );
         String iss = "default_issuer";
         entries.add(new ConfigEntry(this, iss, "type", "server")
-            .info("Type of default Document Issuer (when not issued by a player in-game), set the type to 'player', if you want the UUID to be a player's.")
+            .info("Type of default Document Issuer (when not issued by a player in-game),",
+                "set the type to 'player', if you want the UUID to be a player's.")
             .cons((entry, map) -> DEF_ISSUER_TYPE = entry.getString(map))
             .req(true, false)
         );
         entries.add(new ConfigEntry(this, iss, "uuid", "00000000-0000-0000-0000-000000000000")
-            .info("ID/UUID of default Document Issuer (when not issued by a player in-game), make sure the 'type' is 'player' if you plan to use a player UUID.")
+            .info("ID/UUID of default Document Issuer (when not issued by a player in-game),",
+                "make sure the 'type' is 'player' if you plan to use a player UUID.")
             .cons((entry, map) -> DEF_ISSUER_UUID = entry.getString(map))
             .req(true, false)
         );
