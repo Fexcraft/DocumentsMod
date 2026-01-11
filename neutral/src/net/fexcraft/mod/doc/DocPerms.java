@@ -48,12 +48,14 @@ public class DocPerms {
 
 	public static boolean hasPerm(EntityW player, String node){
 		if(WrapperHolder.isSinglePlayer()) return true;
+		if(WrapperHolder.isOp(player, DocConfig.MIN_OP_LVL)) return true;
 		UUID uuid = player.getUUID();
 		return perms.containsKey(uuid) && perms.get(uuid).contains(node);
 	}
 
 	public static boolean hasPerm(EntityW player, String node, String suffix){
 		if(WrapperHolder.isSinglePlayer()) return true;
+		if(WrapperHolder.isOp(player, DocConfig.MIN_OP_LVL)) return true;
 		UUID uuid = player.getUUID();
 		return perms.containsKey(uuid) && (perms.get(uuid).contains(node + ".*") || perms.get(uuid).contains(node + "." + suffix));
 	}
