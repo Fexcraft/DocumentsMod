@@ -1,22 +1,13 @@
 package net.fexcraft.mod.doc;
 
-import net.fexcraft.app.json.JsonHandler;
-import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.lib.mc.api.registry.fCommand;
-import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.Document;
-import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
-import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.world.EntityW;
-import net.fexcraft.mod.uni.world.MessageSender;
-import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -96,7 +87,7 @@ public class DocCommand extends CommandBase {
 				return;
 			}
 			case "reload-perms":{
-				if(!sp && !DocPerms.hasPerm(player, "command.reload-perms") && !Static.isOp((EntityPlayer)sender)){
+				if(!sp && !DocPerms.hasPerm(player, "command.reload-perms")){
 					Print.chat(sender, "&cno permission");
 					return;
 				}
@@ -105,7 +96,7 @@ public class DocCommand extends CommandBase {
 				return;
 			}
 			case "reload-docs":{
-				if(!sp && !DocPerms.hasPerm(player, "command.reload-docs") && !Static.isOp((EntityPlayer)sender)){
+				if(!sp && !DocPerms.hasPerm(player, "command.reload-docs")){
 					Print.chat(sender, "&cno permission");
 					return;
 				}
@@ -127,9 +118,27 @@ public class DocCommand extends CommandBase {
 				return;
 			}
 			case "fill":{
+				Document doc = DocRegistry.getDocument(args[1]);
+				if(doc == null){
+					player.send("documents.cmd.doc_not_found");
+					return;
+				}
 				int idx = DocRegistry.getDocumentIndex(args[1]);
 				if(idx < 0){
 					player.send("404: doc not found");
+					return;
+				}
+				if(!doc.autoissue){
+					player.send("403: doc not for auto-issue");
+					return;
+				}
+				DocPlayerData dpd = DocRegistry.PLAYERS.get(player.getUUID());
+				if(dpd == null){
+					player.send("404: player data not found");
+					return;
+				}
+				if(dpd.hasReceived(doc.id.colon())){
+					player.send("403: doc already issued");
 					return;
 				}
 				player.openUI(DocUI.EDITOR, idx, 1, 0);
