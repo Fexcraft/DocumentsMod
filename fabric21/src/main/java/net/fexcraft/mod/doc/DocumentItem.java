@@ -8,6 +8,7 @@ import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -18,9 +19,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
 
@@ -31,30 +33,31 @@ public class DocumentItem extends Item implements DocItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list, TooltipFlag flag){
+	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay disp, Consumer<Component> cons, TooltipFlag flag){
 		DocStackApp app = UniStack.getApp(stack, DocStackApp.class);
 		if(app == null){
-			list.add(Component.literal("no document app"));
+			cons.accept(Component.literal("no document app"));
 			return;
 		}
 		CompoundTag com = stack.get(FCL.FCLTAG).getUnsafe();
 		Document doc = app.getDocument();
 		if(doc == null){
-			list.add(Component.literal("no document data"));
-			list.add(Component.literal(com.toString()));
+			cons.accept(Component.literal("no document data"));
+			cons.accept(Component.literal(com.toString()));
 		}
 		else{
 			for(String str : doc.description){
-				list.add(Component.translatable(str));
+				cons.accept(Component.translatable(str));
 			}
-			list.add(Component.translatable(com.getBoolean("document:issued") ? "documents.item.issued" : "documents.item.blank"));
+			cons.accept(Component.translatable(com.getBooleanOr("document:issued", false) ? "documents.item.issued" : "documents.item.blank"));
 		}
 	}
 
 	@Override
 	public Component getName(ItemStack stack){
 		if(stack.has(FCL.FCLTAG)){
-			Document doc = DocRegistry.getDocument(stack.get(FCL.FCLTAG).getUnsafe().getString(NBTKEY_TYPE));
+			TagCW com = UniStack.getStack(stack).directTag();
+			Document doc = DocRegistry.getDocument(com.getString(NBTKEY_TYPE));
 			if(doc != null) return Component.literal(doc.name);
 		}
 		return super.getName(stack);
