@@ -8,7 +8,7 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
@@ -16,12 +16,12 @@ import net.minecraft.server.level.ServerPlayer;
  */
 public class DocPacketHandler21 extends DocPacketHandler {
 
-    public static final ResourceLocation SYNC_PACKET = ResourceLocation.parse("documents:sync");
+    public static final Identifier SYNC_PACKET = Identifier.parse("documents:sync");
     public static final CustomPacketPayload.Type<PacketSync21> SYNC_PACKET_TYPE = new CustomPacketPayload.Type<>(SYNC_PACKET);
     public static final StreamCodec<RegistryFriendlyByteBuf, PacketSync21> SYNC_PACKET_CODEC = StreamCodec.of(PacketSync21::encode, buffer -> new PacketSync21().decode(buffer));
 
     public DocPacketHandler21(){
-        PayloadTypeRegistry.playS2C().register(SYNC_PACKET_TYPE, SYNC_PACKET_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(SYNC_PACKET_TYPE, SYNC_PACKET_CODEC);
     }
 
     @Override

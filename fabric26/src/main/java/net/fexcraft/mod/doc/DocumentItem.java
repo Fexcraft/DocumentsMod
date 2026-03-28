@@ -12,7 +12,6 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +38,7 @@ public class DocumentItem extends Item implements DocItem {
 			cons.accept(Component.literal("no document app"));
 			return;
 		}
-		CompoundTag com = stack.get(FCL.FCLTAG).getUnsafe();
+		CompoundTag com = stack.get(FCL.FCLTAG).tag;
 		Document doc = app.getDocument();
 		if(doc == null){
 			cons.accept(Component.literal("no document data"));
@@ -65,11 +64,11 @@ public class DocumentItem extends Item implements DocItem {
 
 	@Override
 	public InteractionResult use(Level world, Player player, InteractionHand hand){
-		if(world.isClientSide) return InteractionResult.PASS;
+		if(world.isClientSide()) return InteractionResult.PASS;
 		ItemStack stack = player.getItemInHand(hand);
 		DocStackApp cap = UniStack.getApp(stack, DocStackApp.class);
 		if(cap == null || cap.getDocument() == null){
-			((ServerPlayer)player).sendSystemMessage(Component.literal("no document data"));
+			player.sendSystemMessage(Component.literal("no document data"));
 			return InteractionResult.FAIL;
 		}
 		UniEntity.getEntity(player).openUI(cap.isIssued() ? DocUI.VIEWER : DocUI.EDITOR, V3I.NULL);

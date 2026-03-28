@@ -5,7 +5,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fexcraft.mod.doc.data.DocPlayerData;
 import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.ui.DocUI;
-import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
@@ -14,11 +13,8 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 
 import static net.fexcraft.mod.doc.DocRegistry.NBTKEY_TYPE;
 import static net.fexcraft.mod.fcl.UniFCL.LOG;
@@ -39,7 +35,7 @@ public class DocumentsCommand {
 			}))
 			.then(Commands.literal("uuid").executes(cmd -> {
 				Documents.LOGGER.info(cmd.getSource().getPlayerOrException().toString());
-				cmd.getSource().sendSystemMessage(Component.literal(cmd.getSource().getPlayerOrException().getGameProfile().getId().toString()));
+				cmd.getSource().sendSystemMessage(Component.literal(cmd.getSource().getPlayerOrException().getGameProfile().id().toString()));
 				return 0;
 			}))
 			.then(Commands.literal("fill")
@@ -125,7 +121,7 @@ public class DocumentsCommand {
 								}
 								Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
 								Player player = EntityArgument.getPlayer(cmd, "player");
-								DocCreator.start(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(), doc.id.colon());
+								DocCreator.start(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().id().toString(), doc.id.colon());
 							}
 							catch(Exception e){
 								cmd.getSource().sendFailure(Component.literal("error, check log"));
@@ -141,7 +137,7 @@ public class DocumentsCommand {
 								try{
 									Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
 									Player player = EntityArgument.getPlayer(cmd, "player");
-									DocCreator.set(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString(),
+									DocCreator.set(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().id().toString(),
 										cmd.getArgument("key", String.class), cmd.getArgument("value", String.class));
 								}
 								catch(Exception e){
@@ -156,7 +152,7 @@ public class DocumentsCommand {
 						try{
 							Player cmdu = cmd.getSource().isPlayer() ? cmd.getSource().getPlayer() : null;
 							Player player = EntityArgument.getPlayer(cmd, "player");
-							DocCreator.issue(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().getId().toString());
+							DocCreator.issue(cmdu == null ? LOG : UniEntity.getEntity(cmdu), player.getGameProfile().id().toString());
 						}
 						catch(Exception e){
 							cmd.getSource().sendFailure(Component.literal("error, check log"));

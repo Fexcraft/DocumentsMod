@@ -25,4 +25,5 @@ run
 forge*changelog.txt
 forge12/gradle/
 forge20/gradle/
-fabric21/gradle/
+fabric26/gradle/
+fabric26/gradle*

@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.mod.doc.data.DocStackApp;
-import net.fexcraft.mod.doc.data.Document;
 import net.fexcraft.mod.doc.packet.DocPacketHandler;
 import net.fexcraft.mod.doc.ui.DocUI;
 import net.fexcraft.mod.fcl.FCL;
@@ -19,11 +18,10 @@ import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +44,8 @@ public class Documents implements ModInitializer {
 		DocPacketHandler.INSTANCE = new DocPacketHandler21();
 		UniStack.register(new DocStackApp(null));
 		//
-		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, ResourceLocation.parse("documents:document"));
-		DOCUMENT = Registry.register(BuiltInRegistries.ITEM, key.location(), new DocumentItem(key));
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.parse("documents:document"));
+		DOCUMENT = Registry.register(BuiltInRegistries.ITEM, key.identifier(), new DocumentItem(key));
 		//
 		ServerLifecycleEvents.SERVER_STARTING.register(event -> {
 			DocRegistry.init(FabricLoader.getInstance().getConfigDir().toFile());
@@ -67,7 +65,7 @@ public class Documents implements ModInitializer {
 
 	public static InputStream getResource(String s){
 		try{
-			ResourceLocation rl = ResourceLocation.parse(s.replace("data/documents/", "documents:"));
+			Identifier rl = Identifier.parse(s.replace("data/documents/", "documents:"));
 			var opt = FCL.SERVER.get().getResourceManager().getResource(rl);
 			if(opt.isPresent()) return opt.get().open();
 		}
